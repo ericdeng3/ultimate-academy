@@ -83,6 +83,12 @@
     .tile-hover:hover {
       box-shadow: 0 6px 18px rgba(0,0,0,0.07);
     }
+    .tile-hover-dark {
+      transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tile-hover-dark:hover {
+      box-shadow: 0 0 0 1px rgba(224,92,42,0.4), 0 8px 30px rgba(224,92,42,0.18);
+    }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
@@ -205,7 +211,7 @@
           <div class="browser-dot bg-green-400"></div>
         </div>
         <div class="bg-gray-50 p-5">
-          <div class="bg-white rounded-xl border border-gray-200 p-5 mb-3 tile-hover">
+          <div class="bg-white rounded-xl border border-gray-200 p-5 mb-3">
             <div class="flex items-center gap-2 mb-3">
               <img src="Eric%20Profile%20Photo.jpg" class="rounded-full w-7 h-7 object-cover" alt="Eric" />
               <div>
@@ -217,11 +223,11 @@
               <img src="Game%20IQ%20Feedback%20video%20image.png" class="w-full object-cover" alt="Game footage" />
             </div>
             <div class="space-y-2">
-              <div class="flex gap-2 items-start bg-orange-50 border border-orange-100 rounded-lg p-2.5 tile-hover">
+              <div class="flex gap-2 items-start bg-orange-50 border border-orange-100 rounded-lg p-2.5">
                 <span class="text-xs font-bold text-brand flex-shrink-0">2:03</span>
-                <p class="text-xs text-gray-600">If we're actually setting up for this deep cut, what I'd like us to do is maybe just jog a little bit slower if you're anticipating this pass and then you can accelerate once this player gets the disc.</p>
+                <p class="text-xs text-gray-600">If we're actually setting up for this deep cut, what I'd like us to do is just jog a little bit slower if you're anticipating this pass and then you can accelerate once this player gets the disc.</p>
               </div>
-              <div class="flex gap-2 items-start bg-orange-50 border border-orange-100 rounded-lg p-2.5 tile-hover">
+              <div class="flex gap-2 items-start bg-orange-50 border border-orange-100 rounded-lg p-2.5">
                 <span class="text-xs font-bold text-blue-600 flex-shrink-0">5:33</span>
                 <p class="text-xs text-gray-600">If there's no space for you to attack just yet, just slow down, reset the cut, and go back into the phases of prep, setup, commit.</p>
               </div>
@@ -342,7 +348,7 @@
           <div class="browser-dot bg-green-400"></div>
         </div>
         <div class="bg-gray-50 p-5">
-          <div class="bg-white rounded-xl border border-gray-200 p-5 mb-3 tile-hover">
+          <div class="bg-white rounded-xl border border-gray-200 p-5 mb-3">
             <div class="flex items-center justify-between mb-3">
               <div>
                 <p class="text-xs font-bold text-gray-900">Weekly Live Call</p>
@@ -365,7 +371,7 @@
               </div>
             </div>
           </div>
-          <div class="bg-white rounded-xl border border-gray-200 p-4 tile-hover">
+          <div class="bg-white rounded-xl border border-gray-200 p-4">
             <div class="flex items-center justify-between mb-2">
               <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">This month's workshop</p>
               <span class="text-xs bg-blue-100 text-blue-600 font-semibold rounded-full px-2.5 py-1">This month</span>
@@ -554,7 +560,7 @@
           </ul>
         </div>
         <!-- Premium -->
-        <div class="bg-gray-900 rounded-2xl p-8 border border-gray-800 shadow-sm relative tile-hover">
+        <div class="bg-gray-900 rounded-2xl p-8 border border-gray-800 shadow-sm relative tile-hover-dark">
           <div class="absolute -top-3 right-4 bg-brand text-white text-xs font-bold px-3 py-1 rounded-full">Accelerated Program</div>
           <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Premium</p>
           <div class="flex items-end gap-1 mb-1">
@@ -664,7 +670,29 @@
             This month's intake is now live.
           </h2>
           <p class="text-gray-400 text-lg mb-8 max-w-md mx-auto">We close our doors once we reach capacity to keep group quality high. Click to join us today.</p>
-          <a href="#pricing" class="inline-block bg-brand text-white font-bold px-10 py-4 rounded-xl hover:bg-brand-dark transition-colors text-base shadow-lg">Get Started</a>
+
+          <!-- Bonuses -->
+          <div class="inline-block text-left bg-white/5 border border-white/10 rounded-2xl px-6 py-5 mb-8 max-w-sm w-full">
+            <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-4">This month's bonuses</p>
+            <ul class="space-y-3">
+              <li class="flex items-start gap-3 text-sm text-gray-300">
+                <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                Bonus #1 – replace with your bonus
+              </li>
+              <li class="flex items-start gap-3 text-sm text-gray-300">
+                <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                Bonus #2 – replace with your bonus
+              </li>
+              <li class="flex items-start gap-3 text-sm text-gray-300">
+                <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                Bonus #3 – replace with your bonus
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <a href="#pricing" class="inline-block bg-brand text-white font-bold px-10 py-4 rounded-xl hover:bg-brand-dark transition-colors text-base shadow-lg">Get Started</a>
+          </div>
     
         </div>
       </div>
@@ -795,6 +823,79 @@
     </div>
   </div>
 
+  <!-- ─── FAQ ─────────────────────────────────────────────────────── -->
+  <section class="py-12 px-6 bg-gray-50 border-t border-gray-100">
+    <div class="max-w-2xl mx-auto">
+      <div class="reveal text-center mb-10">
+        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">FAQ</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Common questions.</h2>
+      </div>
+      <div class="reveal space-y-3" id="faq-list">
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">How much time do I need to commit per week?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">The program is designed to fit around your life. Most members dedicate 3–5 hours per week, but even 2 hours of focused, structured training produces results. We'll build a plan around your availability.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">What level do I need to be to join?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Ultimate Academy is built for adult players at the semi-competitive and sub-elite level — players who compete regularly and want to take their game further. If you're brand new to the sport, this likely isn't the right fit yet.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">What's the difference between Standard and Premium?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Standard gives you access to the community, training library, workshops, and weekly feedback. Premium adds a fully custom training plan, priority 1-on-1 support, weekly personal calls with Eric, and game film review — it's the done-for-you experience for players who want to move faster.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">How does the game film review work?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">You submit footage from your games or training sessions and Eric reviews it with timestamped feedback — specific moments, what to do differently, and why. It's one of the fastest ways to improve because the feedback is based entirely on your game.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">Can I cancel anytime?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Yes — both plans are month-to-month with no lock-in. That said, most members stay because they're seeing results. We recommend committing to at least 90 days to see the full benefit of the program.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">I'm not sure if I'm the right fit — what should I do?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Apply for the Premium program or join Standard and reach out to Eric directly via the community. He only works with athletes he's confident he can help — if it's not the right fit, he'll tell you honestly.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ─── FOOTER ────────────────────────────────────────────────────── -->
   <footer class="py-8 px-6 border-t border-gray-100">
     <div class="max-w-5xl mx-auto flex items-center justify-center">
@@ -863,6 +964,20 @@
 
     function toggleNotReadyReason(value) {
       document.getElementById('not-ready-reason').classList.toggle('hidden', value !== 'Not quite – see reason below');
+    }
+
+    function toggleFaq(btn) {
+      const body = btn.nextElementSibling;
+      const icon = btn.querySelector('.faq-icon');
+      const isOpen = !body.classList.contains('hidden');
+      // Close all
+      document.querySelectorAll('.faq-body').forEach(b => b.classList.add('hidden'));
+      document.querySelectorAll('.faq-icon').forEach(i => i.style.transform = '');
+      // Open clicked if it was closed
+      if (!isOpen) {
+        body.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      }
     }
 
     // Close on Escape key
