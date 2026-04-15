@@ -19,7 +19,7 @@
     }
   </script>
   <style>
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 
     /* ── Scroll-reveal base state ── */
     .reveal {
@@ -106,6 +106,7 @@
         <a href="#platform" class="hover:text-gray-900 transition-colors">Platform</a>
         <a href="#testimonials" class="hover:text-gray-900 transition-colors">Testimonials</a>
         <a href="#pricing" class="hover:text-gray-900 transition-colors">Pricing</a>
+        <a href="#pricing" class="bg-brand text-white font-semibold px-4 py-2 rounded-lg hover:bg-brand-dark transition-colors text-sm">Choose Your Plan</a>
       </div>
     </div>
   </nav>
@@ -121,8 +122,7 @@
         Get the guidance, structure and clarity you need to break through your plateaus and play to your full potential.
       </p>
       <div class="reveal flex flex-wrap items-center justify-center gap-4 mb-8" style="transition-delay:0.32s">
-        <a href="#pricing" id="apply" class="bg-brand text-white font-semibold px-6 py-3 rounded-xl hover:bg-brand-dark transition-colors shadow-sm text-sm">Choose Your Plan</a>
-        <a href="#program" class="text-gray-500 text-sm font-medium hover:text-gray-900 transition-colors flex items-center gap-1">See how it works <span>→</span></a>
+        <a href="#mission" class="bg-brand text-white font-semibold px-6 py-3 rounded-xl hover:bg-brand-dark transition-colors shadow-sm text-sm">Learn how it works →</a>
       </div>
 
       <!-- Intake live -->
@@ -718,8 +718,8 @@
         <div class="flex items-start justify-between">
           <div>
             <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-1">Premium Application</p>
-            <h3 class="text-2xl font-extrabold text-gray-900">Apply for Ultimate Academy</h3>
-            <p class="text-sm text-gray-400 mt-1">We review every application personally. Takes ~5 minutes.</p>
+            <h3 class="text-2xl font-extrabold text-gray-900">Apply for Ultimate Accelerator</h3>
+            <p class="text-sm text-gray-400 mt-1">Takes ~5 minutes. We review each application carefully.</p>
           </div>
           <button onclick="closeApplicationModal()" class="text-gray-400 hover:text-gray-600 transition-colors ml-4 flex-shrink-0 mt-1">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -842,11 +842,34 @@
 
         <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
           <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">Is this for me?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5 space-y-3">
+            <p class="text-sm text-gray-500 leading-relaxed">This program is specifically designed for adult ultimate frisbee players at the semi-competitive or sub-elite level – players who are feeling stuck or plateaued and want to make a bigger impact on the field.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">If you are not an adult ultimate player, or you are not interested in improving and developing as a player, then this program is not for you.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">Who is Eric and why should I listen to him?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5 space-y-3">
+            <p class="text-sm text-gray-500 leading-relaxed">Eric Deng is a handler for Sydney Sunder – Australia's top opens club, competing at the World Ultimate Club Championships (WUCC) in Ireland in August 2026.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">Over the last 18 months, he's helped 300+ ultimate players simplify their approach so they can make a bigger on-field impact – by playing smart and focusing on the things that actually make a difference.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
             <span class="text-sm font-semibold text-gray-900">How much time do I need to commit per week?</span>
             <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">The program is designed to fit around your life. Most members dedicate 3–5 hours per week, but even 2 hours of focused, structured training produces results. We'll build a plan around your availability.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">The program is designed to fit around your life. Most members dedicate a few hours per week, but even 1-2 hours of structured, focused training per week can produce results. We'll build a plan around your availability.</p>
           </div>
         </div>
 
@@ -856,7 +879,20 @@
             <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">Ultimate Academy is built for adult players at the semi-competitive and sub-elite level — players who compete regularly and want to take their game further. If you're brand new to the sport, this likely isn't the right fit yet.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">Semi-competitive to sub-elite. You should already have a foundation in the sport and be competing regularly – this program is built to take you further, not introduce you to the basics.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">How is the program delivered? Is it online?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5 space-y-3">
+            <p class="text-sm text-gray-500 leading-relaxed">Yes – the program is fully online, and for our athletes, that's actually the ideal format.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">Ultimate is a sport where your development happens on the field, in your own sessions, and in your own time. What holds most players back isn't access to a physical facility – it's having the right plan, the right feedback, and the right support system around them. That's exactly what we deliver online, without any geographic limitations.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">Because everything is built around video feedback and structured programming, the coaching is also more precise than a traditional in-person setup. Eric can review your footage repeatedly, pause on specific moments, and give you detailed timestamped notes – the kind of breakdown that's hard to replicate in real time on a field.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">You access everything around your own schedule – training plans, resources, community, and coaching – wherever you are in the world. There are no geographic limitations.</p>
           </div>
         </div>
 
@@ -866,17 +902,31 @@
             <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">Standard gives you access to the community, training library, workshops, and weekly feedback. Premium adds a fully custom training plan, priority 1-on-1 support, weekly personal calls with Eric, and game film review — it's the done-for-you experience for players who want to move faster.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">Standard gives you access to the community, training library, workshops, and weekly feedback. Premium adds a fully custom training plan, priority 1-on-1 support, private small group calls, and priority video feedback – it's the fully programmed approach for players who want to fast-track their progress.</p>
           </div>
         </div>
 
         <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
           <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">How does the game film review work?</span>
+            <span class="text-sm font-semibold text-gray-900">How does the footage review work?</span>
             <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
           </button>
-          <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">You submit footage from your games or training sessions and Eric reviews it with timestamped feedback — specific moments, what to do differently, and why. It's one of the fastest ways to improve because the feedback is based entirely on your game.</p>
+          <div class="faq-body hidden px-6 pb-5 space-y-3">
+            <p class="text-sm text-gray-500 leading-relaxed">You submit footage from your training sessions or games and Eric reviews it with timestamped feedback – specific moments, what to do differently, and why.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">If you've never collected footage before, we'll teach you best practices around equipment and setup. If you're nervous about recording yourself, that's totally normal – it's one of the biggest levers you can pull from a development perspective, and we'll help you get over that barrier.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">What if I have a busy schedule?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5 space-y-3">
+            <p class="text-sm text-gray-500 leading-relaxed">A busy schedule is actually one of the most common reasons athletes come to us. When you're time-poor, the last thing you need is to spend what little training time you have on the wrong things.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">We help you cut through the noise – identifying the specific areas that will move the needle most for your game, and building a clear plan around your schedule. Less time thinking, less time guessing, more time doing what actually works. Our approach is built on the patterns we've seen across hundreds of athletes, so you don't have to figure it out from scratch.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">If your schedule is busy because of a heavy tournament or competition calendar, that's actually ideal. You'll have constant real-time opportunities to apply what you're learning and get immediate feedback on how it's translating to your game – in-season is one of the best times to accelerate your development.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">And if things are quieter, that works just as well. We'll help you map out exactly how to use that time productively so you're fully prepared when the season kicks off.</p>
           </div>
         </div>
 
@@ -886,20 +936,56 @@
             <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">Yes — both plans are month-to-month with no lock-in. That said, most members stay because they're seeing results. We recommend committing to at least 90 days to see the full benefit of the program.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">Yes – both plans are month-to-month with no lock-in. That said, most members stay because they're seeing results that they otherwise wouldn't be able to achieve on their own. We recommend committing to at least 2-3 months to see the full benefit of the program. You can also move between the Premium and Standard plans if you need more flexibility.</p>
           </div>
         </div>
 
         <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
           <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">I'm not sure if I'm the right fit — what should I do?</span>
+            <span class="text-sm font-semibold text-gray-900">How long before I start seeing results?</span>
             <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
           </button>
-          <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">Apply for the Premium program or join Standard and reach out to Eric directly via the community. He only works with athletes he's confident he can help — if it's not the right fit, he'll tell you honestly.</p>
+          <div class="faq-body hidden px-6 pb-5 space-y-3">
+            <p class="text-sm text-gray-500 leading-relaxed">It depends on your training background and a range of individual factors, but the program is designed to help you achieve a meaningful win within your first 30 days.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">That usually happens because we help you identify a few strategic areas that are faster to apply in-game – things you can action almost immediately that have a visible impact on your performance. For most athletes, these early wins build confidence and momentum.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">The deeper, more lasting gains tend to come over the first 2–3 months, as you build the skills and movement patterns that translate into consistent, reliable improvement across all areas of your game.</p>
           </div>
         </div>
 
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">Can I pause my membership if I need a break?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Yes – just reach out and we'll sort it out for you. Life happens, and we'd rather you pause and come back than feel like you're paying for something you can't use right now.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">Do I need any special equipment?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5 space-y-3">
+            <p class="text-sm text-gray-500 leading-relaxed">Just the basics – some discs and something to mark out a field, like cones. Most athletes already have these.</p>
+            <p class="text-sm text-gray-500 leading-relaxed">A tripod is also highly recommended. It'll be one of the best investments you make in your development this year – once you start using video feedback, you won't look back.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
+          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
+            <span class="text-sm font-semibold text-gray-900">I'm not sure if I'm the right fit – what should I do?</span>
+            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-body hidden px-6 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">If you're consdering the Premium plan and you're not sure if you're a fit, submit an application first. If you're considering the Standard plan and you're not sure if you're a fit, join using the link above and reach out to Eric via DM inside the community. He only works with athletes he's confident he can help – if it's not the right fit, he'll tell you honestly, refund you and point you in the right direction.</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="text-center mt-8">
+        <a href="#pricing" class="inline-block bg-brand text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">Get Started Today</a>
       </div>
     </div>
   </section>
