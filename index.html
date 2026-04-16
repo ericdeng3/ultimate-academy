@@ -747,94 +747,105 @@
         </div>
       </div>
       <!-- Form -->
-      <form id="application-form" class="px-4 py-4 md:px-8 md:py-6 space-y-6" onsubmit="submitApplication(event)">
+      <form id="application-form" class="px-4 py-4 md:px-8 md:py-6">
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Full name <span class="text-brand">*</span></label>
-          <input type="text" name="name" required placeholder="Your full name" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
+        <!-- ── STEP 1: Contact details ── -->
+        <div id="step-1" class="space-y-6">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest">Step 1 of 2 — Contact details</p>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Full name <span class="text-brand">*</span></label>
+            <input type="text" name="name" required placeholder="Your full name" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email address <span class="text-brand">*</span></label>
+            <input type="email" name="email" required placeholder="you@example.com" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Instagram handle <span class="text-brand">*</span></label>
+            <p class="text-xs text-gray-400 mb-1.5">We'll reach out here if we have follow-up questions about your application.</p>
+            <input type="text" name="instagram" required placeholder="e.g. @itsericdee" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
+          </div>
+
+          <div class="pt-2 pb-2">
+            <button type="button" id="continue-btn" onclick="continueToStep2()" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">
+              Continue to Application →
+            </button>
+          </div>
         </div>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email address <span class="text-brand">*</span></label>
-          <input type="email" name="email" required placeholder="you@example.com" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
-        </div>
+        <!-- ── STEP 2: Application questions ── -->
+        <div id="step-2" class="hidden space-y-6">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest">Step 2 of 2 — Your application</p>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Instagram handle <span class="text-brand">*</span></label>
-          <p class="text-xs text-gray-400 mb-1.5">We'll reach out here if we have follow-up questions about your application.</p>
-          <input type="text" name="instagram" required placeholder="e.g. @itsericdee" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
-        </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">How long have you been playing ultimate? <span class="text-brand">*</span></label>
+            <select name="experience" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
+              <option value="" disabled selected>Select an option</option>
+              <option>Less than 1 year</option>
+              <option>1–3 years</option>
+              <option>3–5 years</option>
+              <option>5–10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">How long have you been playing ultimate? <span class="text-brand">*</span></label>
-          <select name="experience" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-            <option value="" disabled selected>Select an option</option>
-            <option>Less than 1 year</option>
-            <option>1–3 years</option>
-            <option>3–5 years</option>
-            <option>5–10 years</option>
-            <option>10+ years</option>
-          </select>
-        </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What level do you currently compete at? <span class="text-brand">*</span></label>
+            <select name="level" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
+              <option value="" disabled selected>Select an option</option>
+              <option>Recreational / semi-competitive</option>
+              <option>Club / sub-elite</option>
+              <option>National / elite</option>
+            </select>
+          </div>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">What level do you currently compete at? <span class="text-brand">*</span></label>
-          <select name="level" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-            <option value="" disabled selected>Select an option</option>
-            <option>Recreational / semi-competitive</option>
-            <option>Club / sub-elite</option>
-            <option>National / elite</option>
-          </select>
-        </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What is your biggest challenge in ultimate right now? <span class="text-brand">*</span></label>
+            <textarea name="focus_areas" required rows="3" placeholder="e.g. I struggle to read the defence as a cutter and often get shut down in tight spaces..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
+          </div>
 
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Why work with us? Why now? What makes you think this is the right move for you right now? <span class="text-brand">*</span></label>
+            <textarea name="why_now" required rows="3" placeholder="e.g. I've been plateauing for a while and feel like I need structured guidance rather than training on my own..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
+          </div>
 
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What qualities of a "good teammate" do you possess? What makes working with you enjoyable? <span class="text-brand">*</span></label>
+            <textarea name="teammate_qualities" required rows="3" placeholder="e.g. I'm coachable, show up consistently, and bring positive energy even when things get tough..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
+          </div>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">What is your biggest challenge in ultimate right now? <span class="text-brand">*</span></label>
-          <textarea name="focus_areas" required rows="3" placeholder="e.g. I struggle to read the defence as a cutter and often get shut down in tight spaces..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-        </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">The investment to get started in the Premium plan is $200 USD. Does that work for you? <span class="text-brand">*</span></label>
+            <select name="investment_ok" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
+              <option value="" disabled selected>Select an option</option>
+              <option>Yes, that works</option>
+              <option>No, that does not work</option>
+            </select>
+          </div>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Why work with us? Why now? What makes you think this is the right move for you right now? <span class="text-brand">*</span></label>
-          <textarea name="why_now" required rows="3" placeholder="e.g. I've been plateauing for a while and feel like I need structured guidance rather than training on my own..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-        </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">If accepted, are you ready to start this week? <span class="text-brand">*</span></label>
+            <select name="ready_to_start" required id="ready-select" onchange="toggleNotReadyReason(this.value)" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
+              <option value="" disabled selected>Select an option</option>
+              <option>Yes, I'm ready to go</option>
+              <option>Not quite – see reason below</option>
+            </select>
+          </div>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">What qualities of a "good teammate" do you possess? What makes working with you enjoyable? <span class="text-brand">*</span></label>
-          <textarea name="teammate_qualities" required rows="3" placeholder="e.g. I'm coachable, show up consistently, and bring positive energy even when things get tough..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-        </div>
+          <div id="not-ready-reason" class="hidden">
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What's holding you back from starting this week?</label>
+            <textarea name="not_ready_reason" rows="2" placeholder="e.g. I'm travelling until next month..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
+          </div>
 
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">The investment to get started in the Premium plan is $200 USD. Does that work for you? <span class="text-brand">*</span></label>
-          <select name="investment_ok" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-            <option value="" disabled selected>Select an option</option>
-            <option>Yes, that works</option>
-            <option>No, that does not work</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">If accepted, are you ready to start this week? <span class="text-brand">*</span></label>
-          <select name="ready_to_start" required id="ready-select" onchange="toggleNotReadyReason(this.value)" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-            <option value="" disabled selected>Select an option</option>
-            <option>Yes, I'm ready to go</option>
-            <option>Not quite – see reason below</option>
-          </select>
-        </div>
-
-        <div id="not-ready-reason" class="hidden">
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">What's holding you back from starting this week?</label>
-          <textarea name="not_ready_reason" rows="2" placeholder="e.g. I'm travelling until next month..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-        </div>
-
-
-
-        <!-- Submit -->
-        <div class="pt-2 pb-2">
-          <button type="submit" id="submit-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">
-            Submit Application
-          </button>
-          <p class="text-xs text-gray-400 text-center mt-3">We'll review your application and get back to you within 48 hours.</p>
+          <div class="pt-2 pb-2">
+            <button type="button" id="submit-btn" onclick="submitApplication()" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">
+              Submit Application
+            </button>
+            <p class="text-xs text-gray-400 text-center mt-3">We'll review your application and get back to you within 48 hours.</p>
+          </div>
         </div>
 
         <!-- Success message (hidden by default) -->
@@ -1055,6 +1066,12 @@
     function openApplicationModal() {
       document.getElementById('application-modal').classList.remove('hidden');
       document.body.style.overflow = 'hidden';
+      // Reset to step 1
+      document.getElementById('step-1').classList.remove('hidden');
+      document.getElementById('step-2').classList.add('hidden');
+      document.getElementById('success-msg').classList.add('hidden');
+      document.getElementById('modal-header').classList.remove('hidden');
+      document.getElementById('application-form').reset();
     }
 
     function closeApplicationModal() {
@@ -1085,8 +1102,45 @@
       if (e.key === 'Escape') closeApplicationModal();
     });
 
-    async function submitApplication(e) {
-      e.preventDefault();
+    async function continueToStep2() {
+      // Validate step 1 fields using browser-native validation
+      const step1Inputs = document.querySelectorAll('#step-1 [required]');
+      for (const input of step1Inputs) {
+        if (!input.reportValidity()) return;
+      }
+
+      const btn = document.getElementById('continue-btn');
+      btn.textContent = 'Saving…';
+      btn.disabled = true;
+
+      // Fire lead capture — don't block on response
+      const leadData = {
+        timestamp: new Date().toISOString(),
+        name: document.querySelector('[name="name"]').value.trim(),
+        email: document.querySelector('[name="email"]').value.trim(),
+        instagram: document.querySelector('[name="instagram"]').value.trim(),
+        source: 'eric-deng-ultimate.com',
+        type: 'lead'
+      };
+      fetch(APPS_SCRIPT_URL + '?' + new URLSearchParams(leadData).toString(), {
+        method: 'GET', mode: 'no-cors'
+      }).catch(() => {});
+
+      // Show step 2
+      document.getElementById('step-1').classList.add('hidden');
+      document.getElementById('step-2').classList.remove('hidden');
+      document.getElementById('modal-box').scrollTop = 0;
+      btn.textContent = 'Continue to Application →';
+      btn.disabled = false;
+    }
+
+    async function submitApplication() {
+      // Validate step 2 fields
+      const step2Inputs = document.querySelectorAll('#step-2 [required]');
+      for (const input of step2Inputs) {
+        if (!input.reportValidity()) return;
+      }
+
       const btn = document.getElementById('submit-btn');
       btn.textContent = 'Submitting…';
       btn.disabled = true;
@@ -1095,6 +1149,7 @@
       const data = Object.fromEntries(new FormData(form));
       data.timestamp = new Date().toISOString();
       data.source = 'eric-deng-ultimate.com';
+      data.type = 'application';
 
       try {
         const params = new URLSearchParams(data);
@@ -1106,12 +1161,10 @@
         gtag('event', 'premium_application_submitted', {event_category: 'conversion'});
         // Show success
         document.getElementById('modal-header').classList.add('hidden');
-        form.className = 'p-0';
-        Array.from(form.children).forEach(el => {
-          if (el.id !== 'success-msg') el.classList.add('hidden');
-        });
+        document.getElementById('step-2').classList.add('hidden');
         document.getElementById('success-msg').classList.remove('hidden');
         document.getElementById('modal-box').style.maxHeight = 'none';
+        document.getElementById('modal-box').scrollTop = 0;
       } catch (err) {
         btn.textContent = 'Submit Application';
         btn.disabled = false;
