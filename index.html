@@ -824,7 +824,7 @@
 
         <div id="not-ready-reason" class="hidden">
           <label class="block text-sm font-semibold text-gray-700 mb-1.5">What's holding you back from starting this week?</label>
-          <textarea name="start_delay_reason" rows="2" placeholder="e.g. I'm travelling until next month..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
+          <textarea name="not_ready_reason" rows="2" placeholder="e.g. I'm travelling until next month..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
         </div>
 
 
@@ -1094,6 +1094,7 @@
       const form = document.getElementById('application-form');
       const data = Object.fromEntries(new FormData(form));
       data.timestamp = new Date().toISOString();
+      data.source = 'eric-deng-ultimate.com';
 
       try {
         const params = new URLSearchParams(data);
