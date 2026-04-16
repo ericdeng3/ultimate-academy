@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ultimate Academy 🥏</title>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -544,7 +552,7 @@
             <span class="text-gray-400 text-sm mb-2">/month</span>
           </div>
           <p class="text-sm text-gray-400 mb-6">Everything you need to kickstart your growth.</p>
-          <a href="https://www.skool.com/ultimate/plans" class="block text-center bg-gray-900 text-white font-semibold py-3 rounded-xl hover:bg-black transition-colors mb-7 text-sm">Join Now</a>
+          <a href="https://www.skool.com/ultimate/plans" onclick="gtag('event', 'click_standard_join', {event_category: 'conversion'})" class="block text-center bg-gray-900 text-white font-semibold py-3 rounded-xl hover:bg-black transition-colors mb-7 text-sm">Join Now</a>
           <ul class="space-y-3 text-sm text-gray-600">
             <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>1-on-1 strategy call</li>
             <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>30-day growth strategy</li>
@@ -562,7 +570,7 @@
             <span class="text-gray-400 text-sm mb-2">/month</span>
           </div>
           <p class="text-sm text-gray-400 mb-6">Done-for-you plan for players ready to grow fast.</p>
-          <button onclick="openApplicationModal()" class="block w-full text-center bg-brand text-white font-semibold py-3 rounded-xl hover:bg-brand-dark transition-colors mb-7 text-sm">Apply Now</button>
+          <button onclick="gtag('event', 'click_premium_apply', {event_category: 'conversion'}); openApplicationModal()" class="block w-full text-center bg-brand text-white font-semibold py-3 rounded-xl hover:bg-brand-dark transition-colors mb-7 text-sm">Apply Now</button>
           <ul class="space-y-3 text-sm text-gray-300">
             <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Everything in Standard</li>
             <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Custom training plans</li>
@@ -609,7 +617,7 @@
             </li>
             <li class="flex items-start gap-3 text-sm text-gray-700">
               <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              Unlimited 30-day video feedback
+              Unlimited 30-day priority feedback
             </li>
           </ul>
           <p class="text-xs text-gray-400">Included for anyone who joins during our current intake.</p>
@@ -1093,6 +1101,8 @@
           method: 'GET',
           mode: 'no-cors'
         });
+        // Track application submission
+        gtag('event', 'premium_application_submitted', {event_category: 'conversion'});
         // Show success
         document.getElementById('modal-header').classList.add('hidden');
         form.className = 'p-0';
