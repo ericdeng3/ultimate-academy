@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Apply — Ultimate Academy 🥏</title>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,8 +26,389 @@
       },
     }
   </script>
+  <style>
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    .tile-hover { transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .tile-hover:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
+    .tile-hover-dark { transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .tile-hover-dark:hover { box-shadow: 0 0 0 1px rgba(224,92,42,0.4), 0 8px 30px rgba(224,92,42,0.18); }
+
+    /* Qualification flow options */
+    .qf-option {
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .qf-option:hover { border-color: #E05C2A; background-color: #FFF0EA; }
+  </style>
 </head>
-<body>
-  <!-- Coaching program application page — content to be built in a follow-up session. -->
+<body class="bg-white text-gray-900 font-sans antialiased">
+
+  <!-- ─── NAV ─────────────────────────────────────────────────────── -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+        <img src="../UA%20LOGO.png" alt="Ultimate Academy" class="w-8 h-8 rounded-lg object-cover" />
+        <span class="font-semibold text-gray-900 text-sm">Ultimate Academy 🥏</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+  <section class="pt-28 pb-10 px-6 text-center">
+    <div class="max-w-3xl mx-auto">
+
+      <div class="reveal flex items-center justify-center gap-2 mb-5 text-sm text-gray-500" style="transition-delay:0.05s">
+        <span class="relative flex h-2 w-2 flex-shrink-0">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+        </span>
+        This month's intake is now live
+      </div>
+
+      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.15] tracking-tight mb-5" style="transition-delay:0.12s">
+        The minimum effective program to stay fast, strong, and available for ultimate.
+      </h1>
+      <p class="reveal text-lg text-gray-500 max-w-lg mx-auto mb-3 leading-relaxed" style="transition-delay:0.2s">
+        Built for a full-time life, not a full-time training schedule.
+      </p>
+      <p class="reveal text-base text-gray-500 max-w-xl mx-auto mb-8 leading-relaxed" style="transition-delay:0.26s">
+        For club and league players juggling a full-time job (or shift work) who want a bigger impact on the field — without a bigger time commitment.
+      </p>
+
+      <!-- Credibility badges -->
+      <div class="reveal flex flex-wrap items-center justify-center gap-2.5 mb-8" style="transition-delay:0.32s">
+        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">ASCA Certified</span>
+        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">Handler, Sydney Sunder</span>
+        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">Australian Rep, World Clubs</span>
+        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">300+ Athletes Coached</span>
+      </div>
+
+      <div class="reveal mb-10" style="transition-delay:0.4s">
+        <a href="#qualify" class="inline-block bg-brand text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-dark transition-colors shadow-sm text-sm">See If You Qualify →</a>
+      </div>
+
+      <div class="reveal-scale mx-auto" style="transition-delay:0.46s; max-width: 40rem;">
+        <div class="rounded-2xl overflow-hidden shadow-xl">
+          <img src="../Eric%20Coaching%20Head%20Shot.jpg" alt="Eric coaching" class="w-full object-cover object-center" style="max-height: 320px;" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── WHO THIS IS FOR ─────────────────────────────────────────── -->
+  <section id="who-its-for" class="py-12 px-6 border-y border-gray-100 bg-gray-50">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal">
+        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Who This Is For</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-5">You already play. This makes you better at it.</h2>
+        <p class="text-gray-600 text-base leading-relaxed mb-8">
+          An adult club or league player, mid-20s to mid-40s, juggling a full-time job or a shift roster around training. You're already playing one to three times a week — league night, club sessions, weekend tournaments — and you're not chasing a national team spot. You want to be the player your team can actually rely on: reads the field well, wins the contests that matter, doesn't break down by the third game of a tournament day.
+        </p>
+
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">What you're after</p>
+        <ul class="space-y-3 text-sm text-gray-700">
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            Being the player your team can rely on in the biggest moments of a game
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            Winning the 50/50 contest
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            Sprinting past your matchup deep
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            Laying out without hesitating
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            Feeling athletic and strong day to day — not just during a game
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            Still playing at a high level in your 30s and 40s
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            A program built for a real, busy adult life — not one more thing to feel behind on
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT YOU'RE APPLYING FOR ───────────────────────────────────── -->
+  <section id="offer" class="py-12 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center max-w-2xl mx-auto mb-10">
+        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">The Offer</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-6">Two ways to work with us.</h2>
+        <div class="border-l-2 border-brand pl-5 text-left inline-block">
+          <p class="text-gray-600 text-base leading-relaxed italic">"The minimum effective program to stay fast, strong, and available for ultimate — built for a full-time life, not a full-time training schedule."</p>
+        </div>
+      </div>
+
+      <div class="reveal grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <!-- Core -->
+        <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm tile-hover">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Core</p>
+          <div class="flex items-end gap-1 mb-5">
+            <span class="text-4xl font-extrabold text-gray-900">$200</span>
+            <span class="text-gray-400 text-sm mb-2">/month</span>
+          </div>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              Strength & speed program, app-delivered — 2-3 gym sessions + 1 field session (top speed, acceleration) a week, video-demonstrated, self-guided
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              Built around cutting, deceleration, and layout mechanics — periodized around your season so a tournament weekend is planned for
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              On top of the games and practices you're already doing, not instead of them
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              Monthly group support call — program check-ins and game-level feedback, not just "did you get stronger" but "is this actually more useful on the field"
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              Community forum, always open, for whatever comes up between calls
+            </li>
+          </ul>
+        </div>
+        <!-- Optional Upsell -->
+        <div class="bg-gray-900 rounded-2xl p-6 md:p-8 border border-gray-800 shadow-sm tile-hover-dark">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Optional Upsell</p>
+          <div class="flex items-end gap-1 mb-1">
+            <span class="text-4xl font-extrabold text-white">$300</span>
+            <span class="text-gray-400 text-sm mb-2">/month total</span>
+          </div>
+          <p class="text-xs text-gray-500 mb-5">Not stacked on top of Core — this replaces it.</p>
+          <ul class="space-y-3 text-sm text-gray-300">
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              Everything in Core, plus
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              Weekly group support calls — for faster feedback and more accountability than the monthly cadence gives
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="reveal text-center text-xs text-gray-400 max-w-xl mx-auto mt-8 leading-relaxed">
+        Deliberately not included: nutrition or recovery programming, full-game footage review, position-specific systems or playbooks, daily check-ins, or in-person sessions and camps. That's not a gap — it's what keeps this lean instead of overhead-heavy.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── QUALIFICATION FLOW ─────────────────────────────────────────── -->
+  <section id="qualify" class="py-12 px-6 bg-gray-50 border-y border-gray-100">
+    <div class="max-w-lg mx-auto">
+      <div class="reveal text-center mb-8">
+        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Application</p>
+        <h2 class="text-3xl font-extrabold text-gray-900 leading-tight">See if you qualify.</h2>
+        <p class="text-gray-500 text-sm mt-2">A few quick questions — takes under a minute.</p>
+      </div>
+
+      <div class="reveal-scale bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" id="qf-card">
+
+        <!-- Q1 -->
+        <div id="qf-q1" class="qf-step">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 1 of 5</p>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">Are you currently playing club or league ultimate regularly?</h3>
+          <div class="space-y-3">
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q1', true)">Yes</button>
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q1', false)">No</button>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div id="qf-q2" class="qf-step hidden">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 2 of 5</p>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">Can you realistically commit to 3-4 training sessions a week?</h3>
+          <div class="space-y-3">
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q2', true)">Yes</button>
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q2', false)">No</button>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div id="qf-q3" class="qf-step hidden">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 3 of 5</p>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">Can you commit to $200/month on an ongoing basis?</h3>
+          <div class="space-y-3">
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q3', true)">Yes</button>
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q3', false)">No</button>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div id="qf-q4" class="qf-step hidden">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 4 of 5</p>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">Do you have a current injury or condition that needs medical clearance before training?</h3>
+          <div class="space-y-3">
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q4', true)">Yes, I'd need clearance first</button>
+            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q4', false)">No / it's manageable</button>
+          </div>
+        </div>
+
+        <!-- Q5 (open text, gate-free) -->
+        <div id="qf-q5" class="qf-step hidden">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 5 of 5</p>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">What's driving you to look for this now?</h3>
+          <textarea id="qf-motivation" rows="4" placeholder="Tell us a bit about what's going on..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none mb-5"></textarea>
+          <button type="button" id="qf-submit-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm" onclick="submitApplication()">Submit Application</button>
+        </div>
+
+        <!-- OUTCOME: APPROVED -->
+        <div id="qf-approved" class="qf-step hidden text-center">
+          <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <p class="text-2xl font-extrabold text-gray-900 mb-3">You're a fit.</p>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto mb-7">Based on your answers, Ultimate Academy is built for exactly where you're at. Before you book your onboarding call, watch this short video — it walks through exactly how the program works and what to expect once you're in.</p>
+          <div class="space-y-3">
+            <!-- TODO: replace href with the real VSL video link/embed once recorded -->
+            <a href="#" class="block bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">▶ Watch How It Works (2 min)</a>
+            <!-- TODO: replace href with the real booking/calendar link (e.g. Calendly) once set up -->
+            <a href="#" class="block bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-black transition-colors text-sm shadow-sm">Book Your Onboarding Call →</a>
+          </div>
+          <p class="text-xs text-gray-400 mt-5">Watch the video first — it'll answer most of your questions before the call.</p>
+        </div>
+
+        <!-- OUTCOME: NOT A FIT RIGHT NOW -->
+        <div id="qf-notfit" class="qf-step hidden text-center">
+          <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <p class="text-2xl font-extrabold text-gray-900 mb-3">Not quite the right moment.</p>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto mb-2">Based on your answers, now isn't the right time to start Ultimate Academy — and that's okay.</p>
+          <p id="qf-notfit-reason" class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto mb-7"></p>
+          <p class="text-sm font-semibold text-gray-700 mb-3">In the meantime, here's free stuff to keep leveling up:</p>
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">YouTube</a>
+            <a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">Instagram @itsericdee</a>
+          </div>
+        </div>
+
+        <!-- OUTCOME: PAUSE (injury) -->
+        <div id="qf-pause" class="qf-step hidden text-center">
+          <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg class="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </div>
+          <p class="text-2xl font-extrabold text-gray-900 mb-3">Let's get you cleared first.</p>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto">Training through an untreated injury isn't the minimum effective program — it's how you end up sidelined longer. Get the all-clear from a medical professional, then come back and reapply. We'll be here.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ──────────────────────────────────────────────────── -->
+  <footer class="py-8 px-6 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── Scroll reveal ──────────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+    // ── Qualification flow ───────────────────────────────────────
+    const answers = {};
+
+    const notFitReasons = {
+      'not-playing': "Ultimate Academy is built for players already in the middle of a club or league season — come back once you're back playing regularly.",
+      'time': "Sounds like your schedule's too full for 3-4 sessions a week right now — come back when that changes. The program isn't going anywhere.",
+      'budget': "Sounds like $200/month isn't the right fit for your budget right now — come back when it is. The program isn't going anywhere."
+    };
+
+    function showStep(id) {
+      document.querySelectorAll('.qf-step').forEach(el => el.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+      document.getElementById('qf-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function showNotFit(reason) {
+      answers.exitReason = reason;
+      document.getElementById('qf-notfit-reason').textContent = notFitReasons[reason] || '';
+      gtag('event', 'qualify_not_a_fit', { event_category: 'qualification', reason: reason });
+      showStep('qf-notfit');
+    }
+
+    function answer(question, value) {
+      answers[question] = value;
+
+      if (question === 'q1') {
+        if (!value) return showNotFit('not-playing');
+        return showStep('qf-q2');
+      }
+      if (question === 'q2') {
+        if (!value) return showNotFit('time');
+        return showStep('qf-q3');
+      }
+      if (question === 'q3') {
+        if (!value) return showNotFit('budget');
+        return showStep('qf-q4');
+      }
+      if (question === 'q4') {
+        if (value) {
+          gtag('event', 'qualify_pause_injury', { event_category: 'qualification' });
+          return showStep('qf-pause');
+        }
+        return showStep('qf-q5');
+      }
+    }
+
+    function submitApplication() {
+      answers.motivation = document.getElementById('qf-motivation').value.trim();
+      answers.timestamp = new Date().toISOString();
+      answers.source = 'eric-deng-ultimate.com/apply';
+
+      // TODO: Replace this stub with real submission handling (e.g. fetch to a
+      // backend / Google Apps Script / Zapier endpoint, matching the pattern
+      // already used by the Premium application form on the homepage) once
+      // we've decided where these applications should land.
+      console.log('Qualification application answers:', answers);
+
+      gtag('event', 'qualify_approved', { event_category: 'qualification' });
+      showStep('qf-approved');
+    }
+  </script>
+
 </body>
 </html>
