@@ -27,7 +27,7 @@
     }
   </script>
   <style>
-    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    html { scroll-behavior: smooth; }
 
     .reveal {
       opacity: 0;
@@ -55,22 +55,27 @@
       transition: border-color 0.2s ease, background-color 0.2s ease;
     }
     .qf-option:hover { border-color: #E05C2A; background-color: #FFF0EA; }
+
+    /* Qualification flow step transitions */
+    .qf-fade-out {
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+    .qf-fade-in {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .qf-fade-in-active { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
 
-  <!-- ─── NAV ─────────────────────────────────────────────────────── -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
-    <div class="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
-      <a href="../index.html" class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-        <img src="../UA%20LOGO.png" alt="Ultimate Academy" class="w-8 h-8 rounded-lg object-cover" />
-        <span class="font-semibold text-gray-900 text-sm">Ultimate Academy 🥏</span>
-      </a>
-    </div>
-  </nav>
-
   <!-- ─── PROMISE (hero) ───────────────────────────────────────────── -->
-  <section class="pt-28 pb-10 px-6 text-center">
+  <!-- Nav intentionally omitted on this page — single-purpose application
+       flow, no navigation away from the qualification funnel. -->
+  <section class="pt-16 pb-10 px-6 text-center">
     <div class="max-w-3xl mx-auto">
 
       <div class="reveal flex items-center justify-center gap-2 mb-5 text-sm text-gray-500" style="transition-delay:0.05s">
@@ -128,7 +133,7 @@
             </li>
             <li class="flex items-start gap-2.5">
               <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              You can commit to 3-4 training sessions a week and $200/month, ongoing
+              You can commit to 3 ultimate-specific gym sessions and 1 field session a week, ongoing
             </li>
             <li class="flex items-start gap-2.5">
               <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
@@ -145,15 +150,15 @@
             </li>
             <li class="flex items-start gap-2.5">
               <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-              You're chasing a national team or elite pathway spot
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-              You can't commit to 3-4 sessions a week right now
+              You can't commit to 3 gym sessions and 1 field session a week right now
             </li>
             <li class="flex items-start gap-2.5">
               <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
               You're looking for in-person sessions or a fully custom 1:1 program
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+              You're not committed to putting in the work to get better and see lasting results
             </li>
           </ul>
         </div>
@@ -171,11 +176,11 @@
       <div class="reveal divide-y divide-gray-200">
         <div class="py-6 first:pt-0 last:pb-0">
           <p class="text-sm text-gray-400 leading-snug">Most programs assume more training days means more results.</p>
-          <p class="text-base font-semibold text-gray-900 mt-1.5 leading-snug">This one assumes the opposite — the right 2-3 gym days plus one field day beats five generic days stacked onto a schedule that's already full.</p>
+          <p class="text-base font-semibold text-gray-900 mt-1.5 leading-snug">This one assumes the opposite — the right 3 gym days plus one field day beats five generic days stacked onto a schedule that's already full.</p>
         </div>
         <div class="py-6 first:pt-0 last:pb-0">
           <p class="text-sm text-gray-400 leading-snug">Most strength programs are borrowed from another sport.</p>
-          <p class="text-base font-semibold text-gray-900 mt-1.5 leading-snug">This one is built around what ultimate actually demands — cutting, deceleration, first-step acceleration, layout mechanics.</p>
+          <p class="text-base font-semibold text-gray-900 mt-1.5 leading-snug">This one is built around what ultimate actually demands — cutting, deceleration, first-step acceleration, upper body power for throws.</p>
         </div>
         <div class="py-6 first:pt-0 last:pb-0">
           <p class="text-sm text-gray-400 leading-snug">Most training advice treats getting stronger and staying available all season as separate goals.</p>
@@ -279,7 +284,7 @@
         <!-- Q2 -->
         <div id="qf-q2" class="qf-step hidden">
           <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 2 of 5</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">Can you realistically commit to 3-4 training sessions a week?</h3>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">Can you realistically commit to 3 ultimate-specific gym sessions and 1 field session a week?</h3>
           <div class="space-y-3">
             <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q2', true)">Yes</button>
             <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q2', false)">No</button>
@@ -382,14 +387,30 @@
 
     const notFitReasons = {
       'not-playing': "Ultimate Academy is built for players already in the middle of a club or league season — come back once you're back playing regularly.",
-      'time': "Sounds like your schedule's too full for 3-4 sessions a week right now — come back when that changes. The program isn't going anywhere.",
-      'budget': "Sounds like $200/month isn't the right fit for your budget right now — come back when it is. The program isn't going anywhere."
+      'time': "Sounds like your schedule's too full for 3 gym sessions and 1 field session a week right now — come back when that changes. The program isn't going anywhere.",
+      'budget': "Sounds like the ongoing cost isn't the right fit for your budget right now — come back when it is. The program isn't going anywhere."
     };
 
     function showStep(id) {
-      document.querySelectorAll('.qf-step').forEach(el => el.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
+      const current = document.querySelector('.qf-step:not(.hidden)');
+      const next = document.getElementById(id);
       document.getElementById('qf-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      if (!current || current === next) {
+        next.classList.remove('hidden');
+        return;
+      }
+
+      // Short fade out of the current question, then fade in the next one.
+      current.classList.add('qf-fade-out');
+      setTimeout(() => {
+        current.classList.add('hidden');
+        current.classList.remove('qf-fade-out');
+        next.classList.remove('hidden');
+        next.classList.add('qf-fade-in');
+        requestAnimationFrame(() => next.classList.add('qf-fade-in-active'));
+        setTimeout(() => next.classList.remove('qf-fade-in', 'qf-fade-in-active'), 220);
+      }, 180);
     }
 
     function showNotFit(reason) {
