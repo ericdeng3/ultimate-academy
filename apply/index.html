@@ -13,6 +13,10 @@
     gtag('config', 'G-PK7BFTYPJZ');
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Calendly widget script — loaded once here; the inline widget div itself
+       is injected into #qf-calendly at the moment the applicant qualifies,
+       so it never has to initialize while hidden. -->
+  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
   <script>
     tailwind.config = {
       theme: {
@@ -45,17 +49,6 @@
     }
     .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
 
-    .tile-hover { transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    .tile-hover:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
-    .tile-hover-dark { transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    .tile-hover-dark:hover { box-shadow: 0 0 0 1px rgba(224,92,42,0.4), 0 8px 30px rgba(224,92,42,0.18); }
-
-    /* Qualification flow options */
-    .qf-option {
-      transition: border-color 0.2s ease, background-color 0.2s ease;
-    }
-    .qf-option:hover { border-color: #E05C2A; background-color: #FFF0EA; }
-
     /* Qualification flow step transitions */
     .qf-fade-out {
       opacity: 0;
@@ -68,142 +61,83 @@
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
     .qf-fade-in-active { opacity: 1; transform: translateY(0); }
+
+    .qf-input, .qf-select {
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .qf-input:focus, .qf-select:focus {
+      border-color: #E05C2A;
+      box-shadow: 0 0 0 3px rgba(224,92,42,0.15);
+    }
+
+    .faq-body {
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+    .faq-body.faq-body-visible { opacity: 1; }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
 
-  <!-- ─── PROMISE (hero) ───────────────────────────────────────────── -->
+  <!-- ─── TOP BAR ─────────────────────────────────────────────────── -->
+  <div class="reveal flex items-center justify-center py-4 px-4 bg-[#232321]" style="transition-delay:0.02s">
+    <div class="inline-flex items-center gap-2.5 bg-white rounded-lg px-5 py-2.5">
+      <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+      </span>
+      <span class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-wide">Ultimate-Specific Training Program | Intake Live</span>
+    </div>
+  </div>
+
+  <!-- ─── HERO (pain-based hook) ──────────────────────────────────── -->
   <!-- Nav intentionally omitted on this page — single-purpose application
        flow, no navigation away from the qualification funnel. -->
-  <section class="relative overflow-hidden pt-16 pb-10 px-6 text-center">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(224,92,42,0.09),transparent_60%)] pointer-events-none"></div>
-    <div class="relative max-w-3xl mx-auto">
+  <!-- Dark/white split: the dark panel's padding-bottom (288px = 90% of the
+       image's 320px cap) sets exactly where its background ends. The image
+       is a later sibling pulled up by that same 288px (a standard
+       overlapping-card technique — negative margin between siblings, not
+       the more fragile "margin collapses through the parent" trick), so it
+       lands starting right where the text above it ends and straddles the
+       dark/white boundary. The white panel is then pulled up 32px (the
+       remaining 10%) to meet the dark panel's edge exactly, and the image
+       wrapper is `relative z-10` so it still renders above that overlap
+       instead of being covered by the white panel's background. -->
+  <section class="relative text-center">
+    <div class="pt-8 px-6" style="background-color:#1f223c; padding-bottom:288px;">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
+          Struggling to make an impact on-field when it matters?
+        </h1>
+        <p class="reveal text-xl text-white/80 max-w-lg mx-auto mb-8 leading-relaxed" style="transition-delay:0.16s">
+          Join our ultimate-specific program. Build the qualities you need to finally feel confident stepping on-field.
+        </p>
+      </div>
+    </div>
 
-      <p class="reveal text-xs font-semibold text-brand uppercase tracking-widest mb-4" style="transition-delay:0.05s">Ultimate-Specific Strength & Speed Coaching</p>
+    <div class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 40rem; margin-top: -288px;">
+      <div class="rounded-lg overflow-hidden shadow-xl">
+        <img src="../Eric%20Coaching%20Head%20Shot.jpg" alt="Eric coaching" class="w-full object-cover object-center" style="max-height: 320px;" />
+      </div>
+    </div>
 
-      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.15] tracking-tight mb-5" style="transition-delay:0.12s">
-        Be the player your team can actually rely on when it matters.
-      </h1>
-      <p class="reveal text-lg text-gray-500 max-w-lg mx-auto mb-8 leading-relaxed" style="transition-delay:0.18s">
-        A structured program to help you increase your on-field impact in ultimate frisbee, designed for the adult league or club athlete with a busy schedule.
+    <div class="pt-16 pb-10 px-6" style="margin-top: -32px;">
+      <p class="reveal text-lg text-gray-900 max-w-lg mx-auto mb-8" style="transition-delay:0.28s">
+        An ultimate-specific training program to help you make a bigger on-field impact — built for the busy adult athlete.
       </p>
 
-      <div class="reveal mb-6" style="transition-delay:0.24s">
-        <a href="#qualify" class="inline-block bg-brand text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-dark transition-colors shadow-sm text-sm">See If You Qualify →</a>
-      </div>
-
-      <div class="reveal flex items-center justify-center gap-2 mb-10 text-sm text-gray-500" style="transition-delay:0.26s">
-        <span class="relative flex h-2 w-2 flex-shrink-0">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-        </span>
-        This month's intake is now live
-      </div>
-
-      <div class="reveal-scale mx-auto" style="transition-delay:0.34s; max-width: 40rem;">
-        <div class="rounded-2xl overflow-hidden shadow-xl">
-          <img src="../Eric%20Coaching%20Head%20Shot.jpg" alt="Eric coaching" class="w-full object-cover object-center" style="max-height: 320px;" />
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─── WHO THIS IS FOR / NOT FOR ───────────────────────────────────── -->
-  <section class="py-12 px-6 border-y border-gray-100 bg-gray-50">
-    <div class="max-w-3xl mx-auto">
-      <div class="reveal text-center mb-10">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">FIT</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Who this is for.</h2>
-      </div>
-      <div class="reveal grid sm:grid-cols-2 gap-5">
-        <div class="bg-brand-light border border-orange-100 rounded-2xl p-6">
-          <p class="text-sm font-bold text-brand-dark uppercase tracking-wide mb-4">This is for you if</p>
-          <ul class="space-y-3 text-sm text-gray-700">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              You're an active club or league player wanting to make a bigger on-field impact
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              You're mid-20s to mid-40s, juggling a full-time job or shift work around training
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              You want to play better ultimate, but you're not chasing a pro career
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              You can commit to 2 or 3 ultimate-specific gym sessions and 1 field session a week
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              You want to be the player your team can actually rely on when it matters
-            </li>
-          </ul>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-2xl p-6">
-          <p class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">This isn't for you if</p>
-          <ul class="space-y-3 text-sm text-gray-500">
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-              You're not currently playing (or intending to play) club or league ultimate
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-                You're not wanting to improve your on-field impact this season
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-              You can't commit to 2 or 3 gym sessions and 1 field session a week
-            </li>
-            <li class="flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-              You're not committed to putting in the work to get better and see lasting results
-            </li>
-          </ul>
-        </div>
+      <div class="reveal mb-6" style="transition-delay:0.34s">
+        <a href="#qualify" class="block w-full max-w-sm mx-auto bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-xl">I'M READY TO DEVELOP</a>
       </div>
     </div>
   </section>
 
-  <!-- ─── WHAT MOST TRAINING ADVICE GETS WRONG ───────────────────────── -->
+  <!-- ─── TESTIMONIALS ─────────────────────────────────────────────── -->
   <section class="py-12 px-6">
-    <div class="max-w-2xl mx-auto">
-      <div class="reveal text-center mb-10">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Our Approach</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">What most training advice gets wrong for ultimate players.</h2>
-      </div>
-      <div class="reveal divide-y divide-gray-200">
-        <div class="py-6 first:pt-0 last:pb-0">
-          <p class="text-sm text-gray-400 leading-snug">Most programs assume more training = more results.</p>
-          <p class="text-base font-semibold text-gray-900 mt-1.5 leading-snug">For us, the right ultimate-specific approach fit around your needs — that actually gets done — beats five generic days stacked onto a schedule that's already full.</p>
-        </div>
-        <div class="py-6 first:pt-0 last:pb-0">
-          <p class="text-sm text-gray-400 leading-snug">Most strength programs are borrowed from another sport.</p>
-          <p class="text-base font-semibold text-gray-900 mt-1.5 leading-snug">This one is built around what ultimate actually demands — cutting, deceleration, first-step acceleration, upper body power, and injury resilience.</p>
-        </div>
-        <div class="py-6 first:pt-0 last:pb-0">
-          <p class="text-sm text-gray-400 leading-snug">Most programs pile on more than a busy athlete has time for.</p>
-          <p class="text-base font-semibold text-gray-900 mt-1.5 leading-snug">This one gives you exactly what you need — fresh and motivating so you follow through, efficient so you spend more time playing.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── PROOF ────────────────────────────────────────────────────── -->
-  <section class="py-12 px-6 border-y border-gray-100 bg-gray-50">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat py-10 px-6 sm:px-10" style="background-image: url('Light%20Gray%20Background%20Paper.png');">
       <div class="reveal text-center mb-8">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Proof</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Coached by someone who's done it.</h2>
-      </div>
-
-      <div class="reveal flex flex-wrap items-center justify-center gap-2.5 mb-12">
-        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">ASCA Certified</span>
-        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">Handler, Sydney Sunder</span>
-        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">Australian Rep, World Clubs</span>
-        <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">300+ Athletes Coached</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">What people are saying:</h2>
       </div>
 
       <!--
@@ -216,109 +150,155 @@
           <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-3">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
           </div>
-          <p class="text-xs text-gray-400 leading-relaxed">Real results — coming soon</p>
+          <p class="text-sm text-gray-400 leading-relaxed">Real results — coming soon</p>
         </div>
         <div class="rounded-2xl border-2 border-dashed border-gray-200 p-6 flex flex-col items-center text-center">
           <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-3">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
           </div>
-          <p class="text-xs text-gray-400 leading-relaxed">Real results — coming soon</p>
+          <p class="text-sm text-gray-400 leading-relaxed">Real results — coming soon</p>
         </div>
         <div class="rounded-2xl border-2 border-dashed border-gray-200 p-6 flex flex-col items-center text-center">
           <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-3">
             <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
           </div>
-          <p class="text-xs text-gray-400 leading-relaxed">Real results — coming soon</p>
+          <p class="text-sm text-gray-400 leading-relaxed">Real results — coming soon</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── PLAN ─────────────────────────────────────────────────────── -->
+  <!-- ─── WHAT YOU GET ─────────────────────────────────────────────── -->
   <section class="py-12 px-6">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-2xl mx-auto">
+      <div class="reveal relative text-center mb-10">
+        <img src="black%20paper%20background%20removed.png" alt="" class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" />
+        <h2 class="relative text-3xl md:text-4xl font-extrabold text-white leading-tight py-7 px-6">What you'll get in the program.</h2>
+      </div>
+
+      <div class="reveal grid sm:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">1</div>
+          <p class="text-lg font-bold text-gray-900 mb-3">1:1 Personalized Coaching</p>
+          <div class="rounded-2xl overflow-hidden shadow-sm mb-3">
+            <img src="../Eric's%20Team%20Huddle%20Photo.jpeg" alt="1:1 personalized coaching" class="w-full h-40 object-cover" />
+          </div>
+          <p class="text-sm text-gray-900 leading-relaxed">Direct access to a coach who's competed at the highest levels. Every plan is built around your position, your gaps, and your schedule — not a generic template.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">2</div>
+          <p class="text-lg font-bold text-gray-900 mb-3">An Ultimate-Specific Framework</p>
+          <div class="rounded-2xl overflow-hidden shadow-sm mb-3">
+            <img src="../Tactical%20Workshop%20image.png" alt="Ultimate-specific training framework" class="w-full h-40 object-cover" />
+          </div>
+          <p class="text-sm text-gray-900 leading-relaxed">Every session is built around what actually shows up on the field — more separation, more blocks, further throws — not gym programming borrowed from another sport.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">3</div>
+          <p class="text-lg font-bold text-gray-900 mb-3">Clear Tactical Next Steps</p>
+          <div class="rounded-2xl overflow-hidden shadow-sm mb-3">
+            <img src="../Game%20IQ%20Feedback%20video%20image.png" alt="Clear tactical next steps" class="w-full h-40 object-cover" />
+          </div>
+          <p class="text-sm text-gray-900 leading-relaxed">Leave every session knowing exactly what to work on next — a clear, personalized plan so you're never guessing what's actually moving the needle.</p>
+        </div>
+      </div>
+
+      <div class="reveal text-center mt-10">
+        <a href="#qualify" class="block w-full max-w-sm mx-auto bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-lg">I'M READY TO DEVELOP</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PLAN + QUALIFICATION FLOW + FAQ ─────────────────────────────── -->
+  <section id="qualify" class="relative overflow-hidden py-12 px-6 border-t border-gray-100 bg-gray-50">
+    <div class="relative max-w-3xl mx-auto">
       <div class="reveal text-center mb-10">
         <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">What Happens Next</p>
         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Simple, from here.</h2>
       </div>
-      <div class="reveal grid sm:grid-cols-3 gap-5">
+      <div class="reveal grid sm:grid-cols-3 gap-5 mb-14">
         <div class="text-center">
           <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">1</div>
           <p class="text-sm font-bold text-gray-900 mb-1">Apply</p>
-          <p class="text-xs text-gray-500 leading-relaxed">Answer a few quick questions so we know it's a mutual fit.</p>
+          <p class="text-xs text-gray-500 leading-relaxed">Answer a few questions below so we know you're the right kind of person.</p>
         </div>
         <div class="text-center">
           <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">2</div>
           <p class="text-sm font-bold text-gray-900 mb-1">Short call</p>
-          <p class="text-xs text-gray-500 leading-relaxed">A quick call to confirm fit and answer questions before you start.</p>
+          <p class="text-xs text-gray-500 leading-relaxed">A quick call to confirm fit and start building out your strategy.</p>
         </div>
         <div class="text-center">
           <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">3</div>
           <p class="text-sm font-bold text-gray-900 mb-1">Start</p>
-          <p class="text-xs text-gray-500 leading-relaxed">Begin training within days of your call.</p>
+          <p class="text-xs text-gray-500 leading-relaxed">If it's a fit, we'll get you started with our onboarding process during the call.</p>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ─── QUALIFICATION FLOW ─────────────────────────────────────────── -->
-  <section id="qualify" class="relative overflow-hidden py-12 px-6 border-t border-gray-100 bg-gray-50">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(224,92,42,0.07),transparent_55%)] pointer-events-none"></div>
-    <div class="relative max-w-lg mx-auto">
-      <div class="reveal text-center mb-8">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Application</p>
-        <h2 class="text-3xl font-extrabold text-gray-900 leading-tight">See if you qualify.</h2>
-        <p class="text-gray-500 text-sm mt-2">A few quick questions — takes under a minute.</p>
-      </div>
+      <div class="max-w-lg mx-auto">
+        <div class="reveal-scale bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" id="qf-card">
 
-      <div class="reveal-scale bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" id="qf-card">
-
-        <!-- Q1 -->
-        <div id="qf-q1" class="qf-step">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 1 of 5</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">Are you currently playing league or club ultimate regularly?</h3>
-          <div class="space-y-3">
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q1', true)">Yes</button>
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q1', false)">No</button>
-          </div>
+        <!-- Step 1: Contact details -->
+        <div id="qf-contact" class="qf-step">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Step 1 of 2</p>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">First, how can we reach you?</h3>
+          <form id="qf-contact-form" class="space-y-3" novalidate>
+            <input type="email" id="qf-email" required placeholder="Email address" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
+            <div class="grid grid-cols-2 gap-3">
+              <input type="text" id="qf-first" required placeholder="First name" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
+              <input type="text" id="qf-last" required placeholder="Last name" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
+            </div>
+            <button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-base shadow-sm mt-2">Continue →</button>
+          </form>
         </div>
 
-        <!-- Q2 -->
-        <div id="qf-q2" class="qf-step hidden">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 2 of 5</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">Can you realistically commit to 3 ultimate-specific gym sessions and 1 field session a week?</h3>
-          <div class="space-y-3">
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q2', true)">Yes</button>
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q2', false)">No</button>
-          </div>
-        </div>
-
-        <!-- Q3 -->
-        <div id="qf-q3" class="qf-step hidden">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 3 of 5</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">Can you commit to $200/month, to start?</h3>
-          <div class="space-y-3">
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q3', true)">Yes</button>
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q3', false)">No</button>
-          </div>
-        </div>
-
-        <!-- Q4 -->
-        <div id="qf-q4" class="qf-step hidden">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 4 of 5</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">Do you have a current injury or condition that needs medical clearance before training?</h3>
-          <div class="space-y-3">
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q4', true)">Yes, I'd need clearance first</button>
-            <button type="button" class="qf-option w-full text-left border-2 border-gray-200 rounded-xl px-5 py-4 font-semibold text-gray-800" onclick="answer('q4', false)">No / it's manageable</button>
-          </div>
-        </div>
-
-        <!-- Q5 (open text, gate-free) -->
-        <div id="qf-q5" class="qf-step hidden">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Question 5 of 5</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">What's driving you to look for this now?</h3>
-          <textarea id="qf-motivation" rows="4" placeholder="Tell us a bit about what's going on..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none mb-5"></textarea>
-          <button type="button" id="qf-submit-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm" onclick="submitApplication()">Submit Application</button>
+        <!-- Step 2: Qualifying questions, all together -->
+        <div id="qf-questions" class="qf-step hidden">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Step 2 of 2</p>
+          <h3 class="text-lg font-bold text-gray-900 mb-5">A few quick qualifying questions.</h3>
+          <form id="qf-questions-form" class="space-y-4" novalidate>
+            <div>
+              <label for="qf-q1" class="block text-base font-bold text-gray-900 mb-2">Which of the following best describes where you mostly play ultimate?</label>
+              <div class="relative">
+                <select id="qf-q1" required class="qf-select w-full appearance-none bg-white border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 transition">
+                  <option value="" disabled selected>Select</option>
+                  <option value="pickups">Pick ups</option>
+                  <option value="leagues">Leagues</option>
+                  <option value="club">Club trainings/tournaments</option>
+                  <option value="other">Other</option>
+                </select>
+                <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+            </div>
+            <div id="qf-q1-other" class="hidden">
+              <label for="qf-q1-other-text" class="block text-base font-bold text-gray-900 mb-2">Where do you mostly play?</label>
+              <input type="text" id="qf-q1-other-text" placeholder="Tell us where..." class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
+            </div>
+            <div>
+              <label for="qf-q2" class="block text-base font-bold text-gray-900 mb-2">Are you able to commit to a structured training plan start making a bigger on-field impact in the next 90 days?</label>
+              <div class="relative">
+                <select id="qf-q2" required class="qf-select w-full appearance-none bg-white border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 transition">
+                  <option value="" disabled selected>Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+            </div>
+            <div>
+              <label for="qf-q3" class="block text-base font-bold text-gray-900 mb-2">The program is $2k/year or $200/month. Does that work for you?</label>
+              <div class="relative">
+                <select id="qf-q3" required class="qf-select w-full appearance-none bg-white border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 transition">
+                  <option value="" disabled selected>Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-base shadow-sm mt-2">Continue →</button>
+          </form>
         </div>
 
         <!-- OUTCOME: APPROVED -->
@@ -326,44 +306,105 @@
           <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
             <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
           </div>
-          <p class="text-2xl font-extrabold text-gray-900 mb-3">You're a fit.</p>
-          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto mb-7">Based on your answers, Ultimate Academy is built for exactly where you're at. Before you book your onboarding call, watch this short video — it walks through exactly how the program works and what to expect once you're in.</p>
-          <div class="space-y-3">
-            <!-- TODO: replace href with the real VSL video link/embed once recorded -->
-            <a href="#" class="block bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">▶ Watch How It Works (2 min)</a>
-            <!-- TODO: replace href with the real booking/calendar link (e.g. Calendly) once set up -->
-            <a href="#" class="block bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-black transition-colors text-sm shadow-sm">Book Your Onboarding Call →</a>
-          </div>
-          <p class="text-xs text-gray-400 mt-5">Watch the video first — it'll answer most of your questions before the call.</p>
-        </div>
+          <p class="text-2xl font-extrabold text-gray-900 mb-3">Looks like we'd be able to help.</p>
+          <p class="text-sm text-gray-900 leading-relaxed max-w-sm mx-auto mb-7">Next step is a quick call to confirm that we're a fit, and start building out your strategy. We'll also send over a quick video on how the program works once you've booked.</p>
 
-        <!-- OUTCOME: NOT A FIT RIGHT NOW -->
-        <div id="qf-notfit" class="qf-step hidden text-center">
-          <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <p class="text-2xl font-extrabold text-gray-900 mb-3">Not quite the right moment.</p>
-          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto mb-2">Based on your answers, now isn't the right time to start Ultimate Academy — and that's okay.</p>
-          <p id="qf-notfit-reason" class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto mb-7"></p>
-          <p class="text-sm font-semibold text-gray-700 mb-3">In the meantime, here's free stuff to keep leveling up:</p>
-          <div class="flex flex-wrap items-center justify-center gap-3">
-            <a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">YouTube</a>
-            <a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">Instagram @itsericdee</a>
-          </div>
-        </div>
-
-        <!-- OUTCOME: PAUSE (injury) -->
-        <div id="qf-pause" class="qf-step hidden text-center">
-          <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg class="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-          </div>
-          <p class="text-2xl font-extrabold text-gray-900 mb-3">Let's get you cleared first.</p>
-          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto">Training through an untreated injury isn't the minimum effective program — it's how you end up sidelined longer. Get the all-clear from a medical professional, then come back and reapply. We'll be here.</p>
+          <p class="text-sm font-bold text-gray-900 mb-4">Book your call below.</p>
+          <div id="qf-calendly" class="rounded-2xl overflow-hidden -mx-6 md:-mx-8" style="min-width:320px;height:700px;"></div>
         </div>
 
       </div>
+      </div>
+    </div>
+
+    <!-- FAQ — same section, same gray background, no seam -->
+    <div class="relative max-w-2xl mx-auto mt-20">
+      <div class="reveal space-y-3" id="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
+            <span class="text-xl font-bold text-white">Is this right for me?</span>
+            <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
+            <p class="text-lg text-gray-900 leading-relaxed">This is built for active club or league players — mid-20s to mid-40s, juggling a job around training — who want a bigger on-field impact without chasing a pro career. It's not for you if you're not currently playing, not looking to improve this season, or can't commit to 2–3 gym sessions and 1 field session a week.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
+            <span class="text-xl font-bold text-white">How is this different from a normal gym program?</span>
+            <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
+            <p class="text-lg text-gray-900 leading-relaxed">Most training advice assumes more is better, or borrows programming from another sport entirely. This one is built around what actually shows up on an ultimate field — more separation, more blocks, further throws — and gives you exactly what fits your schedule, nothing more.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
+            <span class="text-xl font-bold text-white">How much time do I need to commit each week?</span>
+            <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
+            <p class="text-lg text-gray-900 leading-relaxed">Most athletes commit to 2–3 ultimate-specific gym sessions and 1 field session a week. We build the plan around your schedule, not the other way around.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
+            <span class="text-xl font-bold text-white">What actually happens in a session?</span>
+            <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
+            <p class="text-lg text-gray-900 leading-relaxed">Focused, ultimate-specific training — strength and speed work built to translate directly onto the field — plus a clear breakdown of exactly what to work on next. No wasted sets, no generic programming.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
+            <span class="text-xl font-bold text-white">How much does it cost?</span>
+            <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
+            <p class="text-lg text-gray-900 leading-relaxed">$200/month to start ($2k/year). We'll confirm the exact plan for you on your fit call once we understand where you're at.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="reveal text-center mt-14">
+        <a href="#qualify" class="block w-full max-w-sm mx-auto bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-xl">I'M READY TO DEVELOP</a>
+      </div>
     </div>
   </section>
+
+  <!-- ─── QUALIFICATION POPUP (shown when an applicant doesn't qualify) ── -->
+  <div id="qf-popup" class="hidden fixed inset-0 z-50 items-center justify-center p-6">
+    <div class="absolute inset-0 bg-gray-900/50" onclick="closePopup()"></div>
+    <div class="relative bg-white rounded-3xl shadow-xl border border-gray-100 max-w-sm w-full p-6 md:p-8 text-center">
+      <button type="button" onclick="closePopup()" aria-label="Close" class="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <div id="qf-popup-icon" class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
+        <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <p id="qf-popup-title" class="text-xl font-extrabold text-gray-900 mb-3"></p>
+      <p id="qf-popup-message" class="text-base text-gray-900 leading-relaxed mb-6"></p>
+      <div id="qf-popup-social">
+        <p class="text-sm font-semibold text-gray-700 mb-3">In the meantime, here's free stuff to keep leveling up:</p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">YouTube</a>
+          <a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">Instagram @itsericdee</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ─── FOOTER ──────────────────────────────────────────────────── -->
   <footer class="py-8 px-6 border-t border-gray-100">
@@ -384,17 +425,54 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
 
+    // ── FAQ accordion ────────────────────────────────────────────
+    function toggleFaq(btn) {
+      // Each item toggles independently — opening one doesn't close the
+      // others, so every answer can be open and readable at once.
+      const body = btn.nextElementSibling;
+      const chevron = btn.querySelector('.faq-icon-chevron');
+      const close = btn.querySelector('.faq-icon-close');
+      const isOpen = !body.classList.contains('hidden');
+
+      if (isOpen) {
+        body.classList.add('hidden');
+        body.classList.remove('faq-body-visible');
+        chevron.classList.remove('hidden');
+        close.classList.add('hidden');
+      } else {
+        body.classList.remove('hidden');
+        // Add the fade-in class a frame later so the browser registers the
+        // starting (opacity:0) state first — otherwise it'd jump straight
+        // to visible with no transition.
+        requestAnimationFrame(() => body.classList.add('faq-body-visible'));
+        chevron.classList.add('hidden');
+        close.classList.remove('hidden');
+      }
+    }
+
     // ── Qualification flow ───────────────────────────────────────
     const answers = {};
 
-    const notFitReasons = {
-      'not-playing': "Ultimate Academy is built for players already in the middle of a league or club season — come back once you're back playing regularly.",
-      'time': "Sounds like your schedule's too full for 3 gym sessions and 1 field session a week right now — come back when that changes. The program isn't going anywhere.",
-      'budget': "Sounds like the ongoing cost isn't the right fit for your budget right now — come back when it is. The program isn't going anywhere."
-    };
+    // Same deployed Google Apps Script web app (google-apps-script.gs) the
+    // homepage's Premium Application form posts to (see index.html) —
+    // reused here so both forms land in the same place. `type` distinguishes
+    // this page's rows from the homepage's 'lead'/'application' rows.
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
+
+    function submitApplicationData(data) {
+      if (!APPS_SCRIPT_URL) return; // not deployed yet — skip rather than fetch a blank URL
+      // Fire-and-forget: Apps Script web apps don't support CORS preflight
+      // for a browser POST, and mode:'no-cors' means we can't read a
+      // response anyway — so this never blocks the UI either way.
+      const params = new URLSearchParams(data);
+      fetch(APPS_SCRIPT_URL + '?' + params.toString(), {
+        method: 'GET',
+        mode: 'no-cors'
+      }).catch(() => {});
+    }
 
     function showStep(id) {
-      const current = document.querySelector('.qf-step:not(.hidden)');
+      const current = document.querySelector('#qf-card .qf-step:not(.hidden)');
       const next = document.getElementById(id);
       document.getElementById('qf-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
@@ -403,7 +481,7 @@
         return;
       }
 
-      // Short fade out of the current question, then fade in the next one.
+      // Short fade out of the current step, then fade in the next one.
       current.classList.add('qf-fade-out');
       setTimeout(() => {
         current.classList.add('hidden');
@@ -415,51 +493,127 @@
       }, 180);
     }
 
-    function showNotFit(reason) {
-      answers.exitReason = reason;
-      document.getElementById('qf-notfit-reason').textContent = notFitReasons[reason] || '';
-      gtag('event', 'qualify_not_a_fit', { event_category: 'qualification', reason: reason });
-      showStep('qf-notfit');
+    // Step 1 → Step 2
+    document.getElementById('qf-contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!this.reportValidity()) return;
+
+      answers.email = document.getElementById('qf-email').value.trim();
+      answers.firstName = document.getElementById('qf-first').value.trim();
+      answers.lastName = document.getElementById('qf-last').value.trim();
+
+      // Capture a partial lead in case they don't finish the qualifying
+      // questions — same "capture on step 1, full record on step 2" pattern
+      // as the homepage's Premium Application form.
+      submitApplicationData({
+        type: 'qualification_lead',
+        timestamp: new Date().toISOString(),
+        source: 'eric-deng-ultimate.com/apply',
+        email: answers.email,
+        firstName: answers.firstName,
+        lastName: answers.lastName
+      });
+
+      showStep('qf-questions');
+    });
+
+    // "Where do you mostly play?" — reveal a follow-up text field on "Other"
+    document.getElementById('qf-q1').addEventListener('change', function () {
+      const other = document.getElementById('qf-q1-other');
+      other.classList.toggle('hidden', this.value !== 'other');
+    });
+
+    // ── "Doesn't qualify" popup ────────────────────────────────────
+    // One generic message for every disqualifying answer — reasonKey is
+    // still passed through so analytics can tell them apart, but the
+    // applicant just sees a single, non-specific "not right now".
+    function openPopup(reasonKey) {
+      document.getElementById('qf-popup-title').textContent = "Not quite the right fit, right now.";
+      document.getElementById('qf-popup-message').textContent = "Thanks for applying. Based on your answers, it looks like this might not be the right fit for you right now — and that's okay.";
+
+      document.getElementById('qf-popup').classList.remove('hidden');
+      document.getElementById('qf-popup').classList.add('flex');
+
+      gtag('event', 'qualify_not_a_fit', { event_category: 'qualification', reason: reasonKey });
     }
 
-    function answer(question, value) {
-      answers[question] = value;
+    function closePopup() {
+      document.getElementById('qf-popup').classList.add('hidden');
+      document.getElementById('qf-popup').classList.remove('flex');
+    }
 
-      if (question === 'q1') {
-        if (!value) return showNotFit('not-playing');
-        return showStep('qf-q2');
-      }
-      if (question === 'q2') {
-        if (!value) return showNotFit('time');
-        return showStep('qf-q3');
-      }
-      if (question === 'q3') {
-        if (!value) return showNotFit('budget');
-        return showStep('qf-q4');
-      }
-      if (question === 'q4') {
-        if (value) {
-          gtag('event', 'qualify_pause_injury', { event_category: 'qualification' });
-          return showStep('qf-pause');
-        }
-        return showStep('qf-q5');
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePopup();
+    });
+
+    // Embed the Calendly booking widget the moment the applicant qualifies,
+    // rather than at page load. widget.js only auto-discovers
+    // .calendly-inline-widget elements that exist when it first runs, so a
+    // div injected later (after that scan already happened) never gets
+    // picked up — it needs to be created via Calendly's JS API instead.
+    // widget.js loads with `async`, so wait for window.Calendly to exist
+    // before calling it (normally already loaded by the time someone
+    // reaches this step).
+    let calendlyLoaded = false;
+    function loadCalendlyWidget() {
+      if (calendlyLoaded) return;
+      calendlyLoaded = true;
+
+      const init = () => {
+        Calendly.initInlineWidget({
+          url: 'https://calendly.com/eric-deng-ultimate/1-on-1-call-w-eric',
+          parentElement: document.getElementById('qf-calendly'),
+          prefill: {
+            email: answers.email,
+            firstName: answers.firstName,
+            lastName: answers.lastName
+          }
+        });
+      };
+
+      if (window.Calendly) {
+        init();
+      } else {
+        const waitForCalendly = setInterval(() => {
+          if (window.Calendly) {
+            clearInterval(waitForCalendly);
+            init();
+          }
+        }, 100);
       }
     }
 
-    function submitApplication() {
-      answers.motivation = document.getElementById('qf-motivation').value.trim();
+    // Step 2 submit → outcome
+    document.getElementById('qf-questions-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!this.reportValidity()) return;
+
+      const q1 = document.getElementById('qf-q1').value;
+      const q2 = document.getElementById('qf-q2').value;
+      const q3 = document.getElementById('qf-q3').value;
+      answers.q1 = q1;
+      if (q1 === 'other') {
+        answers.q1Other = document.getElementById('qf-q1-other-text').value.trim();
+      }
+      answers.q2 = q2;
+      answers.q3 = q3;
+
       answers.timestamp = new Date().toISOString();
       answers.source = 'eric-deng-ultimate.com/apply';
+      answers.type = 'qualification_application';
 
-      // TODO: Replace this stub with real submission handling (e.g. fetch to a
-      // backend / Google Apps Script / Zapier endpoint, matching the pattern
-      // already used by the Premium application form on the homepage) once
-      // we've decided where these applications should land.
-      console.log('Qualification application answers:', answers);
+      const disqualifyReason = q2 === 'no' ? 'training' : q3 === 'no' ? 'budget' : '';
+      answers.qualified = !disqualifyReason;
+      answers.exitReason = disqualifyReason;
+
+      submitApplicationData(answers);
+
+      if (disqualifyReason) return openPopup(disqualifyReason);
 
       gtag('event', 'qualify_approved', { event_category: 'qualification' });
       showStep('qf-approved');
-    }
+      loadCalendlyWidget();
+    });
   </script>
 
 </body>

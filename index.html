@@ -1309,8 +1309,10 @@
 
   <script>
     // ── Application Modal ──────────────────────────────────────────
-    // Replace this URL with your deployed Google Apps Script web app URL
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEcPEdZgwUK2QE7BH9rV6J3m7yShputuDNWjWQmSJzh7cxP7uVUvHOEIoGk9z2au2z/exec';
+    // Deployed Google Apps Script web app (google-apps-script.gs at the
+    // repo root) — apply/index.html posts to this same URL, tagged with
+    // different `type` values so the two forms don't collide.
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
 
     function openSkoolModal() {
       document.getElementById('skool-modal').classList.remove('hidden');
@@ -1380,9 +1382,11 @@
         source: 'eric-deng-ultimate.com',
         type: 'lead'
       };
-      fetch(APPS_SCRIPT_URL + '?' + new URLSearchParams(leadData).toString(), {
-        method: 'GET', mode: 'no-cors'
-      }).catch(() => {});
+      if (APPS_SCRIPT_URL) {
+        fetch(APPS_SCRIPT_URL + '?' + new URLSearchParams(leadData).toString(), {
+          method: 'GET', mode: 'no-cors'
+        }).catch(() => {});
+      }
 
       // Show step 2
       document.getElementById('step-1').classList.add('hidden');
@@ -1410,11 +1414,13 @@
       data.type = 'application';
 
       try {
-        const params = new URLSearchParams(data);
-        await fetch(APPS_SCRIPT_URL + '?' + params.toString(), {
-          method: 'GET',
-          mode: 'no-cors'
-        });
+        if (APPS_SCRIPT_URL) {
+          const params = new URLSearchParams(data);
+          await fetch(APPS_SCRIPT_URL + '?' + params.toString(), {
+            method: 'GET',
+            mode: 'no-cors'
+          });
+        }
         // Track application submission
         gtag('event', 'premium_application_submitted', {event_category: 'conversion'});
         // Show success
