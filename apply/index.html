@@ -66,9 +66,12 @@
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .qf-input:focus, .qf-select:focus {
+    .qf-input:focus {
       border-color: #E05C2A;
       box-shadow: 0 0 0 3px rgba(224,92,42,0.15);
+    }
+    .qf-select:focus {
+      border-color: #D1D5DB;
     }
 
     .faq-body {
@@ -80,15 +83,15 @@
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
 
-  <!-- ─── TOP BAR ─────────────────────────────────────────────────── -->
-  <div class="reveal flex items-center justify-center py-4 px-4 bg-[#232321]" style="transition-delay:0.02s">
-    <div class="inline-flex items-center gap-2.5 bg-white rounded-lg px-5 py-2.5">
+  <!-- ─── TOP BAR (sticky, links to the application section) ─────────── -->
+  <div class="reveal sticky top-0 z-50 flex items-center justify-center py-4 px-4 bg-[#232321]" style="transition-delay:0.02s">
+    <a href="#qualify" class="inline-flex items-center gap-2.5 bg-white rounded-lg px-5 py-2.5 hover:bg-gray-50 transition-colors">
       <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
       </span>
-      <span class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-wide">Ultimate-Specific Training Program | Intake Live</span>
-    </div>
+      <span class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-wide">Ultimate-Specific Training Program</span>
+    </a>
   </div>
 
   <!-- ─── HERO (pain-based hook) ──────────────────────────────────── -->
@@ -110,7 +113,7 @@
         <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
           Struggling to make an impact on-field when it matters?
         </h1>
-        <p class="reveal text-xl text-white/80 max-w-lg mx-auto mb-8 leading-relaxed" style="transition-delay:0.16s">
+        <p class="reveal text-2xl text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed" style="transition-delay:0.16s">
           Join our ultimate-specific program. Build the qualities you need to finally feel confident stepping on-field.
         </p>
       </div>
@@ -123,7 +126,7 @@
     </div>
 
     <div class="pt-16 pb-10 px-6" style="margin-top: -32px;">
-      <p class="reveal text-lg text-gray-900 max-w-lg mx-auto mb-8" style="transition-delay:0.28s">
+      <p class="reveal text-xl text-gray-900 max-w-3xl mx-auto mb-8" style="transition-delay:0.28s">
         An ultimate-specific training program to help you make a bigger on-field impact — built for the busy adult athlete.
       </p>
 
@@ -216,32 +219,32 @@
 
       <div class="reveal grid sm:grid-cols-3 gap-8">
         <div class="text-center">
-          <p class="text-lg font-bold text-gray-900 mb-5">#1: Ultimate-Specific Program</p>
+          <p class="text-xl font-bold text-gray-900 mb-5">#1: Ultimate-Specific Program</p>
           <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
             <img src="../Eric%20Jumping%20For%20Disc%20Action%20Shot.png" alt="Ultimate-specific strength and conditioning" class="w-full h-40 object-cover" />
           </div>
-          <p class="text-sm text-gray-900 leading-relaxed">Strength and speed work built around what actually shows up on the field — more separation, more blocks, further throws — not gym programming borrowed from another sport.</p>
+          <p class="text-base text-gray-900 leading-relaxed">Strength and speed work built around what actually shows up on the field — more separation, more blocks, further throws — not gym programming borrowed from another sport.</p>
         </div>
 
         <div class="text-center">
-          <p class="text-lg font-bold text-gray-900 mb-5">#2: Custom Support Built Around Life</p>
+          <p class="text-xl font-bold text-gray-900 mb-5">#2: Custom Support Built Around Life</p>
           <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
             <img src="../Eric's%20Team%20Huddle%20Photo.jpeg" alt="Custom support built around your schedule" class="w-full h-40 object-cover" />
           </div>
-          <p class="text-sm text-gray-900 leading-relaxed">Work trip, injury, or a week that just falls apart — your plan adjusts with you. Built for the busy adult athlete, not a rigid one-size-fits-all schedule.</p>
+          <p class="text-base text-gray-900 leading-relaxed">Work trip, injury, or a week that just falls apart — your plan adjusts with you. Built for the busy adult athlete, not a rigid one-size-fits-all schedule.</p>
         </div>
 
         <div class="text-center">
-          <p class="text-lg font-bold text-gray-900 mb-5">#3: Solve Roadblocks As They Appear</p>
+          <p class="text-xl font-bold text-gray-900 mb-5">#3: Solve Roadblocks As They Appear</p>
           <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
             <img src="../Tactical%20Workshop%20image.png" alt="Monthly group workshop for game IQ and skill development" class="w-full h-40 object-cover" />
           </div>
-          <p class="text-sm text-gray-900 leading-relaxed">Beyond S&amp;C — a monthly group workshop to help you translate your improving qualities onto the field, break through plateaus, and get feedback where you need it.</p>
+          <p class="text-base text-gray-900 leading-relaxed">Beyond S&amp;C — a monthly group workshop to help you translate your improving qualities onto the field, break through plateaus, and get feedback where you need it.</p>
         </div>
       </div>
 
       <div class="reveal text-center mt-10">
-        <a href="#qualify" class="block w-full max-w-sm mx-auto bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-lg">I'M READY TO DEVELOP</a>
+        <a href="#qualify" class="block w-full max-w-sm mx-auto bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-xl">I'M READY TO DEVELOP</a>
       </div>
     </div>
   </section>
@@ -250,53 +253,67 @@
   <section id="qualify" class="relative overflow-hidden py-12 px-6 border-t border-gray-100 bg-gray-50">
     <div class="relative max-w-3xl mx-auto">
       <div class="reveal text-center mb-10">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">What Happens Next</p>
+        <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-3">What Happens Next</p>
         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Simple, from here.</h2>
       </div>
       <div class="reveal grid sm:grid-cols-3 gap-5 mb-14">
         <div class="text-center">
           <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">1</div>
-          <p class="text-sm font-bold text-gray-900 mb-1">Apply</p>
-          <p class="text-xs text-gray-500 leading-relaxed">Answer a few questions below so we know you're the right kind of person.</p>
+          <p class="text-base font-bold text-gray-900 mb-1">Apply</p>
+          <p class="text-sm text-gray-500 leading-relaxed">Answer a few questions below so we know you're the right kind of person.</p>
         </div>
         <div class="text-center">
           <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">2</div>
-          <p class="text-sm font-bold text-gray-900 mb-1">Short call</p>
-          <p class="text-xs text-gray-500 leading-relaxed">A quick call to confirm fit and start building out your strategy.</p>
+          <p class="text-base font-bold text-gray-900 mb-1">Short call</p>
+          <p class="text-sm text-gray-500 leading-relaxed">A quick call to confirm fit and start building out your strategy.</p>
         </div>
         <div class="text-center">
           <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">3</div>
-          <p class="text-sm font-bold text-gray-900 mb-1">Start</p>
-          <p class="text-xs text-gray-500 leading-relaxed">If it's a fit, we'll get you started with our onboarding process during the call.</p>
+          <p class="text-base font-bold text-gray-900 mb-1">Start</p>
+          <p class="text-sm text-gray-500 leading-relaxed">If it's a fit, we'll get you started with our onboarding process during the call.</p>
         </div>
       </div>
 
       <div class="max-w-lg mx-auto">
         <div class="reveal-scale bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" id="qf-card">
 
+        <!-- Overall progress: fill out the form (steps 1–2) → book your event
+             (the approved/Calendly step). Toggled by setProgressPhase(). -->
+        <div class="flex items-center justify-center gap-2 mb-6 pb-5 border-b border-gray-100 text-sm">
+          <span id="qf-progress-fill" class="flex items-center gap-1.5 font-bold text-brand">
+            <span class="w-2 h-2 rounded-full bg-brand"></span>
+            Fill out the form
+          </span>
+          <span class="text-gray-300">·</span>
+          <span id="qf-progress-book" class="flex items-center gap-1.5 font-medium text-gray-400">
+            <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+            Book your call
+          </span>
+        </div>
+
         <!-- Step 1: Contact details -->
         <div id="qf-contact" class="qf-step">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Step 1 of 2</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">First, how can we reach you?</h3>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Short 1:1 Fit / Strategy Call</h3>
+          <p class="text-base text-gray-500 leading-relaxed">Excited to speak with you for our ultimate-specific program.</p>
+          <p class="text-base text-gray-500 leading-relaxed mb-5">Fill out the details below and book a call to see if you're a fit.</p>
           <form id="qf-contact-form" class="space-y-3" novalidate>
-            <input type="email" id="qf-email" required placeholder="Email address" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
+            <input type="email" id="qf-email" required placeholder="Email address" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />
             <div class="grid grid-cols-2 gap-3">
-              <input type="text" id="qf-first" required placeholder="First name" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
-              <input type="text" id="qf-last" required placeholder="Last name" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
+              <input type="text" id="qf-first" required placeholder="First name *" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />
+              <input type="text" id="qf-last" required placeholder="Last name *" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />
             </div>
-            <button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-base shadow-sm mt-2">Continue →</button>
+            <button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">Continue →</button>
           </form>
         </div>
 
         <!-- Step 2: Qualifying questions, all together -->
         <div id="qf-questions" class="qf-step hidden">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Step 2 of 2</p>
-          <h3 class="text-lg font-bold text-gray-900 mb-5">A few quick qualifying questions.</h3>
+          <h3 class="text-xl font-bold text-gray-900 mb-5">A few quick qualifying questions.</h3>
           <form id="qf-questions-form" class="space-y-4" novalidate>
             <div>
-              <label for="qf-q1" class="block text-base font-bold text-gray-900 mb-2">Which of the following best describes where you mostly play ultimate?</label>
+              <label for="qf-q1" class="block text-lg font-medium text-gray-900 mb-2">Which of the following best describes where you mostly play ultimate?</label>
               <div class="relative">
-                <select id="qf-q1" required class="qf-select w-full appearance-none bg-white border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 transition">
+                <select id="qf-q1" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">
                   <option value="" disabled selected>Select</option>
                   <option value="pickups">Pick ups</option>
                   <option value="leagues">Leagues</option>
@@ -307,32 +324,32 @@
               </div>
             </div>
             <div id="qf-q1-other" class="hidden">
-              <label for="qf-q1-other-text" class="block text-base font-bold text-gray-900 mb-2">Where do you mostly play?</label>
-              <input type="text" id="qf-q1-other-text" placeholder="Tell us where..." class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 placeholder-gray-400 transition" />
+              <label for="qf-q1-other-text" class="block text-lg font-medium text-gray-900 mb-2">Where do you mostly play?</label>
+              <input type="text" id="qf-q1-other-text" placeholder="Tell us where..." class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 transition" />
             </div>
             <div>
-              <label for="qf-q2" class="block text-base font-bold text-gray-900 mb-2">Are you able to commit to a structured training plan start making a bigger on-field impact in the next 90 days?</label>
+              <label for="qf-q2" class="block text-lg font-medium text-gray-900 mb-2">Are you able to commit to a structured training plan to start making a bigger on-field impact in the next 90 days?</label>
               <div class="relative">
-                <select id="qf-q2" required class="qf-select w-full appearance-none bg-white border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 transition">
+                <select id="qf-q2" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">
                   <option value="" disabled selected>Select</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
+                  <option value="yes">Yes, I can commit.</option>
+                  <option value="no">No, I can't commit.</option>
                 </select>
                 <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </div>
             </div>
             <div>
-              <label for="qf-q3" class="block text-base font-bold text-gray-900 mb-2">The program is $2k/year or $200/month. Does that work for you?</label>
+              <label for="qf-q3" class="block text-lg font-medium text-gray-900 mb-2">The program is $2k/year or $200/month. Does that work for you?</label>
               <div class="relative">
-                <select id="qf-q3" required class="qf-select w-full appearance-none bg-white border-2 border-gray-200 rounded-xl px-5 py-4 text-base font-medium text-gray-800 transition">
+                <select id="qf-q3" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">
                   <option value="" disabled selected>Select</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
+                  <option value="yes">Yes, that works.</option>
+                  <option value="no">No, that does not work.</option>
                 </select>
                 <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </div>
             </div>
-            <button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-base shadow-sm mt-2">Continue →</button>
+            <button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">Continue →</button>
           </form>
         </div>
 
@@ -342,9 +359,9 @@
             <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
           </div>
           <p class="text-2xl font-extrabold text-gray-900 mb-3">Looks like we'd be able to help.</p>
-          <p class="text-sm text-gray-900 leading-relaxed max-w-sm mx-auto mb-7">Next step is a quick call to confirm that we're a fit, and start building out your strategy. We'll also send over a quick video on how the program works once you've booked.</p>
+          <p class="text-base text-gray-900 leading-relaxed max-w-sm mx-auto mb-7">Next step is a quick call to confirm that we're a fit, and start building out your strategy. We'll also send over a quick video on how the program works once you've booked.</p>
 
-          <p class="text-sm font-bold text-gray-900 mb-4">Book your call below.</p>
+          <p class="text-base font-bold text-gray-900 mb-4">Book your call below.</p>
           <div id="qf-calendly" class="rounded-2xl overflow-hidden -mx-6 md:-mx-8" style="min-width:320px;height:700px;"></div>
         </div>
 
@@ -358,56 +375,63 @@
 
         <div class="faq-item">
           <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
-            <span class="text-xl font-bold text-white">Is this right for me?</span>
+            <span class="text-2xl font-bold text-white">What actually happens when you join?</span>
             <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
-          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
-            <p class="text-lg text-gray-900 leading-relaxed">This is built for active club or league players — mid-20s to mid-40s, juggling a job around training — who want a bigger on-field impact without chasing a pro career. It's not for you if you're not currently playing, not looking to improve this season, or can't commit to 2–3 gym sessions and 1 field session a week.</p>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
+            <p class="text-xl text-gray-900 leading-relaxed">You'll start with an onboarding call, where we assess your training experience and figure out exactly where you're at.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">From there, we walk you through your first few weeks of training clearly — you'll always know what you're doing and why.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">We build in checkpoints across your first 6 weeks to make sure you're actually seeing results, not just going through the motions.</p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
-            <span class="text-xl font-bold text-white">How is this different from a normal gym program?</span>
+            <span class="text-2xl font-bold text-white">How is this different from a normal program?</span>
             <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
-          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
-            <p class="text-lg text-gray-900 leading-relaxed">Most training advice assumes more is better, or borrows programming from another sport entirely. This one is built around what actually shows up on an ultimate field — more separation, more blocks, further throws — and gives you exactly what fits your schedule, nothing more.</p>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
+            <p class="text-xl text-gray-900 leading-relaxed">Most training advice assumes more is better, or borrows programming from another sport entirely.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">This one is built around what actually shows up on an ultimate field — more separation, more blocks, further throws — and gives you exactly what fits your schedule, nothing more.</p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
-            <span class="text-xl font-bold text-white">How much time do I need to commit each week?</span>
+            <span class="text-2xl font-bold text-white">Is this right for me?</span>
             <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
-          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
-            <p class="text-lg text-gray-900 leading-relaxed">Most athletes commit to 2–3 ultimate-specific gym sessions and 1 field session a week. We build the plan around your schedule, not the other way around.</p>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
+            <p class="text-xl text-gray-900 leading-relaxed">This is built for active club or league players — mid-20s to mid-40s, juggling a job around training — who want a bigger on-field impact without chasing a pro career.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">It's not for you if you're not currently playing, not looking to improve this season, or can't commit to 2–3 gym sessions and 1 field session a week.</p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
-            <span class="text-xl font-bold text-white">What actually happens in a session?</span>
+            <span class="text-2xl font-bold text-white">How much time do I need to commit each week?</span>
             <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
-          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
-            <p class="text-lg text-gray-900 leading-relaxed">Focused, ultimate-specific training — strength and speed work built to translate directly onto the field — plus a clear breakdown of exactly what to work on next. No wasted sets, no generic programming.</p>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
+            <p class="text-xl text-gray-900 leading-relaxed">Most athletes commit to 2–3 ultimate-specific gym sessions and 1 field session a week.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">We build the plan around your schedule, not the other way around.</p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-btn relative w-full flex items-center justify-center px-10 py-5 text-center rounded-2xl bg-[#1f223c] hover:bg-[#2d3154] transition-colors" onclick="toggleFaq(this)">
-            <span class="text-xl font-bold text-white">How much does it cost?</span>
+            <span class="text-2xl font-bold text-white">How much does it cost?</span>
             <svg class="faq-icon-chevron absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
-          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2">
-            <p class="text-lg text-gray-900 leading-relaxed">$200/month to start ($2k/year). We'll confirm the exact plan for you on your fit call once we understand where you're at.</p>
+          <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
+            <p class="text-xl text-gray-900 leading-relaxed">The program is $2k/year or $200/month — whichever suits you best.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">If you're not prepared to invest in your growth right now, don't do it.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">If you're willing to invest in yourself, and you're ready for a change, then we'd love to have you.</p>
           </div>
         </div>
 
@@ -430,12 +454,12 @@
         <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       </div>
       <p id="qf-popup-title" class="text-xl font-extrabold text-gray-900 mb-3"></p>
-      <p id="qf-popup-message" class="text-base text-gray-900 leading-relaxed mb-6"></p>
+      <p id="qf-popup-message" class="text-lg text-gray-900 leading-relaxed mb-6"></p>
       <div id="qf-popup-social">
-        <p class="text-sm font-semibold text-gray-700 mb-3">In the meantime, here's free stuff to keep leveling up:</p>
+        <p class="text-base font-semibold text-gray-700 mb-3">In the meantime, here's free stuff to keep leveling up:</p>
         <div class="flex flex-wrap items-center justify-center gap-3">
-          <a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">YouTube</a>
-          <a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-sm">Instagram @itsericdee</a>
+          <a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">YouTube</a>
+          <a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">Instagram @itsericdee</a>
         </div>
       </div>
     </div>
@@ -506,7 +530,21 @@
       }).catch(() => {});
     }
 
+    // Toggles the "Fill out the form" / "Book your call" header at the top
+    // of the card — active once the applicant reaches the Calendly step.
+    function setProgressPhase(phase) {
+      const fillEl = document.getElementById('qf-progress-fill');
+      const bookEl = document.getElementById('qf-progress-book');
+      const active = 'flex items-center gap-1.5 font-bold text-brand';
+      const inactive = 'flex items-center gap-1.5 font-medium text-gray-400';
+      fillEl.className = phase === 'book' ? inactive : active;
+      fillEl.querySelector('span').className = 'w-2 h-2 rounded-full ' + (phase === 'book' ? 'bg-gray-300' : 'bg-brand');
+      bookEl.className = phase === 'book' ? active : inactive;
+      bookEl.querySelector('span').className = 'w-2 h-2 rounded-full ' + (phase === 'book' ? 'bg-brand' : 'bg-gray-300');
+    }
+
     function showStep(id) {
+      setProgressPhase(id === 'qf-approved' ? 'book' : 'fill');
       const current = document.querySelector('#qf-card .qf-step:not(.hidden)');
       const next = document.getElementById(id);
       document.getElementById('qf-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
