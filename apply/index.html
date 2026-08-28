@@ -140,68 +140,103 @@
         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">What people are saying:</h2>
       </div>
 
-      <!--
-        TODO: Real testimonials/results are being collected — replace the 3
-        placeholder cards below with actual player quotes + photos once
-        they're in. Keep the same card markup/classes so styling matches.
-      -->
-      <div class="reveal grid sm:grid-cols-3 gap-4">
-        <div class="rounded-2xl border-2 border-dashed border-gray-200 p-6 flex flex-col items-center text-center">
-          <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      <!-- Same 3 testimonials used on the homepage (index.html) — kept in
+           sync there; update both places if these are refreshed. Styled as
+           a staggered collage of small review-card tiles rather than a
+           plain grid — dense/small text on purpose, the highlighted
+           phrases do the skimming work. Rotation/overlap only applies at
+           sm+; mobile just stacks them cleanly. -->
+      <div class="reveal relative flex flex-col sm:flex-row sm:items-start sm:justify-center gap-5 sm:gap-0 pt-2 pb-4">
+        <div class="relative z-10 bg-white rounded-2xl p-4 shadow-xl w-full sm:w-64 sm:-rotate-3 sm:mr-[-4px]">
+          <div class="flex items-center gap-2 mb-2">
+            <img src="../Client%20Images/Kayla%20D.jpg" class="rounded-full w-8 h-8 flex-shrink-0 object-cover" alt="Kayla D." />
+            <div class="min-w-0">
+              <p class="text-xs font-bold text-gray-900 truncate">Kayla D.</p>
+              <p class="text-[11px] text-gray-400 truncate">Club Player · USA</p>
+            </div>
           </div>
-          <p class="text-sm text-gray-400 leading-relaxed">Real results — coming soon</p>
+          <div class="flex items-center gap-0.5 mb-2">
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-xs text-gray-700 leading-snug">"Ultimate Academy has <mark class="bg-orange-100 text-gray-800 rounded px-0.5">absolutely changed my game already in just a couple of weeks</mark>! My defense especially has greatly improved, I have always felt like I was just a step behind or so close to getting a block. After watching 2 webinars/trainings I was able to <mark class="bg-orange-100 text-gray-800 rounded px-0.5">implement some new skills into my very next game and get 5 blocks</mark>. I'm working to increase my game IQ and learn skills that I just don't have access to in my local community. <mark class="bg-orange-100 text-gray-800 rounded px-0.5">I can't wait to see how much more I'll grow as a player!</mark>"</p>
         </div>
-        <div class="rounded-2xl border-2 border-dashed border-gray-200 p-6 flex flex-col items-center text-center">
-          <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+
+        <div class="relative z-20 bg-white rounded-2xl p-4 shadow-xl w-full sm:w-64 sm:rotate-2 sm:-translate-y-3">
+          <div class="flex items-center gap-2 mb-2">
+            <img src="../Client%20Images/Kieran%20N.jpg" class="rounded-full w-8 h-8 flex-shrink-0 object-cover" alt="Kieran N." />
+            <div class="min-w-0">
+              <p class="text-xs font-bold text-gray-900 truncate">Kieran N.</p>
+              <p class="text-[11px] text-gray-400 truncate">Club Player & Coach · Malaysia</p>
+            </div>
           </div>
-          <p class="text-sm text-gray-400 leading-relaxed">Real results — coming soon</p>
+          <div class="flex items-center gap-0.5 mb-2">
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-xs text-gray-700 leading-snug">"The greatest value I got from UA was <mark class="bg-orange-100 text-gray-800 rounded px-0.5">clarity</mark>. All this time I've been training on my own, reusing drills that I've taken from trainings but never knowing what my problem was. Eric provided <mark class="bg-orange-100 text-gray-800 rounded px-0.5">clear guidance and problem solving</mark> which improve my gameplay a lot. I'm 30 now, but <mark class="bg-orange-100 text-gray-800 rounded px-0.5">I'm playing better now than I did in my mid 20s</mark>. I'm winning skies, I'm sending deeps, I'm getting bids on Os and Ds when I couldn't before. Highly recommended program, solid 11/10."</p>
         </div>
-        <div class="rounded-2xl border-2 border-dashed border-gray-200 p-6 flex flex-col items-center text-center">
-          <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+
+        <div class="relative z-10 bg-white rounded-2xl p-4 shadow-xl w-full sm:w-64 sm:-rotate-2 sm:ml-[-4px] sm:translate-y-2">
+          <div class="flex items-center gap-2 mb-2">
+            <img src="../Client%20Images/Mia%20K.jfif" class="rounded-full w-8 h-8 flex-shrink-0 object-cover" alt="Mia K." />
+            <div class="min-w-0">
+              <p class="text-xs font-bold text-gray-900 truncate">Mia K.</p>
+              <p class="text-[11px] text-gray-400 truncate">Club Player · USA</p>
+            </div>
           </div>
-          <p class="text-sm text-gray-400 leading-relaxed">Real results — coming soon</p>
+          <div class="flex items-center gap-0.5 mb-2">
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-xs text-gray-700 leading-snug">"Just one month so far, and <mark class="bg-orange-100 text-gray-800 rounded px-0.5">so much growth</mark> because of Ultimate Academy! 🚀 Having a set plan has really helped me to get out there and <mark class="bg-orange-100 text-gray-800 rounded px-0.5">train more often with confidence</mark>. Already, I can see that the consistency is paying off in improving my skills and implementing them in games. Workshops have been another source of <mark class="bg-orange-100 text-gray-800 rounded px-0.5">immediate improvement</mark> for me. I am such a fan of how Eric breaks down concepts visually and with helpful mnemonics that I can remember in-game 🧠. Amazing program. 10/10 would recommend!"</p>
         </div>
       </div>
+
+      <p class="reveal text-center text-[11px] text-gray-400 italic max-w-md mx-auto leading-relaxed">Individual experiences shown here may not be typical. Results depend on each athlete's background, effort, and consistency — these are shared as examples, not guarantees.</p>
     </div>
   </section>
 
   <!-- ─── WHAT YOU GET ─────────────────────────────────────────────── -->
   <section class="py-12 px-6">
     <div class="max-w-2xl mx-auto">
-      <div class="reveal relative text-center mb-10">
+      <div class="reveal relative text-center mb-14">
         <img src="black%20paper%20background%20removed.png" alt="" class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" />
-        <h2 class="relative text-3xl md:text-4xl font-extrabold text-white leading-tight py-7 px-6">What you'll get in the program.</h2>
+        <h2 class="relative text-3xl md:text-4xl font-extrabold text-white leading-tight py-7 px-6">What you'll get in the program:</h2>
       </div>
 
       <div class="reveal grid sm:grid-cols-3 gap-8">
         <div class="text-center">
-          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">1</div>
-          <p class="text-lg font-bold text-gray-900 mb-3">1:1 Personalized Coaching</p>
-          <div class="rounded-2xl overflow-hidden shadow-sm mb-3">
-            <img src="../Eric's%20Team%20Huddle%20Photo.jpeg" alt="1:1 personalized coaching" class="w-full h-40 object-cover" />
+          <p class="text-lg font-bold text-gray-900 mb-5">#1: Ultimate-Specific Program</p>
+          <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
+            <img src="../Eric%20Jumping%20For%20Disc%20Action%20Shot.png" alt="Ultimate-specific strength and conditioning" class="w-full h-40 object-cover" />
           </div>
-          <p class="text-sm text-gray-900 leading-relaxed">Direct access to a coach who's competed at the highest levels. Every plan is built around your position, your gaps, and your schedule — not a generic template.</p>
+          <p class="text-sm text-gray-900 leading-relaxed">Strength and speed work built around what actually shows up on the field — more separation, more blocks, further throws — not gym programming borrowed from another sport.</p>
         </div>
 
         <div class="text-center">
-          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">2</div>
-          <p class="text-lg font-bold text-gray-900 mb-3">An Ultimate-Specific Framework</p>
-          <div class="rounded-2xl overflow-hidden shadow-sm mb-3">
-            <img src="../Tactical%20Workshop%20image.png" alt="Ultimate-specific training framework" class="w-full h-40 object-cover" />
+          <p class="text-lg font-bold text-gray-900 mb-5">#2: Custom Support Built Around Life</p>
+          <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
+            <img src="../Eric's%20Team%20Huddle%20Photo.jpeg" alt="Custom support built around your schedule" class="w-full h-40 object-cover" />
           </div>
-          <p class="text-sm text-gray-900 leading-relaxed">Every session is built around what actually shows up on the field — more separation, more blocks, further throws — not gym programming borrowed from another sport.</p>
+          <p class="text-sm text-gray-900 leading-relaxed">Work trip, injury, or a week that just falls apart — your plan adjusts with you. Built for the busy adult athlete, not a rigid one-size-fits-all schedule.</p>
         </div>
 
         <div class="text-center">
-          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">3</div>
-          <p class="text-lg font-bold text-gray-900 mb-3">Clear Tactical Next Steps</p>
-          <div class="rounded-2xl overflow-hidden shadow-sm mb-3">
-            <img src="../Game%20IQ%20Feedback%20video%20image.png" alt="Clear tactical next steps" class="w-full h-40 object-cover" />
+          <p class="text-lg font-bold text-gray-900 mb-5">#3: Solve Roadblocks As They Appear</p>
+          <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
+            <img src="../Tactical%20Workshop%20image.png" alt="Monthly group workshop for game IQ and skill development" class="w-full h-40 object-cover" />
           </div>
-          <p class="text-sm text-gray-900 leading-relaxed">Leave every session knowing exactly what to work on next — a clear, personalized plan so you're never guessing what's actually moving the needle.</p>
+          <p class="text-sm text-gray-900 leading-relaxed">Beyond S&amp;C — a monthly group workshop to help you translate your improving qualities onto the field, break through plateaus, and get feedback where you need it.</p>
         </div>
       </div>
 
