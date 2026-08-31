@@ -126,11 +126,11 @@ function handleQualificationApplication_(p) {
   const qualified = p.qualified === 'true';
 
   appendRow_('Qualification Applications',
-    ['Timestamp', 'Status', 'Exit Reason', 'First Name', 'Last Name', 'Email',
+    ['Timestamp', 'Status', 'Exit Reason', 'First Name', 'Last Name', 'Email', 'Instagram',
      'Q1: Where they mostly play', 'Q1 Other (if specified)',
      'Q2: Can commit to structured training', 'Q3: Can commit to $200/mo', 'Source'],
     [p.timestamp, qualified ? 'Qualified' : 'Not qualified', p.exitReason || '',
-     p.firstName, p.lastName, p.email,
+     p.firstName, p.lastName, p.email, p.instagram || '',
      p.q1, p.q1Other || '', p.q2, p.q3, p.source]
   );
 
@@ -142,6 +142,7 @@ function handleQualificationApplication_(p) {
       '',
       `Name: ${p.firstName || ''} ${p.lastName || ''}`,
       `Email: ${p.email || ''}`,
+      p.instagram ? `Instagram: ${p.instagram}` : null,
       '',
       `Q1 (where they mostly play): ${p.q1 || ''}`,
       p.q1Other ? `Q1 other: ${p.q1Other}` : null,
