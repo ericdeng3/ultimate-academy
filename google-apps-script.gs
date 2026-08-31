@@ -18,6 +18,7 @@
  *
  *      NOTIFY_EMAIL                        required — where alert emails go
  *      MAILERLITE_API_KEY                  optional — from MailerLite > Integrations > Developer API
+ *      MAILERLITE_GROUP_LEAD_ID            optional — group for apply-page leads (step 1, before finishing the application)
  *      MAILERLITE_GROUP_QUALIFIED_ID       optional — group for qualified apply-page applicants
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
@@ -119,6 +120,11 @@ function handleQualificationLead_(p) {
     ['Timestamp', 'First Name', 'Last Name', 'Email', 'Source'],
     [p.timestamp, p.firstName, p.lastName, p.email, p.source]
   );
+
+  // Sync to MailerLite immediately — this is step 1 (contact info only), so
+  // they land here even if they never finish the qualifying questions.
+  syncToMailerLite_(p.email, p.firstName, p.lastName, mlGroupId_('MAILERLITE_GROUP_LEAD_ID'));
+
   return jsonResponse_({ ok: true });
 }
 
