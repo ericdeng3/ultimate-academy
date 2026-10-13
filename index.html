@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ultimate Academy 🥏</title>
+  <title>Eric Deng Ultimate 🥏</title>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
   <script>
@@ -27,39 +27,16 @@
     }
   </script>
   <style>
-    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    html { scroll-behavior: smooth; }
 
-    /* ── Scroll-reveal base state ── */
     .reveal {
       opacity: 0;
       transform: translateY(28px);
       transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
                   transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* Stagger delays for child items */
-    .reveal-group > * { opacity: 0; transform: translateY(22px);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-    .reveal-group.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay: 0.05s; }
-    .reveal-group.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay: 0.15s; }
-    .reveal-group.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay: 0.25s; }
-    .reveal-group.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay: 0.35s; }
-    .reveal-group.visible > *:nth-child(5) { opacity:1; transform:translateY(0); transition-delay: 0.42s; }
-    .reveal-group.visible > *:nth-child(6) { opacity:1; transform:translateY(0); transition-delay: 0.48s; }
-
-    /* Fade-only variant (for visuals / images) */
-    .reveal-fade {
-      opacity: 0;
-      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .reveal-fade.visible { opacity: 1; }
-
-    /* Scale-up variant (for cards, hero badge) */
     .reveal-scale {
       opacity: 0;
       transform: scale(0.96) translateY(16px);
@@ -68,1373 +45,155 @@
     }
     .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
 
-    .browser-frame {
-      background: #f5f5f5;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.10), 0 4px 16px rgba(0,0,0,0.06);
-      overflow: hidden;
-    }
-    .browser-bar {
-      background: #ebebeb;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      border-bottom: 1px solid #ddd;
-    }
-    .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
-
-    .tile-hover {
-      transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .tile-hover:hover {
-      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
-    }
-    .tile-hover-dark {
-      transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .tile-hover-dark:hover {
-      box-shadow: 0 0 0 1px rgba(224,92,42,0.4), 0 8px 30px rgba(224,92,42,0.18);
-    }
+    .tile-hover { transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .tile-hover:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
 
+  <!-- ─── TOP BAR (sticky, links to the application section) ─────────── -->
+  <div class="sticky top-0 z-50 flex items-center justify-center py-3 px-4 bg-[#232321] text-center">
+    <a href="apply/index.html" class="text-white text-xs sm:text-sm font-semibold hover:text-white/80 transition-colors">
+      <span class="font-extrabold text-brand">NEW</span>
+      Intake is now live — <span class="underline">find out if you're a fit</span> →
+    </a>
+  </div>
 
-  <!-- ─── NAV ─────────────────────────────────────────────────────── -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
-    <div class="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
-      <a href="#mission" class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-        <img src="UA%20LOGO.png" alt="Ultimate Academy" class="w-8 h-8 rounded-lg object-cover" />
-        <span class="font-semibold text-gray-900 text-sm">Ultimate Academy 🥏</span>
-      </a>
-      <a href="#pricing" class="md:hidden bg-brand text-white font-semibold px-3 py-1.5 rounded-lg text-xs">Choose Your Plan</a>
-      <div class="hidden md:flex items-center gap-7 text-sm text-gray-500">
-        <a href="#program" class="hover:text-gray-900 transition-colors">Program</a>
-        <a href="#platform" class="hover:text-gray-900 transition-colors">Platform</a>
-        <a href="#pricing" class="hover:text-gray-900 transition-colors">Pricing</a>
-        <a href="#more-testimonials" class="hover:text-gray-900 transition-colors">Testimonials</a>
-        <a href="#pricing" class="bg-brand text-white font-semibold px-4 py-2 rounded-lg hover:bg-brand-dark transition-colors text-sm">Choose Your Plan</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ─── HERO ──────────────────────────────────────────────────────── -->
-  <section class="pt-28 pb-10 px-6 text-center">
-    <div class="max-w-3xl mx-auto">
-
-
-      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.15] tracking-tight mb-5" style="transition-delay:0.12s">
-        Feel like your game isn't growing as fast as it should?
+  <!-- ─── HERO ─────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden pt-14 pb-12 px-6 text-center">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(224,92,42,0.09),transparent_60%)] pointer-events-none"></div>
+    <div class="relative max-w-xl mx-auto">
+      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-5" style="transition-delay:0.05s">
+        Do you want to become a better ultimate player?
       </h1>
-      <p class="reveal text-lg text-gray-500 max-w-lg mx-auto mb-8 leading-relaxed" style="transition-delay:0.22s">
-        Get the clarity you need to solve your biggest roadblock and play to your full potential.
+      <p class="reveal text-lg text-gray-500 leading-relaxed mb-8" style="transition-delay:0.12s">
+        Free drills, cheat sheets, and tools to sharpen your game — plus a path to 1:1 coaching with a coach who's trained 300+ athletes, if you're ready to go further.
       </p>
-      <div class="reveal flex flex-wrap items-center justify-center gap-4 mb-8" style="transition-delay:0.32s">
-        <a href="#mission" class="bg-brand text-white font-semibold px-6 py-3 rounded-xl hover:bg-brand-dark transition-colors shadow-sm text-sm">Learn How It Works →</a>
-      </div>
-
-      <!-- Intake live -->
-      <div class="reveal flex items-center justify-center gap-2 mb-8 text-sm text-gray-500" style="transition-delay:0.38s">
-        <span class="relative flex h-2 w-2 flex-shrink-0">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-        </span>
-        This month's intake is now live
-      </div>
-
-      <!-- Coaching photo – 30% smaller, no badge -->
-      <div class="reveal-scale mx-auto mb-10" style="transition-delay:0.44s; max-width: 56rem;">
-        <div class="rounded-2xl overflow-hidden shadow-xl">
-          <img src="Eric%20Coaching%20Head%20Shot.jpg" alt="Eric coaching" class="w-full object-cover object-center" style="max-height: 392px;" />
-        </div>
-      </div>
-
-      <!-- Social proof -->
-      <div class="reveal flex flex-wrap items-center justify-center gap-3 text-center" style="transition-delay:0.52s">
-        <div class="flex items-center">
-          <img src="Client%20Images/Other%20Client%201.jpg" class="rounded-full w-10 h-10 ring-2 ring-white object-cover" alt="Client" />
-          <img src="Client%20Images/Other%20client%202.jpg" class="rounded-full w-10 h-10 ring-2 ring-white object-cover -ml-3" alt="Client" />
-          <img src="Client%20Images/Other%20client%203.jpg" class="rounded-full w-10 h-10 ring-2 ring-white object-cover -ml-3" alt="Client" />
-        </div>
-        <p class="text-sm text-gray-500">Helped <span class="font-semibold text-gray-900">300+ adult ultimate players</span> in just the last 18 months.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─── MISSION STATEMENT ────────────────────────────────────────── -->
-  <section id="mission" class="py-10 px-6 border-y border-gray-100 bg-gray-50">
-    <div class="max-w-3xl mx-auto">
-      <div class="reveal">
-        <p class="text-xl md:text-2xl font-extrabold text-gray-900 leading-snug mb-6">We're working with a handful of adult athletes who want to make a bigger impact on the ultimate frisbee field.</p>
-        <div class="space-y-4 border-l-2 border-brand pl-6 text-gray-600 text-base leading-relaxed">
-          <p><span class="font-semibold text-gray-900">Our goal is simple:</span><br />
-          To help you make a bigger impact on the ultimate frisbee field with just a bit of intentional effort per week – without having to sacrifice the other priorities you have in your life.</p>
-          <p>We've helped hundreds of players see the field in a way that makes hitting options, getting blocks and getting open feel way simpler.</p>
-          <p>We've got a great reputation because we only take on players we know we can help.</p>
-          <p class="font-semibold text-gray-900">And this month, it could be your turn.</p>
-        </div>
-        <div class="mt-8 text-center">
-          <a href="#program" class="inline-block bg-brand text-white font-semibold px-6 py-3 rounded-xl hover:bg-brand-dark transition-colors shadow-sm text-sm">See How It Works →</a>
-        </div>
+      <div class="reveal" style="transition-delay:0.18s">
+        <a href="apply/index.html" onclick="gtag('event', 'click_apply_from_homepage', {event_category: 'conversion', location: 'hero'})" class="inline-block bg-brand text-white font-extrabold px-8 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-base">I'M READY TO DEVELOP</a>
       </div>
     </div>
   </section>
 
-  <!-- ─── PILLAR 1: GAME IQ ──────────────────────────────────────────── -->
-  <section id="program" class="py-12 px-6">
-    <div class="max-w-5xl mx-auto">
+  <!-- ─── FREE TRAINING RESOURCES ─────────────────────────────────── -->
+  <section class="py-14 px-6 border-y border-gray-100 bg-gray-50">
+    <div class="max-w-6xl mx-auto">
       <div class="reveal text-center mb-12">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">The Program</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Develop your game through our 3 pillars.</h2>
+        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Free Resources</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-3">Free training resources.</h2>
+        <p class="text-gray-500 text-base max-w-lg mx-auto">Drills, cheat sheets, and tools to help you improve — free, no catch.</p>
+      </div>
+
+      <!--
+        TODO: These 3 are placeholders — swap the "Coming Soon" buttons for
+        real links (or a signup form) once the actual drills/cheat
+        sheet/assessment tool are built. Keep the same card markup so
+        styling matches.
+      -->
+      <div class="reveal grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover flex flex-col">
+          <div class="rounded-xl overflow-hidden m-4 mb-0">
+            <img src="Eric's%20Team%20Huddle%20Photo.jpeg" alt="Free throwing drills" class="w-full h-36 object-cover" />
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <p class="text-xs font-semibold text-brand uppercase tracking-wide mb-2">It's Free</p>
+            <p class="text-base font-bold text-gray-900 mb-2">Free Throwing Drills</p>
+            <p class="text-sm text-gray-500 leading-relaxed flex-1 mb-4">A handful of throwing drills to build touch and consistency, straight from training sessions.</p>
+            <span class="block text-center bg-gray-100 text-gray-400 font-semibold py-2.5 rounded-xl text-sm cursor-not-allowed">Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover flex flex-col">
+          <div class="rounded-xl overflow-hidden m-4 mb-0">
+            <img src="Tactical%20Workshop%20image.png" alt="Block patterns cheat sheet" class="w-full h-36 object-cover" />
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <p class="text-xs font-semibold text-brand uppercase tracking-wide mb-2">It's Free</p>
+            <p class="text-base font-bold text-gray-900 mb-2">Block Patterns Cheat Sheet</p>
+            <p class="text-sm text-gray-500 leading-relaxed flex-1 mb-4">A quick-reference guide to the block patterns and reads that actually show up in games.</p>
+            <span class="block text-center bg-gray-100 text-gray-400 font-semibold py-2.5 rounded-xl text-sm cursor-not-allowed">Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover flex flex-col">
+          <div class="rounded-xl overflow-hidden m-4 mb-0">
+            <img src="Game%20IQ%20Feedback%20video%20image.png" alt="Skill assessment tool" class="w-full h-36 object-cover" />
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <p class="text-xs font-semibold text-brand uppercase tracking-wide mb-2">New</p>
+            <p class="text-base font-bold text-gray-900 mb-2">Skill Assessment Tool</p>
+            <p class="text-sm text-gray-500 leading-relaxed flex-1 mb-4">Answer a few questions and get a breakdown of where to focus your training next.</p>
+            <span class="block text-center bg-gray-100 text-gray-400 font-semibold py-2.5 rounded-xl text-sm cursor-not-allowed">Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="bg-white border-2 border-brand rounded-2xl overflow-hidden tile-hover flex flex-col">
+          <div class="rounded-xl overflow-hidden m-4 mb-0">
+            <img src="Eric%20Coaching%20Head%20Shot.jpg" alt="1:1 fit call" class="w-full h-36 object-cover" />
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <p class="text-xs font-semibold text-brand uppercase tracking-wide mb-2">Apply Now</p>
+            <p class="text-base font-bold text-gray-900 mb-2">1:1 Fit Call</p>
+            <p class="text-sm text-gray-500 leading-relaxed flex-1 mb-4">Ready for more than free content? See if you qualify for 1:1 ultimate-specific coaching.</p>
+            <a href="apply/index.html" onclick="gtag('event', 'click_apply_from_homepage', {event_category: 'conversion', location: 'resources_grid'})" class="block text-center bg-brand text-white font-semibold py-2.5 rounded-xl hover:bg-brand-dark transition-colors text-sm">Apply Now →</a>
+          </div>
+        </div>
+
       </div>
     </div>
-    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-      <div class="reveal">
-        <p class="text-sm font-bold text-brand uppercase tracking-widest mb-4">Game IQ</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-5">Learn to read the game a step ahead of your competition.</h2>
-        <p class="text-gray-500 text-base leading-relaxed mb-6">Develop the pattern recognition, field awareness, and game-specific cues that help you score more goals, get open more often, and get more blocks.</p>
-        <ul class="space-y-3 text-sm text-gray-600">
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Read risk spaces to create block opportunities
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Learn proper offensive spacing and timing
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Get timestamped feedback on your gameplay
-          </li>
-         
-        </ul>
+  </section>
+
+  <!-- ─── ABOUT ERIC ──────────────────────────────────────────────── -->
+  <section class="py-14 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal text-center mb-10">
+        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">About</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Coached by someone who's done it.</h2>
       </div>
-      <!-- Visual -->
-      <div class="reveal-scale browser-frame" style="transition-delay:0.15s">
-        <div class="browser-bar">
-          <div class="browser-dot bg-red-400"></div>
-          <div class="browser-dot bg-yellow-400"></div>
-          <div class="browser-dot bg-green-400"></div>
+      <div class="reveal grid sm:grid-cols-[auto,1fr] gap-8 items-center max-w-2xl mx-auto">
+        <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mx-auto shadow-lg flex-shrink-0">
+          <img src="Eric%20Profile%20Photo.jpg" alt="Eric Deng" class="w-full h-full object-cover" />
         </div>
-        <div class="bg-gray-50 p-5">
-          <div class="bg-white rounded-xl border border-gray-200 p-5 mb-3">
-            <div class="flex items-center gap-2 mb-3">
-              <img src="Eric%20Profile%20Photo.jpg" class="rounded-full w-7 h-7 object-cover" alt="Eric" />
-              <div>
-                <p class="text-xs text-gray-900"><span class="font-bold">Eric Deng</span> · Offensive Gameplay Feedback</p>
-                <p class="text-xs text-gray-400">Submitted 12h ago</p>
-              </div>
-            </div>
-            <div class="bg-gray-100 rounded-lg overflow-hidden mb-3">
-              <img src="Game%20IQ%20Feedback%20video%20image.png" class="w-full object-cover" alt="Game footage" />
-            </div>
-            <div class="space-y-2">
-              <div class="flex gap-2 items-start bg-orange-50 border border-orange-100 rounded-lg p-2.5">
-                <span class="text-xs font-bold text-blue-600 flex-shrink-0">5:33</span>
-                <p class="text-xs text-gray-600">If there's no space for you to attack just yet, just slow down, reset the cut, and go back into the phases of prep, setup, commit.</p>
-              </div>
-            </div>
+        <div class="text-center sm:text-left">
+          <p class="text-gray-500 leading-relaxed mb-5">
+            Eric is an ASCA-certified strength and conditioning coach and a handler for Sydney Sunder, who've represented Australia at the club World Championships. He's coached 300+ athletes, with a program built specifically around what translates to on-field performance in ultimate — not generic strength programming borrowed from another sport.
+          </p>
+          <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+            <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">ASCA Certified</span>
+            <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">Handler, Sydney Sunder</span>
+            <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">Australian Rep, World Clubs</span>
+            <span class="bg-brand-light text-brand-dark text-xs font-semibold px-3 py-1.5 rounded-full border border-orange-100">300+ Athletes Coached</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── PILLAR 2: SKILLS & ATHLETICISM ───────────────────────────── -->
-  <section class="py-12 px-6 bg-gray-50 border-y border-gray-100">
-    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-      <!-- Visual (left) -->
-      <div class="reveal-scale browser-frame order-2 md:order-1" style="transition-delay:0.15s">
-        <div class="browser-bar">
-          <div class="browser-dot bg-red-400"></div>
-          <div class="browser-dot bg-yellow-400"></div>
-          <div class="browser-dot bg-green-400"></div>
-        </div>
-        <div class="bg-gray-50 p-5">
-          <div class="bg-white rounded-xl border border-gray-200 p-5">
-            <div class="flex items-center justify-between mb-4">
-              <div>
-                <p class="text-sm font-bold text-gray-900">Week 2A – Offensive Footwork & Speed</p>
-                <p class="text-xs text-gray-400">2 of 4 sessions complete - full details in the plan</p>
-              </div>
-              <span class="text-xs bg-blue-100 text-blue-600 font-semibold rounded-full px-2.5 py-1">On track</span>
-            </div>
-            <div class="space-y-2">
-              <div class="flex items-center gap-3 bg-blue-50 rounded-lg px-3 py-2.5 border border-blue-100">
-                <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-sm text-gray-700 flex-1">Warm up</span>
-                <span class="text-xs text-gray-400">8 min</span>
-              </div>
-              <div class="flex items-center gap-3 bg-blue-50 rounded-lg px-3 py-2.5 border border-blue-100">
-                <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-sm text-gray-700 flex-1">Offensive footwork + drilling</span>
-                <span class="text-xs text-gray-400">12 min</span>
-              </div>
-              <div class="flex items-center gap-3 bg-blue-50 rounded-lg px-3 py-2.5 border border-blue-100">
-                <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-sm text-gray-700 flex-1">Speed + agility</span>
-                <span class="text-xs text-gray-400">20 min</span>
-              </div>
-              <div class="flex items-center gap-3 rounded-lg px-3 py-2.5 border border-gray-200">
-                <div class="w-4 h-4 rounded border-2 border-gray-300 flex-shrink-0"></div>
-                <span class="text-sm text-gray-500 flex-1">Conditioning</span>
-                <span class="text-xs text-gray-400">10 min</span>
-              </div>
-              <div class="flex items-center gap-3 rounded-lg px-3 py-2.5 border border-gray-200">
-                <div class="w-4 h-4 rounded border-2 border-gray-300 flex-shrink-0"></div>
-                <span class="text-sm text-gray-500 flex-1">Throwing</span>
-                <span class="text-xs text-gray-400">15 min</span>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- ─── FOOTER ──────────────────────────────────────────────────── -->
+  <footer class="py-10 px-6 border-t border-gray-100 bg-gray-50">
+    <div class="max-w-6xl mx-auto flex flex-col items-center gap-5">
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold text-gray-600">
+        <a href="apply/index.html" class="hover:text-brand transition-colors">Apply</a>
+        <a href="https://www.skool.com/ultimate/plans" target="_blank" class="hover:text-brand transition-colors">Community</a>
+        <a href="https://youtube.com/@itsericdee" target="_blank" class="hover:text-brand transition-colors">YouTube</a>
+        <a href="https://instagram.com/itsericdee" target="_blank" class="hover:text-brand transition-colors">Instagram</a>
       </div>
-      <!-- Text (right) -->
-      <div class="reveal order-1 md:order-2">
-        <p class="text-sm font-bold text-blue-600 uppercase tracking-widest mb-4">Skills & Athletic Development</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-5">Build the skills and physical qualities <br class="hidden md:block" />our game demands.</h2>
-        <p class="text-gray-500 text-base leading-relaxed mb-6">From throwing to speed and conditioning – structured weekly training plans that develop the technical and physical tools you need to perform at your best.</p>
-        <ul class="space-y-3 text-sm text-gray-600">
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            50+ video-guided drills & demos across throwing, cutting, and defense
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Personalised feedback on your throwing form and movement
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Apply ultimate-specific speed, agility, and conditioning
-          </li>
-      
-        </ul>
-        <div class="mt-6">
-          <a href="#pricing" class="inline-block bg-brand text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">Choose Your Plan</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── PILLAR 3: IN-GAME APPLICATION ───────────────────────────── -->
-  <section class="py-12 px-6">
-    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-      <div class="reveal">
-        <p class="text-sm font-bold text-green-600 uppercase tracking-widest mb-4">In-Game Application</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-5">Apply what you learn when it matters.</h2>
-        <p class="text-gray-500 text-base leading-relaxed mb-6">Bridge the gap between training and competition. Weekly live calls, specific pre-event preparation, and monthly tactical workshops help you bring your best when it matters.</p>
-        <ul class="space-y-3 text-sm text-gray-600">
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Weekly live calls with real-time Q&A
-          </li>
-        
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Monthly tactical workshops on strategy, tactics and event prep
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            Active community of players to share goals, progress and learn with
-          </li>
-        </ul>
-      </div>
-      <!-- Visual -->
-      <div class="reveal-scale rounded-2xl overflow-hidden shadow-lg" style="transition-delay:0.15s">
-        <img src="Eric's%20Team%20Huddle%20Photo.jpeg" class="w-full h-full object-cover" alt="Team huddle" />
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── PLATFORM ──────────────────────────────────────────────────── -->
-  <section id="platform" class="py-12 px-6 bg-gray-900">
-    <div class="max-w-5xl mx-auto">
-      <div class="max-w-2xl mx-auto">
-        <div class="reveal">
-          <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-4">Private Community</p>
-          <h2 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-5">Resources, coaching and feedback all in one place.</h2>
-          <p class="text-gray-400 text-base leading-relaxed mb-8">Everything is built on Skool – a private community platform that can host all the tools we need to help players level up.</p>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10 tile-hover">
-              <div class="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-              </div>
-              <p class="text-sm font-semibold text-white mb-1">Community</p>
-              <p class="text-xs text-gray-400">Discussion, feedback & wins</p>
-            </div>
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10 tile-hover">
-              <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-              </div>
-              <p class="text-sm font-semibold text-white mb-1">Classroom</p>
-              <p class="text-xs text-gray-400">Videos, recordings & demos</p>
-            </div>
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10 tile-hover">
-              <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              </div>
-              <p class="text-sm font-semibold text-white mb-1">Calendar</p>
-              <p class="text-xs text-gray-400">Live calls & workshops</p>
-            </div>
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10 tile-hover">
-              <div class="w-8 h-8 bg-brand/30 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-              </div>
-              <p class="text-sm font-semibold text-white mb-1">Direct Access</p>
-              <p class="text-xs text-gray-400">DM Eric whenever you need help</p>
-            </div>
-          </div>
-          <div class="mt-8 text-center">
-            <a href="#pricing" class="inline-block bg-brand text-white font-semibold px-6 py-3 rounded-xl hover:bg-brand-dark transition-colors shadow-sm text-sm">Get Access</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── TESTIMONIALS ──────────────────────────────────────────────── -->
-  <section id="testimonials" class="py-12 px-6 bg-gray-100">
-    <div class="max-w-5xl mx-auto">
-
-      <div class="reveal-group grid md:grid-cols-3 gap-5">
-        <!-- Testimonial 1 – Kayla D. -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col">
-          <div class="flex items-center gap-3 mb-4">
-            <img src="Client%20Images/Kayla%20D.jpg" class="rounded-full w-10 h-10 flex-shrink-0 object-cover" alt="Kayla D." />
-            <div>
-              <p class="text-sm font-bold text-gray-900">Kayla D.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-1 mb-4">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-gray-600 text-sm leading-relaxed flex-1">"Ultimate Academy has <mark class="bg-orange-100 text-gray-800 rounded px-0.5">absolutely changed my game already in just a couple of weeks</mark>! My defense especially has greatly improved, I have always felt like I was just a step behind or so close to getting a block. After watching 2 webinars/trainings I was able to <mark class="bg-orange-100 text-gray-800 rounded px-0.5">implement some new skills into my very next game and get 5 blocks</mark>. I’m working to increase my game IQ and learn skills that I just don’t have access to in my local community. <mark class="bg-orange-100 text-gray-800 rounded px-0.5">I can’t wait to see how much more I’ll grow as a player!</mark>"</p>
-        </div>
-        <!-- Testimonial 2 – Kieran N. -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col">
-          <div class="flex items-center gap-3 mb-4">
-            <img src="Client%20Images/Kieran%20N.jpg" class="rounded-full w-10 h-10 flex-shrink-0 object-cover" alt="Kieran N." />
-            <div>
-              <p class="text-sm font-bold text-gray-900">Kieran N.</p>
-              <p class="text-xs text-gray-400">Club Player & Coach · Malaysia</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-1 mb-4">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-gray-600 text-sm leading-relaxed flex-1">"The greatest value I got from UA was <mark class="bg-orange-100 text-gray-800 rounded px-0.5">clarity</mark>. All this time I’ve been training on my own, reusing drills that I’ve taken from trainings but never knowing what my problem was. Eric provided <mark class="bg-orange-100 text-gray-800 rounded px-0.5">clear guidance and problem solving</mark> which improve my gameplay a lot. I’m 30 now, but <mark class="bg-orange-100 text-gray-800 rounded px-0.5">I’m playing better now than I did in my mid 20s</mark>. I’m winning skies, I’m sending deeps, I’m getting bids on Os and Ds when I couldn’t before. Highly recommended program, solid 11/10."</p>
-        </div>
-        <!-- Testimonial 3 – Mia K. -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col">
-          <div class="flex items-center gap-3 mb-4">
-            <img src="Client%20Images/Mia%20K.jfif" class="rounded-full w-10 h-10 flex-shrink-0 object-cover" alt="Mia K." />
-            <div>
-              <p class="text-sm font-bold text-gray-900">Mia K.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-1 mb-4">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-gray-600 text-sm leading-relaxed flex-1">"Just one month so far, and <mark class="bg-orange-100 text-gray-800 rounded px-0.5">so much growth</mark> because of Ultimate Academy! 🚀 Having a set plan has really helped me to get out there and <mark class="bg-orange-100 text-gray-800 rounded px-0.5">train more often with confidence</mark>. Already, I can see that the consistency is paying off in improving my skills and implementing them in games. Workshops have been another source of <mark class="bg-orange-100 text-gray-800 rounded px-0.5">immediate improvement</mark> for me. I am such a fan of how Eric breaks down concepts visually and with helpful mnemonics that I can remember in-game 🧠. Amazing program. 10/10 would recommend!"</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── PRICING ───────────────────────────────────────────────────── -->
-  <section id="pricing" class="py-12 px-6 bg-gray-50 border-y border-gray-100">
-    <div class="max-w-5xl mx-auto">
-      <div class="reveal text-center mb-14">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Pricing</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Our programs.</h2>
-        <p class="text-gray-500 text-base mt-3">Choose the plan that fits you.</p>
-        <div class="flex items-center justify-center gap-2 mt-4 text-sm text-gray-500">
-          <span class="relative flex h-2 w-2 flex-shrink-0">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-          </span>
-          This month's intake is now live
-        </div>
-      </div>
-      <div class="reveal-group grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-        <!-- Standard -->
-        <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm relative tile-hover">
-          <div class="absolute -top-3 right-4 bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded-full">Great For Starters</div>
-          <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Standard</p>
-          <div class="flex items-end gap-1 mb-2">
-            <span class="text-4xl font-extrabold text-gray-900">$99</span>
-            <span class="text-gray-400 text-sm mb-2">/month</span>
-          </div>
-          <p class="text-sm text-gray-400 mb-6">Guidance and feedback to kickstart your growth.</p>
-          <button onclick="openSkoolModal()" class="block w-full text-center bg-gray-900 text-white font-semibold py-3 rounded-xl hover:bg-black transition-colors mb-7 text-sm">Join Now</button>
-          <ul class="space-y-3 text-sm text-gray-600">
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Video library to build game IQ</li>
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Ultimate-specific skills program</li>
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Live group calls for support</li>
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>On-demand custom video feedback</li>
-    
-          </ul>
-        </div>
-        <!-- Premium -->
-        <div class="bg-gray-900 rounded-2xl p-6 md:p-8 border border-gray-800 shadow-sm relative tile-hover-dark">
-          <div class="absolute -top-3 right-4 bg-brand text-white text-xs font-bold px-3 py-1 rounded-full">4 Spots Left</div>
-          <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Premium</p>
-          <div class="flex items-end gap-1 mb-2">
-            <span class="text-4xl font-extrabold text-white">$299</span>
-            <span class="text-gray-400 text-sm mb-2">/month</span>
-          </div>
-          <p class="text-sm text-gray-400 mb-6">Done-for-you program to fast-track progress.</p>
-          <button onclick="gtag('event', 'click_premium_apply', {event_category: 'conversion'}); openApplicationModal()" class="block w-full text-center bg-brand text-white font-semibold py-3 rounded-xl hover:bg-brand-dark transition-colors mb-7 text-sm">Apply Now</button>
-          <ul class="space-y-3 text-sm text-gray-300">
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Everything in Standard, plus</li>
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Custom strength & speed program</li>
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>24/7 DM access to Eric</li>
-            <li class="flex items-start gap-2.5"><svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>1:1 support from Eric</li>
-          
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─── BONUSES ─────────────────────────────────────────────────── -->
-  <section class="py-10 px-6 bg-orange-50 border-y border-orange-100">
-    <div class="max-w-3xl mx-auto text-center">
-      <div class="reveal">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">Bonuses</p>
-        <div class="flex items-center justify-center gap-2 mb-3">
-          <span class="relative flex h-2 w-2 flex-shrink-0">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-          </span>
-          <span class="text-xs text-gray-500">Currently live</span>
-        </div>
-        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight mb-5">Join us this month and get:</h2>
-        <div class="inline-block text-left bg-white border border-orange-200 rounded-2xl px-6 py-6 max-w-lg w-full shadow-sm">
-          <ul class="space-y-3 mb-4">
-            <li class="flex items-start gap-3 text-sm text-gray-700">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              2 essential cutting pattern training plans as soon as you join
-            </li>
-            <li class="flex items-start gap-3 text-sm text-gray-700">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              2 recordings from our Unmarkable&#8482; and Block-Getter&#8482; workshops
-            </li>
-            <li class="flex items-start gap-3 text-sm text-gray-700">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              1:1 private onboarding call to help you start winning fast
-            </li>
-            <li class="flex items-start gap-3 text-sm text-gray-700">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              14-day speed development program
-            </li>
-            <li class="flex items-start gap-3 text-sm text-gray-700">
-              <svg class="w-4 h-4 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              1:1 DM support until you see results
-            </li>
-          </ul>
-          <p class="text-xs text-gray-400">Included for anyone who joins during our current intake.</p>
-        </div>
-        <div class="mt-6">
-          <a href="#pricing" class="inline-block bg-brand text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">Claim Bonuses</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── HOW IT WORKS (checklist style) ───────────────────────────── -->
-  <section id="onboarding" class="py-12 px-6">
-    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-      <div class="reveal">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-4">How it works</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-5">Up and running from day one.</h2>
-        <p class="text-gray-500 text-base leading-relaxed mb-6">A structured onboarding process designed to get you a quick win in your first few weeks and build lasting habits from day one.</p>
-        <div class="bg-gray-100 rounded-xl overflow-hidden">
-          <img src="Eric%20Full%20Body%20Frontal%20Shot.jpg" class="w-full object-cover" alt="Eric coaching" />
-        </div>
-      </div>
-      <!-- Checklist -->
-      <div class="reveal-group" style="--stagger-base: 0.08s">
-        <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Getting started</p>
-        <div class="space-y-3">
-          <div class="flex items-start gap-4 p-4 bg-green-50 border border-green-200 rounded-xl tile-hover">
-            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            </div>
-            <div>
-              <p class="text-sm font-bold text-gray-900">Welcome to Ultimate Academy</p>
-              <p class="text-xs text-gray-500 mt-0.5">Intro, community tour, and how to get value straight away.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4 p-4 bg-green-50 border border-green-200 rounded-xl tile-hover">
-            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            </div>
-            <div>
-              <p class="text-sm font-bold text-gray-900">Complete your Skill Assessment</p>
-              <p class="text-xs text-gray-500 mt-0.5">Use our skill assessment tool to help identify your biggest roadblocks.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4 p-4 bg-brand-light border border-orange-200 rounded-xl tile-hover">
-            <div class="w-6 h-6 rounded-full bg-brand flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="text-white text-xs font-bold">3</span>
-            </div>
-            <div>
-              <p class="text-sm font-bold text-gray-900">1-on-1 strategy call with Eric</p>
-              <p class="text-xs text-gray-500 mt-0.5">Build your 30-day game plan and solve your number one roadblock.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4 p-4 bg-white border border-gray-200 rounded-xl tile-hover">
-            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="text-gray-400 text-xs font-bold">4</span>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-gray-900">Start your custom training plan</p>
-              <p class="text-xs text-gray-400 mt-0.5">Work through your custom plan and tick off your first session.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4 p-4 bg-white border border-gray-200 rounded-xl tile-hover">
-            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="text-gray-400 text-xs font-bold">5</span>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-gray-900">Submit footage</p>
-              <p class="text-xs text-gray-400 mt-0.5">Get adjustments and feedback on your skills and gameplay from Eric.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4 p-4 bg-white border border-gray-200 rounded-xl tile-hover">
-            <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="text-gray-400 text-xs font-bold">6</span>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-gray-900">Monthly workshops & ongoing support</p>
-              <p class="text-xs text-gray-400 mt-0.5">Continue upskilling each month to achieve lasting growth.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── FINAL CTA ────────────────────────────────────────────────── -->
-  <section id="apply" class="py-10 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="reveal-scale bg-gray-900 rounded-3xl p-6 md:p-14 text-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(224,92,42,0.15),transparent_70%)]"></div>
-        <div class="relative">
-
-          <h2 class="text-2xl md:text-4xl font-extrabold text-white mb-4 flex items-center justify-center gap-3">
-            <span class="relative flex h-3 w-3 flex-shrink-0">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-400"></span>
-            </span>
-            This month's intake is now live.
-          </h2>
-          <p class="text-gray-400 text-lg mb-8 max-w-md mx-auto">We close our doors once we reach capacity to keep group quality high.</p>
-
-          <div>
-            <a href="#pricing" class="inline-block bg-brand text-white font-bold px-10 py-4 rounded-xl hover:bg-brand-dark transition-colors text-base shadow-lg">Get Started Today</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── SKOOL STEPS MODAL ───────────────────────────────────────── -->
-  <div id="skool-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeSkoolModal()"></div>
-    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-      <!-- Header -->
-      <div class="px-8 pt-8 pb-5 border-b border-gray-100">
-        <div class="flex items-start justify-between">
-          <div>
-            <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-1">Standard Plan</p>
-            <h3 class="text-2xl font-extrabold text-gray-900">How to join on Skool</h3>
-            <p class="text-sm text-gray-400 mt-1">Takes less than 2 minutes.</p>
-          </div>
-          <button onclick="closeSkoolModal()" class="text-gray-400 hover:text-gray-600 transition-colors ml-4 flex-shrink-0 mt-1">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-      </div>
-      <!-- Steps -->
-      <div class="px-8 py-6 space-y-4">
-        <div class="flex items-center gap-5">
-          <div class="w-8 h-8 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">1</div>
-          <p class="text-sm text-gray-700 leading-relaxed">Click <span class="font-semibold text-gray-900">"Get Access"</span> below – you'll land on the Ultimate Academy pricing page on Skool.</p>
-        </div>
-        <div class="flex items-center gap-5">
-          <div class="w-8 h-8 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">2</div>
-          <p class="text-sm text-gray-700 leading-relaxed">Click <span class="font-semibold text-gray-900">"JOIN STANDARD"</span> on the left.</p>
-        </div>
-        <div class="flex items-center gap-5">
-          <div class="w-8 h-8 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">3</div>
-          <p class="text-sm text-gray-700 leading-relaxed">Make an account or log in if you already have one.</p>
-        </div>
-        <div class="flex items-center gap-5">
-          <div class="w-8 h-8 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">4</div>
-          <p class="text-sm text-gray-700 leading-relaxed">Fill out your information and click <span class="font-semibold text-gray-900">"JOIN STANDARD"</span> at the bottom.</p>
-        </div>
-        <div class="flex items-center gap-5">
-          <div class="w-8 h-8 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">5</div>
-          <p class="text-sm text-gray-700 leading-relaxed">You'll get instant access and I'll send you a DM to help you get onboarded.</p>
-        </div>
-      </div>
-      <!-- Skool screenshot with arrow -->
-      <div class="px-6 pb-5">
-        <div class="relative rounded-xl overflow-hidden border border-gray-100">
-          <img src="Skool%20Plans%20Image.png" alt="Skool plans page" class="w-full block" />
-          <!-- Orange arrow pointing to JOIN STANDARD on left card -->
-          <div class="absolute" style="left: 23%; top: 66%; transform: translateX(-50%)">
-            <svg width="36" height="44" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="18" y1="2" x2="18" y2="30" stroke="#E05C2A" stroke-width="5" stroke-linecap="round"/>
-              <polygon points="18,44 4,26 32,26" fill="#E05C2A"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- CTA -->
-      <div class="px-8 pb-8">
-        <a href="https://www.skool.com/ultimate/plans" target="_blank" onclick="gtag('event', 'click_standard_join', {event_category: 'conversion'}); closeSkoolModal()" class="block text-center bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">Get Access</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── APPLICATION MODAL ───────────────────────────────────────── -->
-  <div id="application-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
-    <!-- Backdrop -->
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeApplicationModal()"></div>
-    <!-- Modal card -->
-    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" id="modal-box">
-      <!-- Header -->
-      <div id="modal-header" class="sticky top-0 bg-white rounded-t-3xl px-8 pt-8 pb-4 border-b border-gray-100 z-10">
-        <div class="flex items-start justify-between">
-          <div>
-            <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-1">Premium Application</p>
-            <h3 class="text-2xl font-extrabold text-gray-900">Apply for Ultimate Accelerator</h3>
-            <p class="text-sm text-gray-400 mt-1">Takes ~5 minutes. We review each application carefully.</p>
-          </div>
-          <button onclick="closeApplicationModal()" class="text-gray-400 hover:text-gray-600 transition-colors ml-4 flex-shrink-0 mt-1">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-      </div>
-      <!-- Form -->
-      <form id="application-form" class="px-4 py-4 md:px-8 md:py-6">
-
-        <!-- ── STEP 1: Contact details ── -->
-        <div id="step-1" class="space-y-6">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest">Step 1 of 2 – Contact details</p>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Full name <span class="text-brand">*</span></label>
-            <input type="text" name="name" required placeholder="Your full name" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email address <span class="text-brand">*</span></label>
-            <input type="email" name="email" required placeholder="you@example.com" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Instagram handle <span class="text-brand">*</span></label>
-            <p class="text-xs text-gray-400 mb-1.5">We'll reach out here if we have follow-up questions about your application.</p>
-            <input type="text" name="instagram" required placeholder="e.g. @itsericdee" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition" />
-          </div>
-
-          <div class="pt-2 pb-2">
-            <button type="button" id="continue-btn" onclick="continueToStep2()" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">
-              Continue to Application →
-            </button>
-          </div>
-        </div>
-
-        <!-- ── STEP 2: Application questions ── -->
-        <div id="step-2" class="hidden space-y-6">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-widest">Step 2 of 2 – Your application</p>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">How long have you been playing ultimate? <span class="text-brand">*</span></label>
-            <select name="experience" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-              <option value="" disabled selected>Select an option</option>
-              <option>Less than 1 year</option>
-              <option>1–3 years</option>
-              <option>3–5 years</option>
-              <option>5–10 years</option>
-              <option>10+ years</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What level do you currently compete at? <span class="text-brand">*</span></label>
-            <select name="level" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-              <option value="" disabled selected>Select an option</option>
-              <option>Recreational / semi-competitive</option>
-              <option>Club / sub-elite</option>
-              <option>National / elite</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What is your biggest challenge in ultimate right now? <span class="text-brand">*</span></label>
-            <textarea name="focus_areas" required rows="3" placeholder="e.g. I struggle to read the defence as a cutter and often get shut down in tight spaces..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Why work with us? Why now? What makes you think this is the right move for you right now? <span class="text-brand">*</span></label>
-            <textarea name="why_now" required rows="3" placeholder="e.g. I've been plateauing for a while and feel like I need structured guidance rather than training on my own..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What qualities of a "good teammate" do you possess? What makes working with you enjoyable? <span class="text-brand">*</span></label>
-            <textarea name="teammate_qualities" required rows="3" placeholder="e.g. I'm coachable, show up consistently, and bring positive energy even when things get tough..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">The investment to get started in the Premium plan is $299 USD. Does that work for you? <span class="text-brand">*</span></label>
-            <select name="investment_ok" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-              <option value="" disabled selected>Select an option</option>
-              <option>Yes, that works</option>
-              <option>No, that does not work</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">If accepted, are you ready to start this week? <span class="text-brand">*</span></label>
-            <select name="ready_to_start" required id="ready-select" onchange="toggleNotReadyReason(this.value)" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition appearance-none bg-white">
-              <option value="" disabled selected>Select an option</option>
-              <option>Yes, I'm ready to go</option>
-              <option>Not quite – see reason below</option>
-            </select>
-          </div>
-
-          <div id="not-ready-reason" class="hidden">
-            <label class="block text-sm font-semibold text-gray-700 mb-1.5">What's holding you back from starting this week?</label>
-            <textarea name="not_ready_reason" rows="2" placeholder="e.g. I'm travelling until next month..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition resize-none"></textarea>
-          </div>
-
-          <div class="pt-2 pb-2">
-            <button type="button" id="submit-btn" onclick="submitApplication()" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">
-              Submit Application
-            </button>
-            <p class="text-xs text-gray-400 text-center mt-3">We'll review your application and get back to you within 48 hours.</p>
-          </div>
-        </div>
-
-        <!-- Success message (hidden by default) -->
-        <div id="success-msg" class="hidden text-center pt-8 pb-10 px-6">
-          <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-          </div>
-          <p class="text-2xl font-extrabold text-gray-900 mb-3">Application received!</p>
-          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto">Eric will be in touch via email within the next 48 hours. If he has any further questions to determine your fit for the program, he may also reach out via Instagram or email.</p>
-          <p class="text-sm text-gray-400 mt-4">Any questions? Reach out at <a href="mailto:eric.deng3@gmail.com" class="text-brand hover:underline">eric.deng3@gmail.com</a></p>
-        </div>
-
-      </form>
-    </div>
-  </div>
-
-  <!-- ─── FAQ ─────────────────────────────────────────────────────── -->
-  <section class="py-12 px-6 bg-gray-50 border-y border-gray-100">
-    <div class="max-w-2xl mx-auto">
-      <div class="reveal text-center mb-12">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">FAQ</p>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Frequently asked questions.</h2>
-      </div>
-      <div class="reveal space-y-3" id="faq-list">
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">Is this for me?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">This program is specifically designed for adult ultimate frisbee players who are feeling stuck or plateaued and want to make a bigger impact on the field.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">If that's you, then yes, this is for you.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">How much time do I need to commit per week?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">Most members dedicate a few hours per week, but even 1-2 hours of focused training can produce results. We'll build a plan around your schedule.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">What level do I need to be to join?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">At a minimum, you should have some foundations in the sport and be competing in some capacity. We'll assess your level through our onboarding process and get you set up with the system that fits you best from there.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">How is the program delivered? Is it online?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">Yes – fully online, which proves as a winning system for our athletes.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">What holds most players back isn't actually access to in-person support – it's having the right frameworks, feedback, and structure to act on.</p>
-
-            <p class="text-sm text-gray-500 leading-relaxed">Because everything is built around structured learning and video feedback, the coaching is more precise than a typical in-person setup. It means we can review your footage carefully, pause on specific moments, and give you detailed timestamped notes, which is only made possible through an online format.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">What's the difference between Standard and Premium?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">Standard gives you access to the community, training library, workshops, and weekly feedback.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">Premium adds a fully custom training plan and 1-on-1 support. </p>
-
-            <p class="text-sm text-gray-500 leading-relaxed">If you're on a budget and you work well with a rough structure, then Standard is the way to go. If you'd like to fast-track your progress through a custom program and more in-depth support, then go for Premium.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">Both programs start with a 30-day growth plan built around your goals, so if you're unsure, just pick one to start and we can always fit you with the best option later.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">How does the footage review work?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">You submit footage from your training sessions or games and I review it with timestamped feedback, with details around specific skills, concepts, what to do differently, and why.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">If you've never collected footage before, we'll teach you best practices around equipment and setup. Recording yourself is one of the biggest levers you can pull from a development perspective, so we'll help you get set up properly.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">What if I have a busy schedule?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">A busy schedule is actually one of the most common reasons athletes come to us. When you're time-poor, the last thing you need is to spend what little training time you have on the wrong things.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">If your schedule is busy because of a heavy tournament or competition calendar, that's actually ideal – you'll have real-time opportunities to apply what you're learning and get immediate feedback in-game.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">And if things are quieter, we'll help you map out how to use that time so you're fully prepared when the season kicks off.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">Can I cancel anytime?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">Yes – no lock-in commitment.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">Most of our athletes stay on long-term once they've started to see results using our system. But yes, if your scenario changes, you can cancel anytime with the click of a button.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">How long before I start seeing results?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">It depends on your training background and a range of individual factors.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">The program is designed to help you achieve a meaningful win within your first 30 days.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">The bigger gains come over the first 2–3 months, as you improve and implement the skills and patterns that we teach you.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">Can I pause my membership if I need a break?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5">
-            <p class="text-sm text-gray-500 leading-relaxed">Yes – just reach out and we'll take care of it for you.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">Do I need any special equipment?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">Just the basics – some discs and cones.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">A tripod is also highly recommended. Trust me – it'll be the best investment you make in a piece of equipment this year.</p>
-          </div>
-        </div>
-
-        <div class="faq-item bg-white border border-gray-200 rounded-2xl overflow-hidden tile-hover">
-          <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left" onclick="toggleFaq(this)">
-            <span class="text-sm font-semibold text-gray-900">I'm not sure if I'm the right fit – what should I do?</span>
-            <svg class="faq-icon w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="faq-body hidden px-6 pb-5 space-y-3">
-            <p class="text-sm text-gray-500 leading-relaxed">For Premium, please submit an application first!</p>
-            <p class="text-sm text-gray-500 leading-relaxed">For Standard, please send me a DM on Instagram with your query.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">For both plans, we only work with athletes we're confident we can help – if it's not the right fit, I'll tell you honestly and point you in the right direction.</p>
-            <p class="text-sm text-gray-500 leading-relaxed"><b>Note: </b>If you frequently find excuses for yourself, and often don't take action when you commit to things, then this probably <b>isn't</b> for you.</p>
-            <p class="text-sm text-gray-500 leading-relaxed">However, if you're motivated to make a change to your game, and willing to follow a plan to get there, then I'm confident we can help you achieve some serious results very soon.</p>
-          </div>
-        </div>
-
-      </div>
-      <div class="text-center mt-8">
-        <a href="#pricing" class="inline-block bg-brand text-white font-bold px-8 py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">Get Started Today</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── MORE TESTIMONIALS ──────────────────────────────────────── -->
-  <section id="more-testimonials" class="py-12 px-6 bg-gray-100">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-12 reveal">
-        <p class="text-xs font-semibold text-brand uppercase tracking-widest mb-3">helped 300+ adult athletes</p>
-        <h2 class="text-3xl font-extrabold text-gray-900 mb-3">More testimonials.</h2>
-        <p class="text-gray-500 text-sm max-w-md mx-auto">We have a great reputation because our members get results.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-
-        <!-- Kay Powell -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Kay%20Powell.jpg" alt="Kay P." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Kay P.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"I wish Ultimate Academy had been around when I started playing 20+ years ago. Playing at a high level the past 5 years (USAU nationals level and WUL), I have seen the potential to access a whole new side of the game with 1:1 accelerated coaching with Eric. In less than a month I have begun recognizing and even acting on defensive patterns, which has <mark class="bg-orange-100 text-gray-800 rounded px-0.5">helped me become a block-getter</mark>. I think Ultimate Academy is a <mark class="bg-orange-100 text-gray-800 rounded px-0.5">valuable resource for ultimate players at any level</mark>."</p>
-        </div>
-
-        <!-- William Hines -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/William%20Hines.jfif" alt="William H." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">William H.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"The Ultimate Academy is awesome! I've been a part of the community and working with Eric for just over a year now and it's been by far <mark class="bg-orange-100 text-gray-800 rounded px-0.5">the best year of my frisbee career!</mark> The amount of individual high-level feedback from Eric is incredible! I've gotten so much better at my throws, cutting, defense, and game IQ in general! <mark class="bg-orange-100 text-gray-800 rounded px-0.5">Absolutely 10/10, if you want to get better at ultimate, this is the place to be.</mark>"</p>
-        </div>
-
-        <!-- Cait Hamilton -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Cait%20Hamilton.jpg" alt="Cait H." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Cait H.</p>
-              <p class="text-xs text-gray-400">Masters Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"The greatest thing I've loved about UA is that I have an opportunity to be coached specifically on aspects of my game I want to develop. For a player who came "late" to the sport and never had the opportunity for 1:1 feedback, Eric and the community have been pivotal in providing that coaching for my personal development. I've been challenged to step out of my comfort zone and have a <mark class="bg-orange-100 text-gray-800 rounded px-0.5">specific development plan just for me</mark> — <mark class="bg-orange-100 text-gray-800 rounded px-0.5">that's priceless.</mark>"</p>
-        </div>
-
-        <!-- Daphne Wong -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Daphne%20Wong.jpg" alt="Daphne W." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Daphne W.</p>
-              <p class="text-xs text-gray-400">Club Player · Malaysia</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"I've been getting coaching from Eric for a year now and I wish someone like Eric was around when I first started playing in 2013. Eric's resources from training plans you can use on your own to 1-1 support calls + his analysis of my play in games from my recordings have <mark class="bg-orange-100 text-gray-800 rounded px-0.5">made a world of difference</mark> in how I play and how I view the game. Subscribing to Eric's coaching is <mark class="bg-orange-100 text-gray-800 rounded px-0.5">super worth it</mark> even if you're just looking to have access to Eric's library of resources."</p>
-        </div>
-
-        <!-- Lonnie Yeung -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Lonnie%20Yueng.jpg" alt="Lonnie Y." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Lonnie Y.</p>
-              <p class="text-xs text-gray-400">Masters Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"After stepping away from Ultimate for decades, I returned wanting to bridge the gap in my game IQ. While YouTube videos offer good tips, Eric provides a <mark class="bg-orange-100 text-gray-800 rounded px-0.5">much more systematic breakdown of skills and strategy</mark>. The Skool classrooms are well-organized "mini courses" that make the learning process feel structured rather than random. Receiving specific feedback—both live and recorded—has been invaluable for identifying my individual habits and making <mark class="bg-orange-100 text-gray-800 rounded px-0.5">tangible personal gains</mark>."</p>
-        </div>
-
-        <!-- Aaron Bruce -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Aaron%20Bruce.jpg" alt="Aaron B." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Aaron B.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"The last month in Ultimate Academy has helped me a lot, and I'd really point to an increased ability to analyze my game and my skills. I feel so much more confident working on my throws, cuts, defense, and IQ because Eric's resources and live calls make sure that I'm going in the right direction. Even just a sentence or cue here or there has been <mark class="bg-orange-100 text-gray-800 rounded px-0.5">massively helpful</mark>. I've been playing Ultimate for over 10 years at this point, and I can already <mark class="bg-orange-100 text-gray-800 rounded px-0.5">feel my growth trajectory improving</mark>."</p>
-        </div>
-
-        <!-- Lynn Schmit -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Lynn%20Schmidt.jpg" alt="Lynn S." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Lynn S.</p>
-              <p class="text-xs text-gray-400">Club Player · Germany</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"I have been a member of this group for nearly a year now and my game has improved by a lot already! Before I joined I really had problems with nearly every part of the game (Offense, Defence and Game IQ). With Eric's help I improved in all three categories by a lot, but I mostly feel it in my defence game now. Before I never liked to play defense, but <mark class="bg-orange-100 text-gray-800 rounded px-0.5">now I love to play defense</mark> and I can manage to stick to my players quite well. All in all this group has <mark class="bg-orange-100 text-gray-800 rounded px-0.5">helped me find my joy and confidence</mark> in playing good Ultimate!"</p>
-        </div>
-
-        <!-- Cedar Noonan -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Cedar%20Noonan.jpg" alt="Cedar N." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Cedar N.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"I've been a member of the Ultimate Academy in various forms over the past year but I think this month has been by far the most helpful. This past month has <mark class="bg-orange-100 text-gray-800 rounded px-0.5">changed my training habits</mark>, and on the field my mental feedback and clarity have both improved considerably in only one pickup session. To anyone on the fence about joining I would say that if you have very high reaching goals, and are serious about reaching them then this is a <mark class="bg-orange-100 text-gray-800 rounded px-0.5">fantastic place to start</mark>."</p>
-        </div>
-
-        <!-- Felipe Orozco -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Felipe%20O.jpg" alt="Felipe O." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Felipe O.</p>
-              <p class="text-xs text-gray-400">Club Player · Colombia</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"In a country where the Frisbee community is small and driven mostly by heart, technical theory rarely comes up. For someone without 'natural talent,' it can be a real struggle to know what to practice or how to actually see progress. This space changed that. Here, you get fresh perspectives on things you thought you knew and insights into things you'd never even considered. It's the perfect place to <mark class="bg-orange-100 text-gray-800 rounded px-0.5">build the systems you need to get real results</mark>. If you're looking for what's missing in your game and how to fix it, <mark class="bg-orange-100 text-gray-800 rounded px-0.5">joining is a total no-brainer</mark>."</p>
-        </div>
-
-        <!-- Kayla Harrison -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Kayla%20Harrison.jpg" alt="Kayla H." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Kayla H.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"The emphasis on mental strength (in terms of game IQ, resilience, and grindset) has been very formative for me. I often felt frustrated because I didn't understand why my work in the gym, though it made me faster and stronger, <mark class="bg-orange-100 text-gray-800 rounded px-0.5">wasn't translating to the field</mark> as much as I wanted it to. With the offensive and defensive workshops I'm finally beginning to <mark class="bg-orange-100 text-gray-800 rounded px-0.5">bridge that gap and be able to look at the field differently</mark> — especially with the implementation of cues that help me recognize 'if this then that.'"</p>
-        </div>
-
-        <!-- Chris Tian -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Chris%20Tian.jpg" alt="Chris T." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Chris T.</p>
-              <p class="text-xs text-gray-400">Club Player · USA</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"UA has been a tremendous help in me improving my game to the next level. The guidance from Eric and the discussions with the group have been super helpful in <mark class="bg-orange-100 text-gray-800 rounded px-0.5">developing my own knowledge and skill set for tryouts</mark> this upcoming club season. Eric gives <mark class="bg-orange-100 text-gray-800 rounded px-0.5">very detailed and timely feedback</mark> that is helpful for players who are looking to improve in a fast paced environment."</p>
-        </div>
-
-        <!-- Chu Jun Song -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <img src="Client%20Images/Chu%20Jun%20Song.jpg" alt="Chu J." class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-            <div>
-              <p class="text-sm font-bold text-gray-900">Chu J.</p>
-              <p class="text-xs text-gray-400">Club Player · Malaysia</p>
-            </div>
-          </div>
-          <div class="flex gap-0.5">
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <p class="text-sm text-gray-600 leading-relaxed">"Huge fan of Ultimate Academy! The community is incredibly supportive and helpful, which motivates me to consistently track my progress and learn from other members' reflections. Eric is an outstanding coach, very responsive, encouraging, and able to explain gameplay concepts clearly. <mark class="bg-orange-100 text-gray-800 rounded px-0.5">My game IQ has improved significantly</mark> thanks to his guidance! <mark class="bg-orange-100 text-gray-800 rounded px-0.5">10/10 platform for players who want a real and meaningful upgrade in their game.</mark>"</p>
-        </div>
-
-      </div>
-
-      <div class="text-center mt-12 reveal">
-        <a href="#pricing" class="inline-block bg-brand text-white font-bold px-10 py-4 rounded-xl hover:bg-brand-dark transition-colors text-sm shadow-sm">Join Us Today</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── FOOTER ────────────────────────────────────────────────────── -->
-  <footer class="py-8 px-6 border-t border-gray-100">
-    <div class="max-w-5xl mx-auto flex items-center justify-center">
       <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
     </div>
   </footer>
 
   <script>
-    // Hero testimonial carousel
-    const testimonials = document.querySelectorAll('.hero-testimonial');
-    const dots = document.querySelectorAll('.hero-dot');
-    let current = 0;
-    let timer;
-
-    function goTo(index) {
-      testimonials[current].classList.add('opacity-0');
-      dots[current].classList.replace('bg-gray-900', 'bg-gray-300');
-      dots[current].style.width = '';
-      current = index;
-      testimonials[current].classList.remove('opacity-0');
-      dots[current].classList.replace('bg-gray-300', 'bg-gray-900');
-    }
-
-    function next() { goTo((current + 1) % testimonials.length); }
-
-    dots.forEach(dot => {
-      dot.addEventListener('click', () => {
-        clearInterval(timer);
-        goTo(parseInt(dot.dataset.dot));
-        timer = setInterval(next, 4000);
-      });
-    });
-
-    timer = setInterval(next, 4000);
-  </script>
-
-  <script>
-    // Intersection Observer – triggers .visible on any .reveal* element
+    // ── Scroll reveal ──────────────────────────────────────────────
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target); // fire once
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal, .reveal-group, .reveal-fade, .reveal-scale')
-      .forEach(el => observer.observe(el));
-  </script>
-
-  <script>
-    // ── Application Modal ──────────────────────────────────────────
-    // Deployed Google Apps Script web app (google-apps-script.gs at the
-    // repo root) — apply/index.html posts to this same URL, tagged with
-    // different `type` values so the two forms don't collide.
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
-
-    function openSkoolModal() {
-      document.getElementById('skool-modal').classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeSkoolModal() {
-      document.getElementById('skool-modal').classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    function openApplicationModal() {
-      document.getElementById('application-modal').classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      // Reset to step 1
-      document.getElementById('step-1').classList.remove('hidden');
-      document.getElementById('step-2').classList.add('hidden');
-      document.getElementById('success-msg').classList.add('hidden');
-      document.getElementById('modal-header').classList.remove('hidden');
-      document.getElementById('application-form').reset();
-    }
-
-    function closeApplicationModal() {
-      document.getElementById('application-modal').classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    function toggleNotReadyReason(value) {
-      document.getElementById('not-ready-reason').classList.toggle('hidden', value !== 'Not quite – see reason below');
-    }
-
-    function toggleFaq(btn) {
-      const body = btn.nextElementSibling;
-      const icon = btn.querySelector('.faq-icon');
-      const isOpen = !body.classList.contains('hidden');
-      // Close all
-      document.querySelectorAll('.faq-body').forEach(b => b.classList.add('hidden'));
-      document.querySelectorAll('.faq-icon').forEach(i => i.style.transform = '');
-      // Open clicked if it was closed
-      if (!isOpen) {
-        body.classList.remove('hidden');
-        icon.style.transform = 'rotate(180deg)';
-      }
-    }
-
-    // Close on Escape key
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { closeApplicationModal(); closeSkoolModal(); }
-    });
-
-    async function continueToStep2() {
-      // Validate step 1 fields using browser-native validation
-      const step1Inputs = document.querySelectorAll('#step-1 [required]');
-      for (const input of step1Inputs) {
-        if (!input.reportValidity()) return;
-      }
-
-      const btn = document.getElementById('continue-btn');
-      btn.textContent = 'Saving…';
-      btn.disabled = true;
-
-      // Fire lead capture — don't block on response
-      const leadData = {
-        timestamp: new Date().toISOString(),
-        name: document.querySelector('[name="name"]').value.trim(),
-        email: document.querySelector('[name="email"]').value.trim(),
-        instagram: document.querySelector('[name="instagram"]').value.trim(),
-        source: 'eric-deng-ultimate.com',
-        type: 'lead'
-      };
-      if (APPS_SCRIPT_URL) {
-        fetch(APPS_SCRIPT_URL + '?' + new URLSearchParams(leadData).toString(), {
-          method: 'GET', mode: 'no-cors'
-        }).catch(() => {});
-      }
-
-      // Show step 2
-      document.getElementById('step-1').classList.add('hidden');
-      document.getElementById('step-2').classList.remove('hidden');
-      document.getElementById('modal-box').scrollTop = 0;
-      btn.textContent = 'Continue to Application →';
-      btn.disabled = false;
-    }
-
-    async function submitApplication() {
-      // Validate step 2 fields
-      const step2Inputs = document.querySelectorAll('#step-2 [required]');
-      for (const input of step2Inputs) {
-        if (!input.reportValidity()) return;
-      }
-
-      const btn = document.getElementById('submit-btn');
-      btn.textContent = 'Submitting…';
-      btn.disabled = true;
-
-      const form = document.getElementById('application-form');
-      const data = Object.fromEntries(new FormData(form));
-      data.timestamp = new Date().toISOString();
-      data.source = 'eric-deng-ultimate.com';
-      data.type = 'application';
-
-      try {
-        if (APPS_SCRIPT_URL) {
-          const params = new URLSearchParams(data);
-          await fetch(APPS_SCRIPT_URL + '?' + params.toString(), {
-            method: 'GET',
-            mode: 'no-cors'
-          });
-        }
-        // Track application submission
-        gtag('event', 'premium_application_submitted', {event_category: 'conversion'});
-        // Show success
-        document.getElementById('modal-header').classList.add('hidden');
-        document.getElementById('step-2').classList.add('hidden');
-        document.getElementById('success-msg').classList.remove('hidden');
-        document.getElementById('modal-box').style.maxHeight = 'none';
-        document.getElementById('modal-box').scrollTop = 0;
-      } catch (err) {
-        btn.textContent = 'Submit Application';
-        btn.disabled = false;
-        alert('Something went wrong. Please try again.');
-      }
-    }
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
   </script>
 
 </body>

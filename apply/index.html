@@ -98,24 +98,34 @@
   <!-- Nav intentionally omitted on this page — single-purpose application
        flow, no navigation away from the qualification funnel. -->
   <!-- Dark/white split: the dark panel's padding-bottom sets exactly where
-       its background ends, 90% of the way down the coaching photo. The
-       image is a later sibling pulled up by that same amount (a standard
+       its background ends, 90% of the way down the Loom video. The video
+       is a later sibling pulled up by that same amount (a standard
        overlapping-card technique — negative margin between siblings, not
        the more fragile "margin collapses through the parent" trick), so it
        lands starting right where the text above it ends and straddles the
        dark/white boundary. The white panel is then pulled up the remaining
-       10% to meet the dark panel's edge exactly, and the image wrapper is
+       10% to meet the dark panel's edge exactly, and the video wrapper is
        `relative z-10` so it still renders above that overlap instead of
        being covered by the white panel's background.
        These offsets are set by JS (syncHeroSplit, near the bottom of the
-       page) rather than hardcoded, because the image's rendered height
-       varies by viewport width (it's capped at 320px but renders shorter
-       on narrow phones) — hardcoding one pixel value made the dark panel
-       overshoot past the image and bleed into the text below on mobile.
+       page) from #hero-image's actual rendered height, rather than
+       hardcoded — on mobile the available width (and therefore the
+       height, since #hero-image is a fixed-aspect-ratio box) is smaller
+       than on desktop, and a single hardcoded split made the dark panel
+       overshoot past the media and bleed into the text below on narrow
+       phones. #hero-image's height comes from a padding-top aspect-ratio
+       box (56.25% = 16:9), so it's known immediately on layout — no need
+       to wait for the iframe to finish loading the way we had to wait for
+       the old photo to decode. Loom's oEmbed API reported this video as
+       4:3, but that produced visible letterboxing around the actual
+       footage, so this is a corrected guess rather than a verified value
+       — if black bars are still visible, the real fix is swapping this
+       percentage for the exact one from Loom's own Share → Embed snippet
+       for this specific video, which we don't have.
        The inline values below are just a same-page fallback in case JS is
        slow to run before first paint; JS corrects them immediately after. -->
   <section class="relative text-center">
-    <div id="hero-dark-panel" class="pt-8 px-6" style="background-color:#1f223c; padding-bottom:288px;">
+    <div id="hero-dark-panel" class="pt-8 px-6" style="background-color:#1f223c; padding-bottom:365px;">
       <div class="max-w-4xl mx-auto">
         <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
           Struggling to make an impact on-field when it matters?
@@ -126,25 +136,27 @@
       </div>
     </div>
 
-    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -288px;">
+    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -365px;">
       <div class="rounded-lg overflow-hidden shadow-xl">
-        <img id="hero-image" src="../Eric%20Coaching%20Head%20Shot.jpg" alt="Eric coaching" class="w-full object-cover object-center" style="max-height: 320px;" />
+        <div id="hero-image" class="relative w-full" style="padding-top: 56.25%;">
+          <iframe src="https://www.loom.com/embed/9879a9ddc7c14afc8ecf340cc89942a2" title="Join Ultimate Academy" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen class="absolute inset-0 w-full h-full"></iframe>
+        </div>
       </div>
     </div>
 
-    <div id="hero-white-panel" class="pt-16 pb-10 px-6" style="margin-top: -32px;">
+    <div id="hero-white-panel" class="pt-16 pb-5 px-6" style="margin-top: -40px;">
       <p class="reveal text-xl text-gray-900 max-w-3xl mx-auto mb-8" style="transition-delay:0.28s">
         An ultimate-specific training program to help you make a bigger on-field impact — built for the busy adult athlete.
       </p>
 
-      <div class="reveal mb-6" style="transition-delay:0.34s">
+      <div class="reveal mb-3" style="transition-delay:0.34s">
         <a href="#qualify" class="block w-full max-w-sm mx-auto bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-xl">I'M READY TO DEVELOP</a>
       </div>
     </div>
   </section>
 
   <!-- ─── TESTIMONIALS ─────────────────────────────────────────────── -->
-  <section class="py-12 px-6">
+  <section class="pt-6 pb-6 px-6">
     <div class="max-w-4xl mx-auto rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat py-10 px-6 sm:px-10" style="background-image: url('Light%20Gray%20Background%20Paper.png');">
       <div class="reveal text-center mb-8">
         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">What people are saying:</h2>
@@ -212,12 +224,18 @@
         </div>
       </div>
 
+      <div class="reveal rounded-xl overflow-hidden shadow-lg mt-10 mb-6">
+        <div class="relative w-full" style="padding-top: 56.25%;">
+          <iframe src="https://www.loom.com/embed/0af277783c9b41ba8497e904bc4ec534" title="Ultimate Academy" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen class="absolute inset-0 w-full h-full"></iframe>
+        </div>
+      </div>
+
       <p class="reveal text-center text-[11px] text-gray-400 italic max-w-md mx-auto leading-relaxed">Individual experiences shown here may not be typical. Results depend on each athlete's background, effort, and consistency — these are shared as examples, not guarantees.</p>
     </div>
   </section>
 
   <!-- ─── WHAT YOU GET ─────────────────────────────────────────────── -->
-  <section class="py-12 px-6">
+  <section class="pt-6 pb-12 px-6">
     <div class="max-w-3xl mx-auto">
       <div class="reveal relative text-center mb-14">
         <img src="black%20paper%20background%20removed.png" alt="" class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" />
@@ -226,7 +244,7 @@
 
       <div class="reveal grid sm:grid-cols-3 gap-8">
         <div class="text-center">
-          <p class="text-xl font-bold text-gray-900 mb-5">#1: "Ultimate-First" Program</p>
+          <p class="text-xl font-bold text-gray-900 mb-5">#1: Ultimate-First Program</p>
           <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
             <img src="462561753_1123204412501185_1127485990382219780_n.jpg" alt="Ultimate-specific strength and conditioning" class="w-full h-40 object-cover" />
           </div>
@@ -234,7 +252,7 @@
         </div>
 
         <div class="text-center">
-          <p class="text-xl font-bold text-gray-900 mb-5">#2: Easy to Track and Get Done</p>
+          <p class="text-xl font-bold text-gray-900 mb-5">#2: Easy to Track and Complete</p>
           <div class="rounded-2xl overflow-hidden shadow-sm mb-5">
             <img src="teambuildr%20demo.png" alt="Track your training week by week on your phone" class="w-full h-40 object-cover" />
           </div>
@@ -339,19 +357,31 @@
               <div class="relative">
                 <select id="qf-q2" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">
                   <option value="" disabled selected>Select</option>
-                  <option value="yes">Yes, I can commit.</option>
-                  <option value="no">No, I can't commit.</option>
+                  <option value="yes">Yes, I can commit</option>
+                  <option value="no">No, I can't commit</option>
                 </select>
                 <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </div>
             </div>
             <div>
-              <label for="qf-q3" class="block text-lg font-medium text-gray-900 mb-2">The program is $200/month. Does that work for you?</label>
+              <label for="qf-q3" class="block text-lg font-medium text-gray-900 mb-2">Are you prepared to financially invest in a structured program?</label>
               <div class="relative">
                 <select id="qf-q3" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">
                   <option value="" disabled selected>Select</option>
-                  <option value="yes">Yes, that works.</option>
-                  <option value="no">No, that does not work.</option>
+                  <option value="yes">Yes, I'm prepared to invest</option>
+                  <option value="no">No, I'm not prepared to invest</option>
+                </select>
+                <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+            </div>
+            <div>
+              <label for="qf-q4" class="block text-lg font-medium text-gray-900 mb-2">How soon are you looking to start?</label>
+              <div class="relative">
+                <select id="qf-q4" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">
+                  <option value="" disabled selected>Select</option>
+                  <option value="immediate">Immediately, within the next 2 weeks</option>
+                  <option value="exploring">Within the next 60 days, still exploring</option>
+                  <option value="no_timeline">No set timeline</option>
                 </select>
                 <svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </div>
@@ -390,7 +420,7 @@
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
           <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
-            <p class="text-xl text-gray-900 leading-relaxed">You'll start with an onboarding call.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">You'll start with a 1:1 strategy call.</p>
             <p class="text-xl text-gray-900 leading-relaxed">We'll meet, discuss your goals, training experience and figure out exactly where you're at right now.</p>
             <p class="text-xl text-gray-900 leading-relaxed">From there, we'll set you up with a custom plan fit to your needs, and walk you through your first 2 weeks in detail.</p>
             <p class="text-xl text-gray-900 leading-relaxed">After that, we'll check in with you and the plan through your first 6 weeks.</p>
@@ -418,9 +448,9 @@
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
           <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
-            <p class="text-xl text-gray-900 leading-relaxed">This program is designed for the <b>busy adult athlete</b> who wants a structured approach to feeling confident, ready and resilient to step on-field.</p>
-            <p class="text-xl text-gray-900 leading-relaxed">If you have an empty calendar and you're chasing a professional sporting career, this is <b>not</b> a fit right now.</p>
-            <p class="text-xl text-gray-900 leading-relaxed">If you are between the ages of 25 and 45, and <b>juggling a full-time life with training, then we can help.</b></p>
+            <p class="text-xl text-gray-900 leading-relaxed">This program is designed for the busy adult athlete who wants a structured approach to feeling confident, ready and resilient to step on-field.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">If you have an empty calendar, or you're chasing a professional sporting career, this is <b>not</b> a fit right now.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">If you're an adult athlete who wants to make a bigger on-field impact, and is juggling a full-time life with training, then chances are we can help.</p>
         
           </div>
         </div>
@@ -432,8 +462,8 @@
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
           <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
-            <p class="text-xl text-gray-900 leading-relaxed">We'll sit down with you during our onboarding call to decide on the approach that suits you best.</p>
-            <p class="text-xl text-gray-900 leading-relaxed">With that said, most of our athletes commit to 2 or 3 strength sessions and 1 field session (on an average week).</p>
+            <p class="text-xl text-gray-900 leading-relaxed">We'll sit down with you during our 1:1 strategy call to decide on the approach that suits you best.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">With that said, most of our athletes commit to 2-3 strength sessions and 1 field session (on an average week).</p>
             <p class="text-xl text-gray-900 leading-relaxed">We work hard to keep the sessions efficient whilst ticking all the boxes.</p>
             <p class="text-xl text-gray-900 leading-relaxed">That way, we can free up time for more things that matter in your life.</p>
           </div>
@@ -446,17 +476,16 @@
             <svg class="faq-icon-close hidden absolute right-6 w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
           <div class="faq-body hidden bg-gray-50 px-6 py-6 mt-2 space-y-3">
-            <p class="text-xl text-gray-900 leading-relaxed">The program is $200/month. This allows us to:</p>
-            <p class="text-xl text-gray-900 leading-relaxed">1. Keep the group quality high (stay motivated alongside a like-minded community working towards similar goals as you). </p>
-            <p class="text-xl text-gray-900 leading-relaxed">2. Give you access to top coaching (so that you can get custom support when you need it).</p>
-            <p class="text-xl text-gray-900 leading-relaxed">If you're not at a point where you can comfortably invest in your growth right now, <b>don't do it.</b></p>
-            <p class="text-xl text-gray-900 leading-relaxed">If you're are, and you're ready for a change, then chances are we can help.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">Our approach is fully custom, so we offer different types of support based on what you need and where you're at in your development journey.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">We'll use the strategy call to see if we can actually help you, and sort you into a program that aligns to your goals.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">If you're still a student or can't comfortably invest in your growth in ultimate right now, then this probably <b>isn't</b> the best fit for you right now.</p>
+            <p class="text-xl text-gray-900 leading-relaxed">If you're willing to invest in your growth, and ready for a change, then chances are we can help.</p>
           </div>
         </div>
 
       </div>
 
-      <div class="reveal text-center mt-14">
+      <div class="reveal text-center mt-7">
         <a href="#qualify" class="block w-full max-w-sm mx-auto bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-xl">I'M READY TO DEVELOP</a>
       </div>
     </div>
@@ -493,12 +522,13 @@
 
   <script>
     // ── Hero dark/white split ────────────────────────────────────
-    // Sets the dark panel's padding-bottom / image's negative top margin /
-    // white panel's negative top margin from the image's ACTUAL rendered
-    // height, rather than the hardcoded values in the markup — the image
-    // is capped at 320px tall but renders shorter on narrow phones, and a
-    // fixed pixel value there made the dark panel overshoot past the image
-    // and bleed into the text below on mobile.
+    // Sets the dark panel's padding-bottom / video's negative top margin /
+    // white panel's negative top margin from #hero-image's ACTUAL rendered
+    // height, rather than the hardcoded values in the markup. #hero-image
+    // is a padding-top aspect-ratio box (16:9), so its height scales with
+    // its width — narrower on mobile than
+    // desktop — and a single hardcoded split made the dark panel overshoot
+    // past the media and bleed into the text below on narrow phones.
     function syncHeroSplit() {
       const img = document.getElementById('hero-image');
       const darkPanel = document.getElementById('hero-dark-panel');
@@ -507,7 +537,7 @@
       if (!img || !darkPanel || !imageWrap || !whitePanel) return;
 
       const h = img.getBoundingClientRect().height;
-      if (!h) return; // image not laid out yet — leave the fallback values in place
+      if (!h) return; // not laid out yet — leave the fallback values in place
 
       const ninetyPercent = h * 0.9;
       const tenPercent = h * 0.1;
@@ -517,16 +547,15 @@
     }
 
     (function () {
-      const heroImage = document.getElementById('hero-image');
-      if (!heroImage) return;
-      if (heroImage.complete) {
-        syncHeroSplit();
-      } else {
-        heroImage.addEventListener('load', syncHeroSplit);
-      }
+      if (!document.getElementById('hero-image')) return;
+      // Unlike the old <img>, #hero-image's height comes from a CSS
+      // padding-top aspect-ratio box, so it's known as soon as the page
+      // lays out — no need to wait for the Loom iframe to finish loading
+      // the way we had to wait for the photo to decode.
+      syncHeroSplit();
       // Re-measure on resize/orientation change (e.g. rotating a phone, or
-      // resizing a desktop window) since the image's rendered height
-      // changes with its width.
+      // resizing a desktop window) since the rendered height changes with
+      // the width.
       let resizeFrame = null;
       window.addEventListener('resize', () => {
         if (resizeFrame) cancelAnimationFrame(resizeFrame);
@@ -725,12 +754,14 @@
       const q1 = document.getElementById('qf-q1').value;
       const q2 = document.getElementById('qf-q2').value;
       const q3 = document.getElementById('qf-q3').value;
+      const q4 = document.getElementById('qf-q4').value;
       answers.q1 = q1;
       if (q1 === 'other') {
         answers.q1Other = document.getElementById('qf-q1-other-text').value.trim();
       }
       answers.q2 = q2;
       answers.q3 = q3;
+      answers.q4 = q4;
       answers.instagram = document.getElementById('qf-instagram').value.trim();
 
       answers.timestamp = new Date().toISOString();

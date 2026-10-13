@@ -134,10 +134,11 @@ function handleQualificationApplication_(p) {
   appendRow_('Qualification Applications',
     ['Timestamp', 'Status', 'Exit Reason', 'First Name', 'Last Name', 'Email', 'Instagram',
      'Q1: Where they mostly play', 'Q1 Other (if specified)',
-     'Q2: Can commit to structured training', 'Q3: Can commit to $200/mo', 'Source'],
+     'Q2: Can commit to structured training', 'Q3: Prepared to invest financially',
+     'Q4: How soon looking to start', 'Source'],
     [p.timestamp, qualified ? 'Qualified' : 'Not qualified', p.exitReason || '',
      p.firstName, p.lastName, p.email, p.instagram || '',
-     p.q1, p.q1Other || '', p.q2, p.q3, p.source]
+     p.q1, p.q1Other || '', p.q2, p.q3, p.q4, p.source]
   );
 
   sendNotifyEmail_(
@@ -153,7 +154,8 @@ function handleQualificationApplication_(p) {
       `Q1 (where they mostly play): ${p.q1 || ''}`,
       p.q1Other ? `Q1 other: ${p.q1Other}` : null,
       `Q2 (structured training commitment): ${p.q2 || ''}`,
-      `Q3 (can commit to $200/mo): ${p.q3 || ''}`,
+      `Q3 (prepared to invest financially): ${p.q3 || ''}`,
+      `Q4 (how soon looking to start): ${p.q4 || ''}`,
       '',
       `Submitted: ${p.timestamp || ''}`
     ].filter(Boolean).join('\n')
