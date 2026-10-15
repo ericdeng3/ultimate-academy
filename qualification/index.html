@@ -561,6 +561,7 @@
 
       return {
         diagnosis: "You said you currently don't have " + gapsList + ", and that you're mostly struggling with your " + skillPhrase + " right now.",
+        fitStatement: "Based on your answers, it looks like we'd be able to help.",
         // Leads with "We'll" (not the more hypothetical "We'd, if you were
         // to...") — states what happens next as the plan, not a maybe.
         process: "We'll kick off with a 1:1 strategy call and actually talk through these roadblocks in your game right now, then build a custom plan - around your schedule - to solve your biggest problem inside your first 30 days.",
@@ -582,7 +583,8 @@
           '</div>' +
           '<p class="text-2xl font-extrabold text-gray-900 mb-5">' + escapeHtml(o.heading) + '</p>' +
           '<div class="text-left max-w-sm mx-auto">' +
-          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.diagnosis) + '</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-4">' + escapeHtml(msg.diagnosis) + '</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.fitStatement) + '</p>' +
           '<p class="text-xs font-semibold text-brand uppercase tracking-widest mb-2">What it looks like to start</p>' +
           '<p class="text-base text-gray-900 leading-relaxed mb-4">' + escapeHtml(msg.process) + '</p>' +
           '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.support) + '</p>' +
