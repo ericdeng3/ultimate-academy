@@ -196,7 +196,7 @@ function handleCoachingFitApplication_(p) {
   appendRow_('Coaching Fit Applications',
     ['Timestamp', 'Status', 'Exit Reason', 'First Name', 'Instagram',
      'Where They Mostly Play', 'Struggling With', 'Training Gaps', 'Primary Skill', 'Scenario',
-     'Ready To Invest?', 'Timeline', 'Need (1-10)', 'Source'],
+     'Ready To Invest?', 'Timeline', 'Need', 'Source'],
     [p.timestamp, qualified ? 'Qualified' : 'Not qualified', p.exitReason || '',
      p.firstName, p.instagram || '',
      p.playLocation, p.struggles, p.gaps, p.primarySkill, p.scenario,
@@ -219,7 +219,7 @@ function handleCoachingFitApplication_(p) {
       `Scenario: ${p.scenario || ''}`,
       `Ready to invest? ${p.budget || ''}`,
       `Timeline: ${p.timeline || ''}`,
-      `Need (1-10): ${p.need || ''}`,
+      `Need: ${p.need || ''}`,
       '',
       `Submitted: ${p.timestamp || ''}`
     ].filter(Boolean).join('\n')

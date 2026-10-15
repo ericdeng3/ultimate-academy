@@ -154,7 +154,7 @@
       },
       contact: {
         heading: 'First, who are we talking to?',
-        sub: "In case we need to reach you with any questions.",
+        sub: "So we know who we're talking to.",
         button: 'Next →',
       },
       outcomeQualified: {
@@ -168,8 +168,8 @@
       },
 
       // Linear step sequence. 'multi' = select any number, explicit Next.
-      // 'single' = tap-to-select, auto-advances. 'scale10' = 1-10 tap row,
-      // auto-advances.
+      // 'single' = tap-to-select, auto-advances. 'text' = free-text input,
+      // explicit Next (disabled until non-empty).
       steps: [
         {
           id: 'playLocation', type: 'single', required: true,
@@ -238,31 +238,45 @@
           ],
         },
         {
-          id: 'need', type: 'scale10', required: true,
-          text: 'Out of 10, how important is it to solve this for your game in the next 90 days?',
+          id: 'need', type: 'single', required: true,
+          text: 'How important is it to solve this for your game in the next 90 days?',
+          options: [
+            { key: 'very_important', label: 'Very important' },
+            { key: 'important', label: 'Important' },
+            { key: 'somewhat_important', label: 'Somewhat important' },
+            { key: 'not_important', label: 'Not important' },
+          ],
+        },
+        {
+          id: 'instagram', type: 'text', required: true,
+          text: "Last thing — what's your Instagram handle?",
+          sub: 'So we can reach you about your results and any questions.',
+          placeholder: '@yourhandle',
         },
       ],
     };
 
     // ── Qualification rule ───────────────────────────────────────────
     // No budget → automatic disqualify, full stop, regardless of anything
-    // else. Otherwise, qualify only if their need score clears the bar for
-    // their scenario — working has a lower bar (6+) than studying (8+),
-    // since working is taken as a (rough) proxy for steadier capacity to
-    // commit. "Something else" wasn't covered in the brief — defaulted to
-    // the stricter 8+ bar (same as studying) as the safer assumption until
-    // told otherwise; flagged as a judgment call.
-    // timeline is still asked and still recorded, but no longer part of
-    // the qualify/disqualify decision — this replaces the previous
+    // else. Otherwise, qualify only if their need level clears the bar for
+    // their scenario — working has a lower bar (Somewhat important+) than
+    // studying (Important+), since working is taken as a (rough) proxy for
+    // steadier capacity to commit. "Something else" wasn't covered in the
+    // brief — defaulted to the stricter Important+ bar (same as studying)
+    // as the safer assumption until told otherwise; flagged as a judgment
+    // call. timeline is still asked and still recorded, but no longer part
+    // of the qualify/disqualify decision — this replaces the previous
     // budget+timeline+need rule entirely.
-    const SCENARIO_NEED_THRESHOLD = { working: 6, studying: 8, other: 8 };
+    const NEED_LEVEL = { not_important: 0, somewhat_important: 1, important: 2, very_important: 3 };
+    const SCENARIO_NEED_THRESHOLD = { working: 1, studying: 2, other: 2 };
 
     function computeQualified(answers) {
       if (answers.budget === 'no') {
         return { qualified: false, exitReason: 'budget' };
       }
+      const needLevel = NEED_LEVEL[answers.need];
       const threshold = SCENARIO_NEED_THRESHOLD[answers.scenario];
-      const needMet = (answers.need || 0) >= threshold;
+      const needMet = (needLevel !== undefined ? needLevel : -1) >= threshold;
       return { qualified: needMet, exitReason: needMet ? '' : 'need' };
     }
 
@@ -272,7 +286,7 @@
 
     let state = {};
     function resetState() {
-      state = { screen: 'intro', stepIndex: 0, answers: { struggles: [], gaps: [] }, firstName: '', instagram: '' };
+      state = { screen: 'intro', stepIndex: 0, answers: { struggles: [], gaps: [] }, firstName: '' };
     }
     resetState();
 
@@ -305,7 +319,9 @@
     function progressHtml(stepNumber) {
       const totalSteps = QUAL.steps.length;
       const pct = Math.round((stepNumber / totalSteps) * 100);
-      return '<div class="progress-track mb-5"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+      return '' +
+        '<div class="flex justify-end mb-1.5"><span class="text-xs font-semibold text-gray-400">' + pct + '% complete</span></div>' +
+        '<div class="progress-track mb-5"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
     }
 
     function backButtonHtml() {
@@ -351,7 +367,6 @@
         '<p class="text-sm text-gray-500 mb-5">' + escapeHtml(QUAL.contact.sub) + '</p>' +
         '<form id="contact-form" class="space-y-3" novalidate>' +
         '<input type="text" id="first-name" required placeholder="First name" value="' + escapeHtml(state.firstName) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
-        '<input type="text" id="instagram" placeholder="Instagram handle (optional)" value="' + escapeHtml(state.instagram) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
         '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">' + QUAL.contact.button + '</button>' +
         '</form>'
       );
@@ -361,23 +376,21 @@
           render();
         });
         const firstInput = document.getElementById('first-name');
-        const instagramInput = document.getElementById('instagram');
         document.getElementById('contact-form').addEventListener('submit', e => {
           e.preventDefault();
           if (!e.target.reportValidity()) return;
           state.firstName = firstInput.value.trim();
-          state.instagram = instagramInput.value.trim();
 
           // Capture a partial lead here, same "capture on contact, full
           // record at the end" pattern used on apply/index.html and
           // skill-assessment-tool — so they're on record even if they
-          // don't finish the questions.
+          // don't finish the questions. Instagram isn't known yet — it's
+          // now the last question, to incentivize finishing the flow.
           submitQualData({
             type: 'coaching_fit_lead',
             timestamp: new Date().toISOString(),
             source: 'eric-deng-ultimate.com/qualification',
             firstName: state.firstName,
-            instagram: state.instagram,
           });
 
           state.screen = 'step';
@@ -407,13 +420,12 @@
           }).join('') +
           '</div>' +
           '<button type="button" id="multi-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm disabled:opacity-40 disabled:cursor-not-allowed" ' + (selected.length > 0 ? '' : 'disabled') + '>Next →</button>';
-      } else if (step.type === 'scale10') {
-        const val = saved || 5;
+      } else if (step.type === 'text') {
+        const val = saved || '';
         bodyHtml =
-          '<div class="text-center mb-4"><span id="scale-value" class="text-5xl font-extrabold text-brand">' + val + '</span></div>' +
-          '<input type="range" id="scale-slider" min="1" max="10" step="1" value="' + val + '" class="w-full" style="accent-color:#E05C2A; height: 8px;" />' +
-          '<div class="flex justify-between text-xs text-gray-400 mt-2 px-1"><span>Not important</span><span>Critical</span></div>' +
-          '<button type="button" id="scale-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-6">Next →</button>';
+          (step.sub ? '<p class="text-sm text-gray-400 mb-3">' + escapeHtml(step.sub) + '</p>' : '') +
+          '<input type="text" id="step-text-input" placeholder="' + escapeHtml(step.placeholder || '') + '" value="' + escapeHtml(val) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition mb-4" />' +
+          '<button type="button" id="text-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm disabled:opacity-40 disabled:cursor-not-allowed" ' + (val.trim() ? '' : 'disabled') + '>Next →</button>';
       } else {
         // 'single'
         bodyHtml =
@@ -458,16 +470,15 @@
         return;
       }
 
-      if (step.type === 'scale10') {
-        const slider = document.getElementById('scale-slider');
-        const valueLabel = document.getElementById('scale-value');
-        state.answers[step.id] = parseInt(slider.value, 10);
-        slider.addEventListener('input', () => {
-          const val = parseInt(slider.value, 10);
-          state.answers[step.id] = val;
-          valueLabel.textContent = val;
+      if (step.type === 'text') {
+        const input = document.getElementById('step-text-input');
+        const nextBtn = document.getElementById('text-next-btn');
+        input.addEventListener('input', () => {
+          state.answers[step.id] = input.value.trim();
+          nextBtn.disabled = input.value.trim().length === 0;
         });
-        document.getElementById('scale-next-btn').addEventListener('click', () => goNextStep());
+        nextBtn.addEventListener('click', () => goNextStep());
+        input.focus();
         return;
       }
 
@@ -507,6 +518,19 @@
       }
     }
 
+    // Looks up the full option label for a raw answer key (e.g. 'pickups'
+    // → 'Pick ups'), so the Sheet/email get readable answers instead of
+    // internal codes. Falls back to the raw key for step types with no
+    // `options` (like the 'text' instagram step).
+    function stepLabel(stepId, key) {
+      const step = QUAL.steps.find(s => s.id === stepId);
+      const opt = step && step.options && step.options.find(o => o.key === key);
+      return opt ? opt.label : (key || '');
+    }
+    function stepLabels(stepId, keys) {
+      return (keys || []).map(k => stepLabel(stepId, k)).join(', ');
+    }
+
     function finishAndShowOutcome() {
       const result = computeQualified(state.answers);
       state.result = result;
@@ -516,15 +540,15 @@
         timestamp: new Date().toISOString(),
         source: 'eric-deng-ultimate.com/qualification',
         firstName: state.firstName,
-        instagram: state.instagram,
-        playLocation: state.answers.playLocation,
-        struggles: state.answers.struggles.join(', '),
-        gaps: state.answers.gaps.join(', '),
-        primarySkill: state.answers.primarySkill,
-        scenario: state.answers.scenario,
-        budget: state.answers.budget,
-        timeline: state.answers.timeline,
-        need: state.answers.need,
+        instagram: state.answers.instagram,
+        playLocation: stepLabel('playLocation', state.answers.playLocation),
+        struggles: stepLabels('struggles', state.answers.struggles),
+        gaps: stepLabels('gaps', state.answers.gaps),
+        primarySkill: stepLabel('primarySkill', state.answers.primarySkill),
+        scenario: stepLabel('scenario', state.answers.scenario),
+        budget: stepLabel('budget', state.answers.budget),
+        timeline: stepLabel('timeline', state.answers.timeline),
+        need: stepLabel('need', state.answers.need),
         qualified: String(result.qualified),
         exitReason: result.exitReason,
       };
@@ -639,32 +663,32 @@
         ok ? pass++ : fail++;
       }
 
-      check('no budget + working + need 10 → still disqualified (budget is an unconditional hard gate)',
-        computeQualified({ budget: 'no', scenario: 'working', need: 10 }).qualified, false);
+      check('no budget + working + need very_important → still disqualified (budget is an unconditional hard gate)',
+        computeQualified({ budget: 'no', scenario: 'working', need: 'very_important' }).qualified, false);
 
-      check('working + budget + need 6 → qualified (meets the working threshold exactly)',
-        computeQualified({ budget: 'yes', scenario: 'working', need: 6 }).qualified, true);
+      check('working + budget + need somewhat_important → qualified (meets the working threshold exactly)',
+        computeQualified({ budget: 'yes', scenario: 'working', need: 'somewhat_important' }).qualified, true);
 
-      check('working + budget + need 5 → disqualified (one below the working threshold)',
-        computeQualified({ budget: 'yes', scenario: 'working', need: 5 }).qualified, false);
+      check('working + budget + need not_important → disqualified (one below the working threshold)',
+        computeQualified({ budget: 'yes', scenario: 'working', need: 'not_important' }).qualified, false);
 
-      check('studying + budget + need 8 → qualified (meets the studying threshold exactly)',
-        computeQualified({ budget: 'yes', scenario: 'studying', need: 8 }).qualified, true);
+      check('studying + budget + need important → qualified (meets the studying threshold exactly)',
+        computeQualified({ budget: 'yes', scenario: 'studying', need: 'important' }).qualified, true);
 
-      check('studying + budget + need 7 → disqualified (one below the studying threshold, even though 7 would pass for "working")',
-        computeQualified({ budget: 'yes', scenario: 'studying', need: 7 }).qualified, false);
+      check('studying + budget + need somewhat_important → disqualified (one below the studying threshold, even though it would pass for "working")',
+        computeQualified({ budget: 'yes', scenario: 'studying', need: 'somewhat_important' }).qualified, false);
 
-      check('"something else" + budget + need 8 → qualified (defaulted to the stricter studying-level bar)',
-        computeQualified({ budget: 'yes', scenario: 'other', need: 8 }).qualified, true);
+      check('"something else" + budget + need important → qualified (defaulted to the stricter studying-level bar)',
+        computeQualified({ budget: 'yes', scenario: 'other', need: 'important' }).qualified, true);
 
-      check('"something else" + budget + need 7 → disqualified (below the defaulted bar)',
-        computeQualified({ budget: 'yes', scenario: 'other', need: 7 }).qualified, false);
+      check('"something else" + budget + need somewhat_important → disqualified (below the defaulted bar)',
+        computeQualified({ budget: 'yes', scenario: 'other', need: 'somewhat_important' }).qualified, false);
 
       check('exitReason is "budget" when budget is the disqualifier',
-        computeQualified({ budget: 'no', scenario: 'working', need: 10 }).exitReason, 'budget');
+        computeQualified({ budget: 'no', scenario: 'working', need: 'very_important' }).exitReason, 'budget');
 
       check('exitReason is "need" when the scenario threshold isn\'t met',
-        computeQualified({ budget: 'yes', scenario: 'studying', need: 3 }).exitReason, 'need');
+        computeQualified({ budget: 'yes', scenario: 'studying', need: 'not_important' }).exitReason, 'need');
 
       console.log(pass + ' passed, ' + fail + ' failed.');
       return { pass, fail };

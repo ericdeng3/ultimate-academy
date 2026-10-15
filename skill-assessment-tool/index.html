@@ -81,21 +81,48 @@
     }
     .opt-btn:disabled { cursor: default; }
 
-    .num-btn {
+    /* Multi-select variant, used by the embedded fit-check widget — same
+       look, but with a checkbox indicator since more than one can be
+       chosen and it doesn't auto-advance. */
+    .opt-btn-multi {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      text-align: left;
       border: 2px solid #E5E7EB;
       background: #F9FAFB;
       border-radius: 0.75rem;
-      font-weight: 700;
+      padding: 1rem 1.25rem;
       font-size: 1.0625rem;
+      font-weight: 500;
       color: #1F2937;
-      min-height: 48px;
       transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+      min-height: 56px;
     }
-    .num-btn.selected {
+    .opt-btn-multi.selected {
+      border-color: #E05C2A;
+      background: #FFF0EA;
+      color: #C44E20;
+      font-weight: 700;
+    }
+    .opt-check {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid #D1D5DB;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .opt-btn-multi.selected .opt-check {
       border-color: #E05C2A;
       background: #E05C2A;
-      color: #fff;
     }
+    .opt-check svg { opacity: 0; width: 14px; height: 14px; }
+    .opt-btn-multi.selected .opt-check svg { opacity: 1; }
 
     .progress-track { background: #F3F4F6; border-radius: 9999px; height: 6px; overflow: hidden; }
     .progress-fill { background: #E05C2A; height: 100%; transition: width 0.25s ease; }
@@ -108,12 +135,12 @@
 
   <!-- ─── TOP BAR ──────────────────────────────────────────────────── -->
   <div class="sticky top-0 z-50 flex items-center justify-center py-4 px-4 bg-[#232321]">
-    <a href="../index.html" class="inline-flex items-center gap-2.5 bg-white rounded-lg px-5 py-2.5 hover:bg-gray-50 transition-colors">
+    <a href="#" id="top-bar-restart" class="inline-flex items-center gap-2.5 bg-white rounded-lg px-5 py-2.5 hover:bg-gray-50 transition-colors">
       <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
       </span>
-      <span class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-wide">Free Skill Assessment Tool</span>
+      <span class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-wide">Start Your Free Skill Assessment</span>
     </a>
   </div>
 
@@ -137,9 +164,9 @@
     const ASSESSMENT = {
 
       intro: {
-        heading: 'Find your biggest training gaps.',
-        sub: "Answer 32 quick questions about your goal, your training and your game. Get a personalised report in about 5 minutes. Free, no sign-up.",
-        button: 'START THE ASSESSMENT',
+        heading: 'Identify your biggest gaps in ultimate, and get a custom report to fix it in 5 minutes.',
+        sub: "Answer a few questions about your goals, your training and your game. Get a personalised report in 5 minutes for free. No sign-up required.",
+        button: 'START THE ASSESSMENT →',
       },
 
       nameScreen: {
@@ -188,11 +215,11 @@
       },
 
       scale5: [
-        { label: 'Not true', value: 0 },
-        { label: 'Rarely true', value: 1 },
-        { label: 'Sometimes true', value: 2 },
-        { label: 'Mostly true', value: 3 },
-        { label: 'Always true', value: 4 },
+        { label: 'Strongly disagree', value: 0 },
+        { label: 'Disagree', value: 1 },
+        { label: 'Neither agree nor disagree', value: 2 },
+        { label: 'Agree', value: 3 },
+        { label: 'Strongly agree', value: 4 },
       ],
 
       // ── Part 1: Goal (unscored) ──────────────────────────────────
@@ -208,7 +235,7 @@
         },
         {
           id: 'P3', part: 1, partLabel: 'Goal', type: 'choice', required: true,
-          text: 'When do you need to be ready?',
+          text: 'When would you like to have achieved this goal by?',
           options: [
             { label: 'Within 3 months', value: 'lt3' },
             { label: '3–6 months', value: '3to6' },
@@ -227,12 +254,12 @@
         },
         {
           id: 'P5', part: 1, partLabel: 'Goal', type: 'choice', required: true,
-          text: 'What level do you play at now?',
+          text: 'What best describes where you usually play ultimate?',
           options: [
-            { label: 'Social/league', value: 'social' },
-            { label: 'Club Div 2', value: 'div2' },
-            { label: 'Club Div 1', value: 'div1' },
-            { label: 'National/elite', value: 'elite' },
+            { label: 'Pick ups', value: 'pickups' },
+            { label: 'Leagues', value: 'leagues' },
+            { label: 'Club trainings/tournaments', value: 'club' },
+            { label: 'A mix', value: 'mix' },
           ],
         },
       ],
@@ -288,7 +315,7 @@
         },
         {
           id: 'TA4', part: 2, partLabel: 'Training audit', type: 'choice', category: 'athleticism',
-          text: 'How often do you do high-speed running on purpose (sprinting at 90%+ of your max)?',
+          text: 'How often do you train your high-speed running (sprinting at 90%+ of your max)?',
           standardLabel: 'High-speed running 2x a week', metIndexes: [3],
           // Personalised to playing load: low-frequency players need 2x/week
           // of dedicated top-speed work, higher-frequency players need 1x —
@@ -312,7 +339,7 @@
           standardLabel: 'Repeat-sprint conditioning 2x a week', metIndexes: [3],
           options: [
             { label: 'Rarely or never', value: 0 },
-            { label: 'Less than weekly', value: 1 },
+            { label: 'Once a fortnight', value: 1 },
             { label: 'Once a week', value: 2 },
             { label: 'Twice a week or more', value: 4 },
           ],
@@ -337,47 +364,68 @@
           },
           options: [
             { label: 'Rarely or never', value: 0 },
-            { label: 'Less than weekly', value: 1 },
+            { label: 'Once a fortnight', value: 1 },
             { label: 'Once a week', value: 2 },
             { label: 'Twice a week or more', value: 4 },
           ],
         },
         {
+          // Split into two questions (frequency + structure) rather than one
+          // combined question — same underlying signal as before (doing it
+          // regularly AND with real structure is what counts as fully
+          // "met"), but asked as two separate, simpler questions. TA7Structure
+          // is unscored (no standardLabel/category) — it only gates TA7's
+          // tier, the same role PF plays for TA4/TA6.
           id: 'TA7', part: 2, partLabel: 'Training audit', type: 'choice', category: 'skill',
-          // Not just a frequency check — the real gap is usually not doing
-          // it at ALL weekly, it's doing it self-directed with no plan. The
-          // top tier requires structure; self-directed-but-weekly lands
-          // yellow (a decent starting point) rather than being lumped in
-          // with "rarely or never".
-          text: 'How do you practise throwing outside team training?',
-          standardLabel: 'Structured throwing practice, weekly', metIndexes: [3],
+          text: 'How often do you work on your throws outside of team training?',
+          standardLabel: 'Structured throwing practice, weekly',
+          dynamicTier: answers => computeStructuredPracticeTier(answers['TA7'], answers['TA7Structure']),
+          dynamicUserLabel: answers => combineFreqStructureLabel(answers['TA7'], answers['TA7Structure']),
           options: [
             { label: 'Rarely or never', value: 0 },
-            { label: 'Self-directed, less than weekly', value: 1 },
-            { label: 'Self-directed, at least weekly', value: 2 },
-            { label: 'Structured (specific drills or a coached plan), at least weekly', value: 4 },
+            { label: 'Once a fortnight', value: 1 },
+            { label: 'Once a week', value: 2 },
+            { label: 'Twice a week or more', value: 4 },
+          ],
+        },
+        {
+          id: 'TA7Structure', part: 2, partLabel: 'Training audit', type: 'choice',
+          text: 'How structured is your throwing training?',
+          options: [
+            { label: 'Self-directed — I come up with it myself', value: 0 },
+            { label: 'Structured — specific drills or a coached plan', value: 1 },
           ],
         },
         {
           id: 'TA8', part: 2, partLabel: 'Training audit', type: 'choice', category: 'skill',
-          text: 'How do you train cutting or defensive footwork on its own?',
-          standardLabel: 'Structured footwork training, weekly', metIndexes: [3],
+          text: 'How often do you work on cutting or defensive footwork outside team training?',
+          standardLabel: 'Structured footwork training, weekly',
+          dynamicTier: answers => computeStructuredPracticeTier(answers['TA8'], answers['TA8Structure']),
+          dynamicUserLabel: answers => combineFreqStructureLabel(answers['TA8'], answers['TA8Structure']),
           options: [
             { label: 'Rarely or never', value: 0 },
-            { label: 'Self-directed, less than weekly', value: 1 },
-            { label: 'Self-directed, at least weekly', value: 2 },
-            { label: 'Structured (specific drills or a coached plan), at least weekly', value: 4 },
+            { label: 'Once a fortnight', value: 1 },
+            { label: 'Once a week', value: 2 },
+            { label: 'Twice a week or more', value: 4 },
+          ],
+        },
+        {
+          id: 'TA8Structure', part: 2, partLabel: 'Training audit', type: 'choice',
+          text: 'How structured is your cutting/footwork training?',
+          options: [
+            { label: 'Self-directed — I come up with it myself', value: 0 },
+            { label: 'Structured — specific drills or a coached plan', value: 1 },
           ],
         },
         {
           id: 'TA9', part: 2, partLabel: 'Training audit', type: 'choice', category: 'gameiq',
-          text: 'How often do you review footage of your own games?',
+          text: 'How often do you review footage of your own skills or gameplay?',
           standardLabel: 'Regular footage review', metIndexes: [3],
           options: [
-            { label: 'Never', value: 0 },
-            { label: 'Once or twice a season', value: 1 },
+            { label: 'Rarely or never', value: 0 },
+            { label: 'A few times a season', value: 1 },
             { label: 'Monthly', value: 2 },
-            { label: 'After most tournaments', value: 4 },
+            { label: 'Every 1-2 weeks', value: 4 },
           ],
         },
         {
@@ -385,10 +433,10 @@
           text: 'How often do you get expert feedback on your skills and movement?',
           standardLabel: 'Regular expert feedback', metIndexes: [3],
           options: [
-            { label: 'Never', value: 0 },
-            { label: 'Once or twice a year', value: 1 },
-            { label: 'A few times a season', value: 2 },
-            { label: 'At least monthly', value: 4 },
+            { label: 'Rarely or never', value: 0 },
+            { label: 'A few times a season', value: 1 },
+            { label: 'Monthly', value: 2 },
+            { label: 'Every 1-2 weeks', value: 4 },
           ],
         },
         {
@@ -401,7 +449,7 @@
             { label: "I don't get feedback", value: 0 },
             { label: 'General tips', value: 1 },
             { label: 'A rough idea of what to work on', value: 2 },
-            { label: 'A specific plan and someone checking in', value: 4 },
+            { label: 'A structured plan with clear steps to improve', value: 4 },
           ],
         },
         {
@@ -421,10 +469,10 @@
         },
         {
           id: 'TA13', part: 2, partLabel: 'Training audit', type: 'choice', category: 'structure',
-          text: 'Does your training change across the year (off-season, pre-season, in-season, peaking for tryouts)?',
+          text: 'Does your training plan change with your needs during the calendar year?',
           standardLabel: 'Training that progresses with you through the year', metIndexes: [2],
           options: [
-            { label: "No, it's the same all year", value: 0 },
+            { label: "No, don't have that planned", value: 0 },
             { label: 'Somewhat, but not planned', value: 2 },
             { label: 'Yes, planned around my calendar', value: 4 },
           ],
@@ -516,16 +564,40 @@
       return 'red';
     }
 
+    // Two-axis version of the same idea, for TA7/TA8 (throwing/footwork
+    // practice), which got split into a frequency question and a separate
+    // structure question: green needs BOTH weekly+ frequency AND real
+    // structure; either one alone is a yellow starting point; neither is red.
+    function computeStructuredPracticeTier(freqAns, structureAns) {
+      if (!freqAns || !structureAns) return 'red';
+      const structured = structureAns.index === 1;
+      const weeklyPlus = freqAns.index >= 2;
+      if (structured && weeklyPlus) return 'green';
+      if (structured || weeklyPlus) return 'yellow';
+      return 'red';
+    }
+
+    function combineFreqStructureLabel(freqAns, structureAns) {
+      if (!freqAns || !structureAns) return '—';
+      return freqAns.label + ' · ' + structureAns.label;
+    }
+
     function computeStandards(answers) {
       const playFreq = answers['PF'] ? answers['PF'].value : 0;
       return ASSESSMENT.part2
-        .filter(q => q.standardLabel) // PF itself isn't a standard
+        .filter(q => q.standardLabel) // PF, TA7Structure, TA8Structure aren't standards of their own
         .map(q => {
           const ans = answers[q.id];
-          const minMetIndex = q.dynamicMinMetIndex ? q.dynamicMinMetIndex(playFreq) : Math.min.apply(null, q.metIndexes);
-          const tier = ans ? tierFromIndex(ans.index, minMetIndex) : 'red';
+          let tier;
+          if (q.dynamicTier) {
+            tier = q.dynamicTier(answers);
+          } else {
+            const minMetIndex = q.dynamicMinMetIndex ? q.dynamicMinMetIndex(playFreq) : Math.min.apply(null, q.metIndexes);
+            tier = ans ? tierFromIndex(ans.index, minMetIndex) : 'red';
+          }
           const label = q.dynamicLabel ? q.dynamicLabel(playFreq) : q.standardLabel;
-          return { id: q.id, label: label, tier: tier, met: tier === 'green', userLabel: ans ? ans.label : '—' };
+          const userLabel = q.dynamicUserLabel ? q.dynamicUserLabel(answers) : (ans ? ans.label : '—');
+          return { id: q.id, label: label, tier: tier, met: tier === 'green', userLabel: userLabel };
         });
     }
 
@@ -711,6 +783,7 @@
       const totalSteps = allQuestions.length + 1;
       const pct = Math.round((stepNumber / totalSteps) * 100);
       return '' +
+        '<div class="flex justify-end mb-1.5"><span class="text-xs font-semibold text-gray-400">' + pct + '% complete</span></div>' +
         '<div class="progress-track mb-5"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
     }
 
@@ -752,7 +825,10 @@
       const html = cardWrap(
         '<div class="text-center">' +
         '<h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight mb-3">' + escapeHtml(ASSESSMENT.intro.heading) + '</h1>' +
-        '<p class="text-base text-gray-500 leading-relaxed mb-7">' + escapeHtml(ASSESSMENT.intro.sub) + '</p>' +
+        '<p class="text-base text-gray-500 leading-relaxed mb-5">' + escapeHtml(ASSESSMENT.intro.sub) + '</p>' +
+        '<div class="rounded-2xl overflow-hidden shadow-sm mb-5">' +
+        '<img src="NSU%20summer%20league%20finals%20199.jpg" alt="NSU Summer League Finals" class="w-full h-56 object-cover" />' +
+        '</div>' +
         '<button type="button" id="start-btn" class="w-full bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-lg">' + ASSESSMENT.intro.button + '</button>' +
         '</div>'
       );
@@ -778,20 +854,26 @@
           '<button type="submit" id="q-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm disabled:opacity-40 disabled:cursor-not-allowed" ' + (saved && saved.value ? '' : 'disabled') + '>Next →</button>' +
           '</form>';
       } else if (q.type === 'scale10') {
-        const nums = [1,2,3,4,5,6,7,8,9,10];
+        const val = (saved && saved.value) || 5;
         bodyHtml =
-          '<div class="grid grid-cols-5 gap-2" id="opts">' +
-          nums.map(n => '<button type="button" class="num-btn' + (saved && saved.value === n ? ' selected' : '') + '" data-val="' + n + '">' + n + '</button>').join('') +
-          '</div>' +
-          '<div class="flex justify-between text-xs text-gray-400 mt-2 px-1"><span>Not important</span><span>Critical</span></div>';
+          '<div class="text-center mb-4"><span id="scale-value" class="text-5xl font-extrabold text-brand">' + val + '</span></div>' +
+          '<input type="range" id="scale-slider" min="1" max="10" step="1" value="' + val + '" class="w-full" style="accent-color:#E05C2A; height: 8px;" />' +
+          '<div class="flex justify-between text-xs text-gray-400 mt-2 px-1"><span>Not important</span><span>Critical</span></div>' +
+          '<button type="button" id="scale-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-6">Next →</button>';
+      } else if (q.type === 'scale5') {
+        const idx = (saved && typeof saved.index === 'number') ? saved.index : 2;
+        const opt = ASSESSMENT.scale5[idx];
+        bodyHtml =
+          '<p class="text-sm text-gray-400 mb-3">How much do you agree with this statement?</p>' +
+          '<div class="text-center mb-4"><span id="scale5-value" class="text-2xl font-extrabold text-brand">' + escapeHtml(opt.label) + '</span></div>' +
+          '<input type="range" id="scale5-slider" min="0" max="4" step="1" value="' + idx + '" class="w-full" style="accent-color:#E05C2A; height: 8px;" />' +
+          '<div class="flex justify-between text-xs text-gray-400 mt-2 px-1"><span>Disagree</span><span>Agree</span></div>' +
+          '<button type="button" id="scale5-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-6">Next →</button>';
       } else {
-        // 'choice' (unscored P3–P5, or scored TA) and 'scale5' (YG) share
-        // the same big-stacked-button rendering.
-        const options = q.type === 'scale5' ? ASSESSMENT.scale5 : q.options;
+        // 'choice' (unscored P3–P5, or scored TA)
         bodyHtml =
-          (q.type === 'scale5' ? '<p class="text-sm text-gray-400 mb-3">How true is this for you?</p>' : '') +
           '<div class="space-y-2.5" id="opts">' +
-          options.map((opt, idx) => {
+          q.options.map((opt, idx) => {
             const isSelected = saved && saved.index === idx;
             return '<button type="button" class="opt-btn' + (isSelected ? ' selected' : '') + '" data-idx="' + idx + '">' + escapeHtml(opt.label) + '</button>';
           }).join('') +
@@ -831,29 +913,42 @@
         return;
       }
 
-      const optsContainer = document.getElementById('opts');
-      const buttons = optsContainer.querySelectorAll('button');
-
       if (q.type === 'scale10') {
-        buttons.forEach(btn => {
-          btn.addEventListener('click', () => {
-            const val = parseInt(btn.getAttribute('data-val'), 10);
-            buttons.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            state.answers[q.id] = { value: val };
-            buttons.forEach(b => b.disabled = true);
-            setTimeout(() => { buttons.forEach(b => b.disabled = false); goNext(); }, 250);
-          });
+        const slider = document.getElementById('scale-slider');
+        const valueLabel = document.getElementById('scale-value');
+        state.answers[q.id] = { value: parseInt(slider.value, 10) };
+        slider.addEventListener('input', () => {
+          const val = parseInt(slider.value, 10);
+          state.answers[q.id] = { value: val };
+          valueLabel.textContent = val;
         });
+        document.getElementById('scale-next-btn').addEventListener('click', () => goNext());
         return;
       }
 
-      // 'choice' / 'scale5'
-      const options = q.type === 'scale5' ? ASSESSMENT.scale5 : q.options;
+      if (q.type === 'scale5') {
+        const slider = document.getElementById('scale5-slider');
+        const valueLabel = document.getElementById('scale5-value');
+        const setAnswerFromSlider = () => {
+          const idx = parseInt(slider.value, 10);
+          const opt = ASSESSMENT.scale5[idx];
+          state.answers[q.id] = { index: idx, value: opt.value, label: opt.label };
+          valueLabel.textContent = opt.label;
+        };
+        setAnswerFromSlider();
+        slider.addEventListener('input', setAnswerFromSlider);
+        document.getElementById('scale5-next-btn').addEventListener('click', () => goNext());
+        return;
+      }
+
+      const optsContainer = document.getElementById('opts');
+      const buttons = optsContainer.querySelectorAll('button');
+
+      // 'choice'
       buttons.forEach(btn => {
         btn.addEventListener('click', () => {
           const idx = parseInt(btn.getAttribute('data-idx'), 10);
-          const opt = options[idx];
+          const opt = q.options[idx];
           buttons.forEach(b => b.classList.remove('selected'));
           btn.classList.add('selected');
           state.answers[q.id] = { index: idx, value: opt.value, label: opt.label };
@@ -1004,194 +1099,37 @@
 
         '<button type="button" id="download-pdf-btn" class="w-full bg-white text-brand font-bold py-4 rounded-xl border-2 border-brand hover:bg-brand-light transition-colors text-base mb-5">DOWNLOAD MY REPORT (PDF)</button>' +
 
-        '<div class="bg-[#1f223c] rounded-2xl p-6 text-center">' +
-        '<p class="text-white text-base leading-relaxed mb-4">Based on what you\'ve shared, you could be a strong fit for one of our structured programs. Find out more below.</p>' +
-        '<a href="#qf-section" class="block w-full bg-brand text-white font-extrabold px-6 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm">SEE IF YOU\'RE A FIT ↓</a>' +
-        '</div>'
+        fitCheckSectionHtml()
       );
-
-      // ── "See if you're a fit" — ported from apply/index.html's
-      // qualification flow, same markup/IDs/logic, with two differences:
-      // (1) only 2 "what happens next" steps shown here (no "Get Onboarded"
-      // — that's a step on the apply page's own funnel, not relevant to a
-      // lead-magnet result), (2) first name is prefilled from the quiz's
-      // own name screen. This is a separate card below the results card,
-      // not nested inside it. The dark CTA box above now scrolls straight
-      // down into it (#qf-section) instead of linking out to /apply/ —
-      // keeps the athlete on this page rather than sending them elsewhere
-      // right as they're about to book.
-      html += qualificationSectionHtml(name);
 
       transitionTo(html, () => {
         document.getElementById('download-pdf-btn').addEventListener('click', () => downloadPdf(r, name, role, level, today));
-        wireQualificationSection();
+        document.getElementById('open-fit-check-btn').addEventListener('click', revealFitCheck);
       });
     }
 
     // ════════════════════════════════════════════════════════════════
-    // "See if you're a fit" — qualification flow, adapted from
-    // apply/index.html (same contact-form/qualifying-question markup/IDs —
-    // see wireQualificationSection below for the JS half), but the
-    // "qualified" outcome links to the Skool about page instead of booking
-    // a Calendly call. Adding this means this page now DOES make one extra
-    // network call beyond jsPDF — submitting to the same Apps Script backend
-    // the apply page uses — a deliberate change from this page's original
-    // "nothing but jsPDF" design, now that it has its own qualification
-    // funnel.
+    // "See if you're a fit" — the embedded fit-check widget (see the
+    // FIT_CHECK/fc* block below). Starts as just the dark CTA box; when
+    // the athlete clicks "SEE IF YOU'RE A FIT", the box's contents are
+    // replaced in place with #fit-check-app (no modal/popup — the
+    // questionnaire takes over the exact spot the button was in).
     // ════════════════════════════════════════════════════════════════
 
-    function qualificationSectionHtml(name) {
+    function fitCheckSectionHtml() {
       return '' +
-        '<div id="qf-section" class="mt-8 pt-8 border-t border-gray-200" style="scroll-margin-top: 80px;">' +
-        '<div class="text-center mb-8">' +
-        '<p class="text-xs font-semibold text-brand uppercase tracking-widest mb-2">What Happens Next</p>' +
-        '<h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight">See if you\'re a fit for one of our programs.</h2>' +
-        '</div>' +
-
-        '<div class="grid sm:grid-cols-2 gap-5 mb-10">' +
-        '<div class="text-center">' +
-        '<div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">1</div>' +
-        '<p class="text-base font-bold text-gray-900 mb-1">Fill Out The Form Below</p>' +
-        '<p class="text-sm text-gray-500 leading-relaxed">Answer a few questions below so we know you\'re the right kind of person.</p>' +
-        '</div>' +
-        '<div class="text-center">' +
-        '<div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">2</div>' +
-        '<p class="text-base font-bold text-gray-900 mb-1">See The Program Details</p>' +
-        '<p class="text-sm text-gray-500 leading-relaxed">Check out the full program and see if it\'s right for you.</p>' +
-        '</div>' +
-        '</div>' +
-
-        '<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" id="qf-card">' +
-
-        '<div class="flex items-center justify-center gap-2 mb-6 pb-5 border-b border-gray-100 text-sm">' +
-        '<span id="qf-progress-fill" class="flex items-center gap-1.5 font-bold text-brand">' +
-        '<span class="w-2 h-2 rounded-full bg-brand"></span>Fill out the form</span>' +
-        '<span class="text-gray-300">·</span>' +
-        '<span id="qf-progress-book" class="flex items-center gap-1.5 font-medium text-gray-400">' +
-        '<span class="w-2 h-2 rounded-full bg-gray-300"></span>See the program</span>' +
-        '</div>' +
-
-        '<div id="qf-contact" class="qf-step">' +
-        '<h3 class="text-xl font-bold text-gray-900 mb-3">See If You\'re A Fit</h3>' +
-        '<p class="text-base text-gray-500 leading-relaxed">Excited to share our ultimate-specific program with you.</p>' +
-        '<p class="text-base text-gray-500 leading-relaxed mb-5">Fill out the details below, and answer a few quick questions, to see if you\'re a fit.</p>' +
-        '<form id="qf-contact-form" class="space-y-3" novalidate>' +
-        '<input type="email" id="qf-email" required placeholder="Email address" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
-        '<div class="grid grid-cols-2 gap-3">' +
-        '<input type="text" id="qf-first" required placeholder="First name *" value="' + escapeHtml(name) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
-        '<input type="text" id="qf-last" required placeholder="Last name *" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
-        '</div>' +
-        '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">Next →</button>' +
-        '</form>' +
-        '</div>' +
-
-        '<div id="qf-questions" class="qf-step hidden">' +
-        '<h3 class="text-xl font-bold text-gray-900 mb-5">A few quick qualifying questions.</h3>' +
-        '<form id="qf-questions-form" class="space-y-4" novalidate>' +
-
-        '<div>' +
-        '<label for="qf-q1" class="block text-lg font-medium text-gray-900 mb-2">Which of the following best describes where you mostly play ultimate?</label>' +
-        '<div class="relative">' +
-        '<select id="qf-q1" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
-        '<option value="" disabled selected>Select</option>' +
-        '<option value="pickups">Pick ups</option>' +
-        '<option value="leagues">Leagues</option>' +
-        '<option value="club">Club trainings/tournaments</option>' +
-        '<option value="other">Other</option>' +
-        '</select>' +
-        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
-        '</div>' +
-        '</div>' +
-        '<div id="qf-q1-other" class="hidden">' +
-        '<label for="qf-q1-other-text" class="block text-lg font-medium text-gray-900 mb-2">Where do you mostly play?</label>' +
-        '<input type="text" id="qf-q1-other-text" placeholder="Tell us where..." class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 transition" />' +
-        '</div>' +
-
-        '<div>' +
-        '<label for="qf-q2" class="block text-lg font-medium text-gray-900 mb-2">Are you able to commit to a structured training plan to start making a bigger on-field impact in the next 90 days?</label>' +
-        '<div class="relative">' +
-        '<select id="qf-q2" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
-        '<option value="" disabled selected>Select</option>' +
-        '<option value="yes">Yes, I can commit</option>' +
-        '<option value="no">No, I can\'t commit</option>' +
-        '</select>' +
-        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
-        '</div>' +
-        '</div>' +
-
-        '<div>' +
-        '<label for="qf-q3" class="block text-lg font-medium text-gray-900 mb-2">Are you prepared to financially invest in a structured program?</label>' +
-        '<div class="relative">' +
-        '<select id="qf-q3" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
-        '<option value="" disabled selected>Select</option>' +
-        '<option value="yes">Yes, I\'m prepared to invest</option>' +
-        '<option value="no">No, I\'m not prepared to invest</option>' +
-        '</select>' +
-        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
-        '</div>' +
-        '</div>' +
-
-        '<div>' +
-        '<label for="qf-q4" class="block text-lg font-medium text-gray-900 mb-2">How soon are you looking to start?</label>' +
-        '<div class="relative">' +
-        '<select id="qf-q4" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
-        '<option value="" disabled selected>Select</option>' +
-        '<option value="immediate">Immediately, within the next 2 weeks</option>' +
-        '<option value="exploring">Within the next 60 days, still exploring</option>' +
-        '<option value="no_timeline">No set timeline</option>' +
-        '</select>' +
-        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
-        '</div>' +
-        '</div>' +
-
-        '<div>' +
-        '<label for="qf-instagram" class="block text-lg font-medium text-gray-900 mb-2">What\'s your Instagram handle? (in case we need to reach you with any questions)</label>' +
-        '<input type="text" id="qf-instagram" placeholder="@yourhandle" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 transition" />' +
-        '</div>' +
-
-        '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">Apply →</button>' +
-        '</form>' +
-        '</div>' +
-
-        '<div id="qf-approved" class="qf-step hidden text-center">' +
-        '<div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
-        '<svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>' +
-        '</div>' +
-        '<p class="text-2xl font-extrabold text-gray-900 mb-3">Congrats - it looks like you could be a fit.</p>' +
-        '<p class="text-base text-gray-900 leading-relaxed max-w-sm mx-auto mb-7">Check out the full program details and see if it\'s the right next step for you.</p>' +
-        '<a href="https://www.skool.com/ultimate/about" target="_blank" class="block w-full bg-brand text-white font-extrabold px-6 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm">VIEW THE PROGRAM ON SKOOL</a>' +
-        '</div>' +
-
-        '</div>' + // #qf-card
-        '</div>' + // wrapper
-
-        '<div id="qf-popup" class="hidden fixed inset-0 z-50 items-center justify-center p-6">' +
-        '<div class="absolute inset-0 bg-gray-900/50" onclick="closeQfPopup()"></div>' +
-        '<div class="relative bg-white rounded-3xl shadow-xl border border-gray-100 max-w-sm w-full p-6 md:p-8 text-center">' +
-        '<button type="button" onclick="closeQfPopup()" aria-label="Close" class="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors">' +
-        '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
-        '</button>' +
-        '<div id="qf-popup-icon" class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
-        '<svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
-        '</div>' +
-        '<p id="qf-popup-title" class="text-xl font-extrabold text-gray-900 mb-3"></p>' +
-        '<p id="qf-popup-message" class="text-lg text-gray-900 leading-relaxed mb-6"></p>' +
-        '<div id="qf-popup-social">' +
-        '<p class="text-base font-semibold text-gray-700 mb-3">In the meantime, here\'s free stuff to keep leveling up:</p>' +
-        '<div class="flex flex-wrap items-center justify-center gap-3">' +
-        '<a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">YouTube</a>' +
-        '<a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">Instagram</a>' +
-        '</div>' +
-        '</div>' +
-        '</div>' +
+        '<div id="fit-check-section" class="bg-[#1f223c] rounded-2xl p-6 text-center">' +
+        '<p class="text-white text-base leading-relaxed mb-4">Based on what you\'ve shared, you could be a strong fit for one of our structured programs.</p>' +
+        '<button type="button" id="open-fit-check-btn" class="block w-full bg-brand text-white font-extrabold px-6 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm">SEE IF YOU\'RE A FIT →</button>' +
         '</div>';
     }
 
-    // Reset on every wireQualificationSection() call (i.e. every time the
-    // results screen renders) rather than once at page load — a "retake"
-    // should start the qualification flow fresh too.
-    let qfAnswers = {};
-    let qfEscapeListenerAdded = false;
+    function revealFitCheck() {
+      const section = document.getElementById('fit-check-section');
+      if (!section) return;
+      section.outerHTML = '<div id="fit-check-app"></div>';
+      fcInit();
+    }
 
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
 
@@ -1201,110 +1139,452 @@
       fetch(APPS_SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' }).catch(() => {});
     }
 
-    function setQfProgressPhase(phase) {
-      const fillEl = document.getElementById('qf-progress-fill');
-      const bookEl = document.getElementById('qf-progress-book');
-      const active = 'flex items-center gap-1.5 font-bold text-brand';
-      const inactive = 'flex items-center gap-1.5 font-medium text-gray-400';
-      fillEl.className = phase === 'book' ? inactive : active;
-      fillEl.querySelector('span').className = 'w-2 h-2 rounded-full ' + (phase === 'book' ? 'bg-gray-300' : 'bg-brand');
-      bookEl.className = phase === 'book' ? active : inactive;
-      bookEl.querySelector('span').className = 'w-2 h-2 rounded-full ' + (phase === 'book' ? 'bg-brand' : 'bg-gray-300');
+    // ════════════════════════════════════════════════════════════════
+    // Embedded fit-check widget — ported from qualification/index.html
+    // (same data/logic/copy; renamed with an "fc" prefix throughout to
+    // avoid colliding with this page's own quiz, which already has a
+    // `state`/`render`/`goBack`/etc. of its own). Mounts into
+    // #fit-check-app, created above by revealFitCheck().
+    // Submits to the SAME 'coaching_fit_lead'/'coaching_fit_application'
+    // Apps Script types the standalone qualification page uses — no
+    // backend changes needed, that handler already exists and is live.
+    // ════════════════════════════════════════════════════════════════
+
+    const FIT_CHECK = {
+      contact: {
+        heading: 'First, who are we talking to?',
+        sub: "So we know who we're talking to.",
+        button: 'Next →',
+      },
+      outcomeQualified: {
+        heading: "Congrats - looks like you'd be a fit!",
+        button: 'VIEW THE PROGRAM',
+        url: 'https://www.skool.com/ultimate/about',
+      },
+      outcomeNotQualified: {
+        heading: 'Not quite the right fit, right now.',
+        sub: "That's okay — here's some free stuff to keep leveling up in the meantime:",
+      },
+      steps: [
+        {
+          id: 'playLocation', type: 'single', required: true,
+          text: 'Which of the following best describes where you mostly play ultimate?',
+          options: [
+            { key: 'pickups', label: 'Pick ups' },
+            { key: 'leagues', label: 'Leagues' },
+            { key: 'club', label: 'Club trainings/tournaments' },
+            { key: 'other', label: 'A combination' },
+          ],
+        },
+        {
+          id: 'struggles', type: 'multi', required: true,
+          text: 'What are you struggling with most?',
+          sub: 'Select all that apply.',
+          options: [
+            { key: 'gameiq', label: 'Game IQ (timing, spacing, reading the game, etc.)' },
+            { key: 'skill', label: 'Skill Development (throwing, cutting technique, defensive footwork, etc.)' },
+            { key: 'athleticism', label: 'Athleticism (speed/acceleration, vertical jump, ultimate-specific conditioning, etc.)' },
+          ],
+        },
+        {
+          id: 'gaps', type: 'multi', required: true,
+          text: "And in your training, what's missing?",
+          sub: 'Select all that apply.',
+          options: [
+            { key: 'structure', label: 'Having a structured, ultimate-specific plan' },
+            { key: 'feedback', label: 'Getting regular feedback' },
+            { key: 'accountability', label: 'Accountability' },
+          ],
+        },
+        {
+          id: 'primarySkill', type: 'single', required: true,
+          text: "Which specific skill are you struggling with the most right now, that you'd like to solve first?",
+          options: [
+            { key: 'throwing', label: 'Throwing' },
+            { key: 'defense', label: 'Defense' },
+            { key: 'cutting', label: 'Cutting' },
+            { key: 'catching', label: 'Catching' },
+          ],
+        },
+        {
+          id: 'scenario', type: 'single', required: true,
+          text: 'Which of the scenarios below best describes your current situation outside of ultimate?',
+          options: [
+            { key: 'working', label: 'Primarily working' },
+            { key: 'studying', label: 'Primarily studying' },
+            { key: 'other', label: 'Something else' },
+          ],
+        },
+        {
+          id: 'budget', type: 'single', required: true,
+          text: 'Our programs do involve a financial investment. Are you prepared to invest in your growth?',
+          options: [
+            { key: 'yes', label: "Yes, I'm ready to invest in my growth" },
+            { key: 'no', label: 'No, not right now' },
+          ],
+        },
+        {
+          id: 'timeline', type: 'single', required: true,
+          text: 'When are you ready to start?',
+          options: [
+            { key: 'immediate', label: 'Immediately, within the next 2 weeks' },
+            { key: 'exploring', label: 'Within the next 60 days' },
+            { key: 'no_timeline', label: 'No set timeline' },
+          ],
+        },
+        {
+          id: 'need', type: 'single', required: true,
+          text: 'How important is it to solve this for your game in the next 90 days?',
+          options: [
+            { key: 'very_important', label: 'Very important' },
+            { key: 'important', label: 'Important' },
+            { key: 'somewhat_important', label: 'Somewhat important' },
+            { key: 'not_important', label: 'Not important' },
+          ],
+        },
+        {
+          id: 'instagram', type: 'text', required: true,
+          text: "Last thing — what's your Instagram handle?",
+          sub: 'So we can reach you about your results and any questions.',
+          placeholder: '@yourhandle',
+        },
+      ],
+    };
+
+    // Same rule as qualification/index.html — see that file's comment for
+    // the full rationale (no budget = hard gate; otherwise the need level
+    // must clear a bar that depends on scenario).
+    const FC_NEED_LEVEL = { not_important: 0, somewhat_important: 1, important: 2, very_important: 3 };
+    const FC_SCENARIO_NEED_THRESHOLD = { working: 1, studying: 2, other: 2 };
+
+    function fcComputeQualified(answers) {
+      if (answers.budget === 'no') {
+        return { qualified: false, exitReason: 'budget' };
+      }
+      const needLevel = FC_NEED_LEVEL[answers.need];
+      const threshold = FC_SCENARIO_NEED_THRESHOLD[answers.scenario];
+      const needMet = (needLevel !== undefined ? needLevel : -1) >= threshold;
+      return { qualified: needMet, exitReason: needMet ? '' : 'need' };
     }
 
-    function showQfStep(id) {
-      setQfProgressPhase(id === 'qf-approved' ? 'book' : 'fill');
-      const current = document.querySelector('#qf-card .qf-step:not(.hidden)');
-      const next = document.getElementById(id);
-      document.getElementById('qf-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    let fcState = {};
+    function fcResetState() {
+      fcState = { screen: 'contact', stepIndex: 0, answers: { struggles: [], gaps: [] }, firstName: '' };
+    }
 
-      if (!current || current === next) {
-        next.classList.remove('hidden');
+    // #fit-check-app doesn't exist in the DOM until revealFitCheck() swaps
+    // it in (i.e. only once the athlete clicks the CTA button), so —
+    // unlike this page's own #app — it's looked up fresh on every call
+    // rather than cached in a module-level const.
+    function fcTransitionTo(html, onReady) {
+      const container = document.getElementById('fit-check-app');
+      if (!container) return;
+      const current = container.firstElementChild;
+      if (!current) {
+        container.innerHTML = html;
+        if (onReady) onReady();
         return;
       }
       current.classList.add('qf-fade-out');
       setTimeout(() => {
-        current.classList.add('hidden');
-        current.classList.remove('qf-fade-out');
-        next.classList.remove('hidden');
-        next.classList.add('qf-fade-in');
-        requestAnimationFrame(() => next.classList.add('qf-fade-in-active'));
-        setTimeout(() => next.classList.remove('qf-fade-in', 'qf-fade-in-active'), 220);
-      }, 180);
+        container.innerHTML = html;
+        const next = container.firstElementChild;
+        if (next) {
+          next.classList.add('qf-fade-in');
+          requestAnimationFrame(() => next.classList.add('qf-fade-in-active'));
+          setTimeout(() => next.classList.remove('qf-fade-in', 'qf-fade-in-active'), 220);
+        }
+        if (onReady) onReady();
+      }, 160);
     }
 
-    function openQfPopup(reasonKey) {
-      document.getElementById('qf-popup-title').textContent = 'Not quite the right fit, right now.';
-      document.getElementById('qf-popup-message').textContent = "Thanks for applying. Based on your answers, it looks like this might not be the right fit for you right now — and that's okay.";
-      document.getElementById('qf-popup').classList.remove('hidden');
-      document.getElementById('qf-popup').classList.add('flex');
+    function fcProgressHtml(stepNumber) {
+      const totalSteps = FIT_CHECK.steps.length;
+      const pct = Math.round((stepNumber / totalSteps) * 100);
+      return '' +
+        '<div class="flex justify-end mb-1.5"><span class="text-xs font-semibold text-gray-400">' + pct + '% complete</span></div>' +
+        '<div class="progress-track mb-5"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
     }
 
-    function closeQfPopup() {
-      const popup = document.getElementById('qf-popup');
-      if (!popup) return;
-      popup.classList.add('hidden');
-      popup.classList.remove('flex');
+    function fcRender() {
+      if (fcState.screen === 'contact') return fcRenderContact();
+      if (fcState.screen === 'step') return fcRenderStep();
+      if (fcState.screen === 'outcome') return fcRenderOutcome();
     }
 
-    function wireQualificationSection() {
-      qfAnswers = {};
+    function fcRenderContact() {
+      const html = cardWrap(
+        backButtonHtml(false) + // nothing within this embedded widget to go back to
+        fcProgressHtml(0) +
+        '<h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-snug mb-2">' + escapeHtml(FIT_CHECK.contact.heading) + '</h2>' +
+        '<p class="text-sm text-gray-500 mb-5">' + escapeHtml(FIT_CHECK.contact.sub) + '</p>' +
+        '<form id="fc-contact-form" class="space-y-3" novalidate>' +
+        '<input type="text" id="fc-first-name" required placeholder="First name" value="' + escapeHtml(fcState.firstName) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
+        '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">' + FIT_CHECK.contact.button + '</button>' +
+        '</form>'
+      );
+      fcTransitionTo(html, () => {
+        const firstInput = document.getElementById('fc-first-name');
+        document.getElementById('fc-contact-form').addEventListener('submit', e => {
+          e.preventDefault();
+          if (!e.target.reportValidity()) return;
+          fcState.firstName = firstInput.value.trim();
 
-      document.getElementById('qf-contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (!this.reportValidity()) return;
-        qfAnswers.email = document.getElementById('qf-email').value.trim();
-        qfAnswers.firstName = document.getElementById('qf-first').value.trim();
-        qfAnswers.lastName = document.getElementById('qf-last').value.trim();
-        submitApplicationData({
-          type: 'qualification_lead',
-          timestamp: new Date().toISOString(),
-          source: 'eric-deng-ultimate.com/skill-assessment-tool',
-          email: qfAnswers.email,
-          firstName: qfAnswers.firstName,
-          lastName: qfAnswers.lastName
+          // Instagram isn't known yet — it's now the last question, to
+          // incentivize finishing the flow.
+          submitApplicationData({
+            type: 'coaching_fit_lead',
+            timestamp: new Date().toISOString(),
+            source: 'eric-deng-ultimate.com/skill-assessment-tool',
+            firstName: fcState.firstName,
+          });
+
+          fcState.screen = 'step';
+          fcState.stepIndex = 0;
+          fcRender();
         });
-        showQfStep('qf-questions');
+        firstInput.focus();
       });
+    }
 
-      document.getElementById('qf-q1').addEventListener('change', function () {
-        document.getElementById('qf-q1-other').classList.toggle('hidden', this.value !== 'other');
-      });
+    function fcRenderStep() {
+      const step = FIT_CHECK.steps[fcState.stepIndex];
+      const stepNumber = fcState.stepIndex + 1;
+      const saved = fcState.answers[step.id];
 
-      document.getElementById('qf-questions-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (!this.reportValidity()) return;
-
-        const q1 = document.getElementById('qf-q1').value;
-        const q2 = document.getElementById('qf-q2').value;
-        const q3 = document.getElementById('qf-q3').value;
-        const q4 = document.getElementById('qf-q4').value;
-        qfAnswers.q1 = q1;
-        if (q1 === 'other') qfAnswers.q1Other = document.getElementById('qf-q1-other-text').value.trim();
-        qfAnswers.q2 = q2;
-        qfAnswers.q3 = q3;
-        qfAnswers.q4 = q4;
-        qfAnswers.instagram = document.getElementById('qf-instagram').value.trim();
-        qfAnswers.timestamp = new Date().toISOString();
-        qfAnswers.source = 'eric-deng-ultimate.com/skill-assessment-tool';
-        qfAnswers.type = 'qualification_application';
-
-        const disqualifyReason = q2 === 'no' ? 'training' : q3 === 'no' ? 'budget' : '';
-        qfAnswers.qualified = !disqualifyReason;
-        qfAnswers.exitReason = disqualifyReason;
-
-        submitApplicationData(qfAnswers);
-
-        if (disqualifyReason) return openQfPopup(disqualifyReason);
-        showQfStep('qf-approved');
-      });
-
-      if (!qfEscapeListenerAdded) {
-        qfEscapeListenerAdded = true;
-        document.addEventListener('keydown', e => {
-          if (e.key === 'Escape') closeQfPopup();
-        });
+      let bodyHtml = '';
+      if (step.type === 'multi') {
+        const selected = saved || [];
+        bodyHtml =
+          (step.sub ? '<p class="text-sm text-gray-400 mb-3">' + escapeHtml(step.sub) + '</p>' : '') +
+          '<div class="space-y-2.5 mb-5" id="fc-opts">' +
+          step.options.map(opt => {
+            const isSelected = selected.indexOf(opt.key) !== -1;
+            return '<button type="button" class="opt-btn-multi' + (isSelected ? ' selected' : '') + '" data-key="' + opt.key + '">' +
+              '<span class="opt-check"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span>' +
+              escapeHtml(opt.label) + '</button>';
+          }).join('') +
+          '</div>' +
+          '<button type="button" id="fc-multi-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm disabled:opacity-40 disabled:cursor-not-allowed" ' + (selected.length > 0 ? '' : 'disabled') + '>Next →</button>';
+      } else if (step.type === 'text') {
+        const val = saved || '';
+        bodyHtml =
+          (step.sub ? '<p class="text-sm text-gray-400 mb-3">' + escapeHtml(step.sub) + '</p>' : '') +
+          '<input type="text" id="fc-step-text" placeholder="' + escapeHtml(step.placeholder || '') + '" value="' + escapeHtml(val) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition mb-4" />' +
+          '<button type="button" id="fc-text-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm disabled:opacity-40 disabled:cursor-not-allowed" ' + (val.trim() ? '' : 'disabled') + '>Next →</button>';
+      } else {
+        // 'single'
+        bodyHtml =
+          '<div class="space-y-2.5" id="fc-opts">' +
+          step.options.map(opt => {
+            const isSelected = saved === opt.key;
+            return '<button type="button" class="opt-btn' + (isSelected ? ' selected' : '') + '" data-key="' + opt.key + '">' + escapeHtml(opt.label) + '</button>';
+          }).join('') +
+          '</div>';
       }
+
+      const html = cardWrap(
+        backButtonHtml(true) +
+        fcProgressHtml(stepNumber) +
+        '<h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-snug mb-5">' + escapeHtml(step.text) + '</h2>' +
+        bodyHtml
+      );
+
+      fcTransitionTo(html, () => {
+        document.getElementById('back-btn').addEventListener('click', fcGoBack);
+        fcWireStepEvents(step);
+      });
+    }
+
+    function fcWireStepEvents(step) {
+      if (step.type === 'multi') {
+        const optsContainer = document.getElementById('fc-opts');
+        const buttons = optsContainer.querySelectorAll('button');
+        const nextBtn = document.getElementById('fc-multi-next-btn');
+        if (!fcState.answers[step.id]) fcState.answers[step.id] = [];
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const key = btn.getAttribute('data-key');
+            const arr = fcState.answers[step.id];
+            const idx = arr.indexOf(key);
+            if (idx === -1) arr.push(key); else arr.splice(idx, 1);
+            btn.classList.toggle('selected');
+            nextBtn.disabled = arr.length === 0;
+          });
+        });
+        nextBtn.addEventListener('click', () => fcGoNextStep());
+        return;
+      }
+
+      if (step.type === 'text') {
+        const input = document.getElementById('fc-step-text');
+        const nextBtn = document.getElementById('fc-text-next-btn');
+        input.addEventListener('input', () => {
+          fcState.answers[step.id] = input.value.trim();
+          nextBtn.disabled = input.value.trim().length === 0;
+        });
+        nextBtn.addEventListener('click', () => fcGoNextStep());
+        input.focus();
+        return;
+      }
+
+      const optsContainer = document.getElementById('fc-opts');
+      const buttons = optsContainer.querySelectorAll('button');
+
+      // 'single'
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-key');
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          fcState.answers[step.id] = key;
+          buttons.forEach(b => b.disabled = true);
+          setTimeout(() => { buttons.forEach(b => b.disabled = false); fcGoNextStep(); }, 250);
+        });
+      });
+    }
+
+    function fcGoNextStep() {
+      if (fcState.stepIndex < FIT_CHECK.steps.length - 1) {
+        fcState.stepIndex += 1;
+        fcRender();
+      } else {
+        fcFinishAndShowOutcome();
+      }
+    }
+
+    function fcGoBack() {
+      if (fcState.screen === 'step') {
+        if (fcState.stepIndex === 0) {
+          fcState.screen = 'contact';
+        } else {
+          fcState.stepIndex -= 1;
+        }
+        fcRender();
+      }
+    }
+
+    // Looks up the full option label for a raw answer key (e.g. 'pickups'
+    // → 'Pick ups'), so the Sheet/email get readable answers instead of
+    // internal codes. Falls back to the raw key for step types with no
+    // `options` (like the 'text' instagram step).
+    function fcStepLabel(stepId, key) {
+      const step = FIT_CHECK.steps.find(s => s.id === stepId);
+      const opt = step && step.options && step.options.find(o => o.key === key);
+      return opt ? opt.label : (key || '');
+    }
+    function fcStepLabels(stepId, keys) {
+      return (keys || []).map(k => fcStepLabel(stepId, k)).join(', ');
+    }
+
+    function fcFinishAndShowOutcome() {
+      const result = fcComputeQualified(fcState.answers);
+      fcState.result = result;
+
+      submitApplicationData({
+        type: 'coaching_fit_application',
+        timestamp: new Date().toISOString(),
+        source: 'eric-deng-ultimate.com/skill-assessment-tool',
+        firstName: fcState.firstName,
+        instagram: fcState.answers.instagram,
+        playLocation: fcStepLabel('playLocation', fcState.answers.playLocation),
+        struggles: fcStepLabels('struggles', fcState.answers.struggles),
+        gaps: fcStepLabels('gaps', fcState.answers.gaps),
+        primarySkill: fcStepLabel('primarySkill', fcState.answers.primarySkill),
+        scenario: fcStepLabel('scenario', fcState.answers.scenario),
+        budget: fcStepLabel('budget', fcState.answers.budget),
+        timeline: fcStepLabel('timeline', fcState.answers.timeline),
+        need: fcStepLabel('need', fcState.answers.need),
+        qualified: String(result.qualified),
+        exitReason: result.exitReason,
+      });
+
+      gtag('event', result.qualified ? 'coaching_fit_qualified' : 'coaching_fit_not_qualified', {
+        event_category: 'qualification',
+        reason: result.exitReason
+      });
+
+      fcState.screen = 'outcome';
+      fcRender();
+    }
+
+    const FC_GAP_PHRASE = {
+      structure: 'a structured, ultimate-specific plan',
+      feedback: 'regular feedback',
+      accountability: 'accountability',
+    };
+    const FC_SKILL_PHRASE = { throwing: 'throwing', defense: 'defense', cutting: 'cutting', catching: 'catching' };
+
+    // "X, Y and Z" — used to personalise the qualified outcome from
+    // whatever combination of gaps they actually picked.
+    function fcJoinList(items) {
+      if (items.length === 0) return '';
+      if (items.length === 1) return items[0];
+      if (items.length === 2) return items[0] + ' and ' + items[1];
+      return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
+    }
+
+    function fcBuildQualifiedMessage() {
+      const gapsList = fcJoinList((fcState.answers.gaps || []).map(k => FC_GAP_PHRASE[k]).filter(Boolean));
+      const skillPhrase = FC_SKILL_PHRASE[fcState.answers.primarySkill] || '';
+
+      return {
+        diagnosis: "You said you currently don't have " + gapsList + ", and that you're mostly struggling with your " + skillPhrase + " right now.",
+        fitStatement: "Based on your answers, it looks like we'd be able to help.",
+        process: "We'll kick off with a 1:1 strategy call and actually talk through these roadblocks in your game right now, then build a custom plan - around your schedule - to solve your biggest problem inside your first 30 days.",
+        support: "You'll also get my direct feedback and support every step of the way, so your gains actually show up in your game and you start seeing results.",
+        personalNote: "It'd be cool to work with you, so please view the program details below, and you can join us using that link if this looks like the right next move for you and your goals.",
+      };
+    }
+
+    function fcRenderOutcome() {
+      const qualified = fcState.result && fcState.result.qualified;
+      let html;
+      if (qualified) {
+        const o = FIT_CHECK.outcomeQualified;
+        const msg = fcBuildQualifiedMessage();
+        html = cardWrap(
+          '<div class="text-center">' +
+          '<div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
+          '<svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>' +
+          '</div>' +
+          '<p class="text-2xl font-extrabold text-gray-900 mb-5">' + escapeHtml(o.heading) + '</p>' +
+          '<div class="text-left max-w-sm mx-auto">' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-4">' + escapeHtml(msg.diagnosis) + '</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.fitStatement) + '</p>' +
+          '<p class="text-xs font-semibold text-brand uppercase tracking-widest mb-2">What it looks like to start</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-4">' + escapeHtml(msg.process) + '</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.support) + '</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.personalNote) + '</p>' +
+          '<p class="text-base text-gray-900 italic">-Eric</p>' +
+          '</div>' +
+          '<a href="' + o.url + '" target="_blank" class="block w-full bg-brand text-white font-extrabold px-6 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm mt-8">' + o.button + '</a>' +
+          '</div>'
+        );
+      } else {
+        const o = FIT_CHECK.outcomeNotQualified;
+        html = cardWrap(
+          '<div class="text-center">' +
+          '<div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
+          '<svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+          '</div>' +
+          '<p class="text-2xl font-extrabold text-gray-900 mb-3">' + escapeHtml(o.heading) + '</p>' +
+          '<p class="text-base text-gray-700 leading-relaxed max-w-sm mx-auto mb-6">' + escapeHtml(o.sub) + '</p>' +
+          '<div class="flex flex-wrap items-center justify-center gap-3">' +
+          '<a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">YouTube</a>' +
+          '<a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">Instagram</a>' +
+          '</div>' +
+          '</div>'
+        );
+      }
+      fcTransitionTo(html);
+    }
+
+    // Entry point, called from renderResults()'s onReady — reset-and-render
+    // every time the results screen shows, so a retake starts this fresh too.
+    function fcInit() {
+      fcResetState();
+      fcRender();
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -1532,7 +1812,7 @@
     // ?preview= dev shortcut below — see runSelfTests' "mixed" case for the
     // worked-out expected scores this produces.
     const PREVIEW_MIXED_TA_IDX = {
-      PF: 2, TA1: 1, TA2: 3, TA3: 1, TA4: 3, TA5: 3, TA6: 3, TA7: 0, TA8: 0,
+      PF: 2, TA1: 1, TA2: 3, TA3: 1, TA4: 3, TA5: 3, TA6: 3, TA7: 0, TA7Structure: 0, TA8: 0, TA8Structure: 0,
       TA9: 2, TA10: 1, TA11: 1, TA12: 1, TA13: 1,
     };
     const PREVIEW_MIXED_YG_IDX = {
@@ -1550,7 +1830,7 @@
     function buildPreviewAnswers(kind) {
       const common = {
         P4: { index: 0, value: 'handler', label: 'Handler' },
-        P5: { index: 1, value: 'div2', label: 'Club Div 2' },
+        P5: { index: 1, value: 'leagues', label: 'Leagues' },
       };
       if (kind === 'low') {
         return buildAnswers(() => 0, () => 0, Object.assign({
@@ -1626,7 +1906,7 @@
       // Case 4: a minimal answer set built specifically to trigger the
       // *other* flag ("working hard, little to show") — low athleticism so
       // flag A can't fire, trains 8 sessions/week by the estimate formula,
-      // but YG13 ("I can see my gains in games") is "Rarely true".
+      // but YG13 ("I can see my gains in games") is "Disagree".
       const flagBAnswers = {
         TA2: { index: 3, value: 4 },
         TA4: { index: 2, value: 2 }, TA5: { index: 2, value: 2 },
@@ -1686,6 +1966,31 @@
       const summaryAllGreen = computeStandardsSummary(rHigh.standards);
       check('standards summary is the all-green message when nothing is red/yellow', summaryAllGreen.indexOf('meeting every training standard') !== -1, true);
 
+      // Case 6b: TA7/TA8's two-axis (frequency + structure) tier — split
+      // into two questions, so this proves the combination logic directly.
+      check('weekly + structured → green',
+        computeStructuredPracticeTier({ index: 2 }, { index: 1 }), 'green');
+      check('weekly + self-directed → yellow (regular but no real plan)',
+        computeStructuredPracticeTier({ index: 3 }, { index: 0 }), 'yellow');
+      check('fortnightly + structured → yellow (real plan, not often enough yet)',
+        computeStructuredPracticeTier({ index: 1 }, { index: 1 }), 'yellow');
+      check('rarely + self-directed → red',
+        computeStructuredPracticeTier({ index: 0 }, { index: 0 }), 'red');
+      check('missing either answer → red',
+        computeStructuredPracticeTier({ index: 3 }, null), 'red');
+      const splitCheck = computeStandards({
+        TA7: { index: 2, value: 2, label: 'Once a week' },
+        TA7Structure: { index: 1, value: 1, label: 'Structured — specific drills or a coached plan' },
+        TA8: { index: 3, value: 4, label: 'Twice a week or more' },
+        TA8Structure: { index: 0, value: 0, label: 'Self-directed — I come up with it myself' },
+      });
+      check('TA7 (weekly + structured) comes out green via the real checklist path',
+        splitCheck.find(s => s.id === 'TA7').tier, 'green');
+      check('TA8 (2x/week but self-directed) comes out yellow via the real checklist path',
+        splitCheck.find(s => s.id === 'TA8').tier, 'yellow');
+      check('TA7Structure itself never appears as its own standard',
+        splitCheck.some(s => s.id === 'TA7Structure'), false);
+
       // Case 7: Athleticism Strength-band cap — maxed-out session frequency
       // should NOT be enough on its own if TA1 isn't the top (ultimate-
       // specific program) answer, even though every other athleticism item
@@ -1701,6 +2006,25 @@
         P1: { value: 'Test' }, P2: { value: 10 }, P3: { index: 3, value: 'none', label: 'No set date' },
       });
       check('athleticism reaches 100 when max frequency IS paired with an ultimate-specific program', computeResults(maxFreqWithProgram).categoryScores.athleticism, 100);
+
+      // Case 8: embedded fit-check widget's qualification rule (ported from
+      // qualification/index.html — see FC_SCENARIO_NEED_THRESHOLD above).
+      check('fit-check: no budget + working + need very_important → still disqualified (hard gate)',
+        fcComputeQualified({ budget: 'no', scenario: 'working', need: 'very_important' }).qualified, false);
+      check('fit-check: working + budget + need somewhat_important → qualified (meets working threshold exactly)',
+        fcComputeQualified({ budget: 'yes', scenario: 'working', need: 'somewhat_important' }).qualified, true);
+      check('fit-check: working + budget + need not_important → disqualified (one below working threshold)',
+        fcComputeQualified({ budget: 'yes', scenario: 'working', need: 'not_important' }).qualified, false);
+      check('fit-check: studying + budget + need important → qualified (meets studying threshold exactly)',
+        fcComputeQualified({ budget: 'yes', scenario: 'studying', need: 'important' }).qualified, true);
+      check('fit-check: studying + budget + need somewhat_important → disqualified',
+        fcComputeQualified({ budget: 'yes', scenario: 'studying', need: 'somewhat_important' }).qualified, false);
+      check('fit-check: "something else" + budget + need important → qualified (defaulted to studying-level bar)',
+        fcComputeQualified({ budget: 'yes', scenario: 'other', need: 'important' }).qualified, true);
+      check('fit-check: exitReason "budget" when budget is the disqualifier',
+        fcComputeQualified({ budget: 'no', scenario: 'working', need: 'very_important' }).exitReason, 'budget');
+      check('fit-check: exitReason "need" when the scenario threshold isn\'t met',
+        fcComputeQualified({ budget: 'yes', scenario: 'studying', need: 'not_important' }).exitReason, 'need');
 
       console.log(pass + ' passed, ' + fail + ' failed.');
       return { pass, fail };
@@ -1720,6 +2044,14 @@
       state.name = 'Preview';
       state.screen = 'results';
     }
+
+    // Top-bar badge restarts the quiz from the intro screen rather than
+    // navigating to the site homepage — same pattern as qualification/index.html.
+    document.getElementById('top-bar-restart').addEventListener('click', e => {
+      e.preventDefault();
+      resetState();
+      render();
+    });
 
     render();
   </script>
