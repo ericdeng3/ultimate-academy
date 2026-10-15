@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Assessment — Ultimate Academy 🥏</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- jsPDF, loaded blocking (no async/defer) so it's guaranteed ready by the
+       time the athlete taps "Download my report" — this tool has no other
+       network calls, so a few hundred KB up front is an acceptable trade
+       for never racing a lazy-load against a click. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* Same step-transition pattern as apply/index.html's qualification flow */
+    .qf-fade-out {
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+    .qf-fade-in {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .qf-fade-in-active { opacity: 1; transform: translateY(0); }
+
+    .qf-input {
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .qf-input:focus {
+      border-color: #E05C2A;
+      box-shadow: 0 0 0 3px rgba(224,92,42,0.15);
+    }
+    .qf-select {
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .qf-select:focus {
+      border-color: #D1D5DB;
+    }
+
+    /* Quiz answer buttons — same visual language as .qf-input (border-2,
+       rounded-xl, bg-gray-50) but as large tappable rows instead of a
+       native <select>, so a tap can both show a selected state AND
+       auto-advance. A <select> can't do that cleanly. */
+    .opt-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: 2px solid #E5E7EB;
+      background: #F9FAFB;
+      border-radius: 0.75rem;
+      padding: 1rem 1.25rem;
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: #1F2937;
+      transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+      min-height: 56px;
+    }
+    .opt-btn.selected {
+      border-color: #E05C2A;
+      background: #FFF0EA;
+      color: #C44E20;
+      font-weight: 700;
+    }
+    .opt-btn:disabled { cursor: default; }
+
+    .num-btn {
+      border: 2px solid #E5E7EB;
+      background: #F9FAFB;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: #1F2937;
+      min-height: 48px;
+      transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+    .num-btn.selected {
+      border-color: #E05C2A;
+      background: #E05C2A;
+      color: #fff;
+    }
+
+    .progress-track { background: #F3F4F6; border-radius: 9999px; height: 6px; overflow: hidden; }
+    .progress-fill { background: #E05C2A; height: 100%; transition: width 0.25s ease; }
+
+    .cat-bar-track { background: #F3F4F6; border-radius: 9999px; height: 14px; overflow: hidden; }
+    .cat-bar-fill { height: 100%; border-radius: 9999px; transition: width 0.4s ease; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+
+  <!-- ─── TOP BAR ──────────────────────────────────────────────────── -->
+  <div class="sticky top-0 z-50 flex items-center justify-center py-4 px-4 bg-[#232321]">
+    <a href="../index.html" class="inline-flex items-center gap-2.5 bg-white rounded-lg px-5 py-2.5 hover:bg-gray-50 transition-colors">
+      <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+      </span>
+      <span class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-wide">Free Skill Assessment Tool</span>
+    </a>
+  </div>
+
+  <main class="px-4 sm:px-6 py-8 sm:py-12">
+    <div id="app" class="max-w-xl mx-auto"></div>
+  </main>
+
+  <!-- ─── FOOTER ──────────────────────────────────────────────────── -->
+  <footer class="py-8 px-6 border-t border-gray-100 mt-6">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ════════════════════════════════════════════════════════════════
+    // ALL content lives here — wording, options, points, categories,
+    // thresholds. Edit this object to change the quiz; the code below it
+    // never needs to change for a copy/content edit.
+    // ════════════════════════════════════════════════════════════════
+    const ASSESSMENT = {
+
+      intro: {
+        heading: 'Find your biggest training gaps.',
+        sub: "Answer 32 quick questions about your goal, your training and your game. Get a personalised report in about 5 minutes. Free, no sign-up.",
+        button: 'START THE ASSESSMENT',
+      },
+
+      nameScreen: {
+        heading: "Last step – what's your first name?",
+        sub: "We'll put it on your report.",
+        button: 'SEE MY RESULTS',
+      },
+
+      categories: {
+        // 36, not 32 — TA1 (is your strength training an actual
+        // ultimate-specific program, or ad-hoc?) counts here too, on top of
+        // Structure. Without it, raw session frequency alone could max out
+        // Athleticism even with zero real programming behind it.
+        athleticism: { label: 'Athleticism', group: 'game', max: 36 },
+        skill:       { label: 'Skill development', group: 'game', max: 24 },
+        gameiq:      { label: 'Game IQ', group: 'game', max: 20 },
+        structure:   { label: 'Structure', group: 'training', max: 16 },
+        feedback:    { label: 'Feedback & accountability', group: 'training', max: 12 },
+      },
+
+      // Priority order used when category scores tie for "top gap" — first
+      // in this list wins the tie (gets flagged as the gap first).
+      tieBreakOrder: ['structure', 'feedback', 'gameiq', 'skill', 'athleticism'],
+
+      gapCopy: {
+        athleticism: {
+          whatItLooksLike: "Your body limits your game: slow first steps, hesitant cuts off one leg, or legs gone by the last game.",
+          howToCloseIt: "A structured, ultimate-specific strength and speed plan that progresses through the season, plus feedback on your movement.",
+        },
+        skill: {
+          whatItLooksLike: "Your skills work in drills but break down at game speed, under a mark or against a good defender.",
+          howToCloseIt: "Regular skill sessions in your plan, plus feedback on specific skills like your throws, cutting footwork or defensive positioning.",
+        },
+        gameiq: {
+          whatItLooksLike: "You play reactively. The same situations keep coming up, but you're deciding late or guessing.",
+          howToCloseIt: "Feedback on your gameplay, so you learn the patterns that decide games and train them into your skill set.",
+        },
+        structure: {
+          whatItLooksLike: "You train, but without an ultimate-specific plan that fits your life and builds through the year.",
+          howToCloseIt: "A plan built around your schedule that changes through the year and peaks you for tryouts and tournaments.",
+        },
+        feedback: {
+          whatItLooksLike: "Nobody is telling you what to fix, so your training doesn't turn into impact on the field.",
+          howToCloseIt: "Regular feedback on specific parts of your game, a clear plan from it, and someone keeping you on track.",
+        },
+      },
+
+      scale5: [
+        { label: 'Not true', value: 0 },
+        { label: 'Rarely true', value: 1 },
+        { label: 'Sometimes true', value: 2 },
+        { label: 'Mostly true', value: 3 },
+        { label: 'Always true', value: 4 },
+      ],
+
+      // ── Part 1: Goal (unscored) ──────────────────────────────────
+      part1: [
+        {
+          id: 'P1', part: 1, partLabel: 'Goal', type: 'text', required: true, maxLength: 80,
+          text: "What's the main goal you're working towards in the next 3–12 months?",
+          placeholder: 'e.g. Make a Div 1 club team',
+        },
+        {
+          id: 'P2', part: 1, partLabel: 'Goal', type: 'scale10', required: true,
+          text: 'How important is this goal to you?',
+        },
+        {
+          id: 'P3', part: 1, partLabel: 'Goal', type: 'choice', required: true,
+          text: 'When do you need to be ready?',
+          options: [
+            { label: 'Within 3 months', value: 'lt3' },
+            { label: '3–6 months', value: '3to6' },
+            { label: '6–12 months', value: '6to12' },
+            { label: 'No set date', value: 'none' },
+          ],
+        },
+        {
+          id: 'P4', part: 1, partLabel: 'Goal', type: 'choice', required: true,
+          text: "What's your main role?",
+          options: [
+            { label: 'Handler', value: 'handler' },
+            { label: 'Cutter', value: 'cutter' },
+            { label: 'Hybrid', value: 'hybrid' },
+          ],
+        },
+        {
+          id: 'P5', part: 1, partLabel: 'Goal', type: 'choice', required: true,
+          text: 'What level do you play at now?',
+          options: [
+            { label: 'Social/league', value: 'social' },
+            { label: 'Club Div 2', value: 'div2' },
+            { label: 'Club Div 1', value: 'div1' },
+            { label: 'National/elite', value: 'elite' },
+          ],
+        },
+      ],
+
+      // ── Part 2: Training audit (scored) ──────────────────────────
+      // metIndexes = which option index(es) count as "meeting the standard"
+      part2: [
+        {
+          // Unscored and not itself a "standard" (no standardLabel, so
+          // computeStandards() skips it) — exists purely to personalise the
+          // TA4/TA6 standards below to how much the athlete already plays.
+          id: 'PF', part: 2, partLabel: 'Training audit', type: 'choice',
+          text: 'How many times per week do you currently play ultimate (games, training or league)?',
+          options: [
+            { label: '0', value: 0 },
+            { label: '1', value: 1 },
+            { label: '2', value: 2 },
+            { label: '3+', value: 3 },
+          ],
+        },
+        {
+          id: 'TA1', part: 2, partLabel: 'Training audit', type: 'choice', category: 'structure',
+          text: 'Which best describes your strength training?',
+          standardLabel: 'Ultimate-specific strength program', metIndexes: [3],
+          options: [
+            { label: 'None', value: 0 },
+            { label: 'Workouts I make up on the day', value: 1 },
+            { label: 'A general gym program', value: 2 },
+            { label: 'An ultimate-specific program', value: 4 },
+          ],
+        },
+        {
+          id: 'TA2', part: 2, partLabel: 'Training audit', type: 'choice', category: 'athleticism',
+          text: 'How many strength sessions do you do per week?',
+          standardLabel: '2+ strength sessions a week', metIndexes: [2, 3],
+          options: [
+            { label: '0', value: 0 },
+            { label: '1', value: 2 },
+            { label: '2', value: 4 },
+            { label: '3+', value: 4 },
+          ],
+        },
+        {
+          id: 'TA3', part: 2, partLabel: 'Training audit', type: 'choice', category: 'structure',
+          text: 'How does your strength training change week to week?',
+          standardLabel: 'Planned progression', metIndexes: [3],
+          options: [
+            { label: "I don't strength train", value: 0 },
+            { label: 'It stays the same', value: 1 },
+            { label: 'I add weight when it feels easy', value: 2 },
+            { label: 'It follows a planned progression', value: 4 },
+          ],
+        },
+        {
+          id: 'TA4', part: 2, partLabel: 'Training audit', type: 'choice', category: 'athleticism',
+          text: 'How often do you do high-speed running on purpose (sprinting at 90%+ of your max)?',
+          standardLabel: 'High-speed running 2x a week', metIndexes: [3],
+          // Personalised to playing load: low-frequency players need 2x/week
+          // of dedicated top-speed work, higher-frequency players need 1x —
+          // but never 0, since pure top-speed sprinting rarely happens
+          // during ultimate itself, no matter how much you play.
+          dynamicLabel: playFreq => {
+            const target = computeTopSpeedTarget(playFreq);
+            return 'High-speed running, ' + target + 'x a week for your playing load';
+          },
+          dynamicMinMetIndex: playFreq => (computeTopSpeedTarget(playFreq) <= 1 ? 2 : 3),
+          options: [
+            { label: 'Rarely or never', value: 0 },
+            { label: 'Only at games or team training', value: 1 },
+            { label: 'Once a week', value: 2 },
+            { label: 'Twice a week or more', value: 4 },
+          ],
+        },
+        {
+          id: 'TA5', part: 2, partLabel: 'Training audit', type: 'choice', category: 'athleticism',
+          text: 'How often do you do repeat-sprint conditioning, like shuttles or MAS running?',
+          standardLabel: 'Repeat-sprint conditioning 2x a week', metIndexes: [3],
+          options: [
+            { label: 'Rarely or never', value: 0 },
+            { label: 'Less than weekly', value: 1 },
+            { label: 'Once a week', value: 2 },
+            { label: 'Twice a week or more', value: 4 },
+          ],
+        },
+        {
+          id: 'TA6', part: 2, partLabel: 'Training audit', type: 'choice', category: 'athleticism',
+          text: 'How often do you train ultimate-specific acceleration and change of direction?',
+          standardLabel: 'Acceleration & change of direction 2x a week', metIndexes: [3],
+          // Personalised: target = enough accel/COD work that (playing +
+          // accel/COD) sessions add up to 3 a week. Unlike top-speed work,
+          // this CAN drop to 0 extra sessions needed at high playing
+          // frequency, since games themselves provide real COD stimulus.
+          dynamicLabel: playFreq => {
+            const target = computeAccelCodTarget(playFreq);
+            return target <= 0
+              ? 'Acceleration & change of direction (covered by your playing load)'
+              : 'Acceleration & change of direction, ' + target + 'x a week for your playing load';
+          },
+          dynamicMinMetIndex: playFreq => {
+            const target = computeAccelCodTarget(playFreq);
+            return target <= 0 ? -1 : target === 1 ? 2 : 3;
+          },
+          options: [
+            { label: 'Rarely or never', value: 0 },
+            { label: 'Less than weekly', value: 1 },
+            { label: 'Once a week', value: 2 },
+            { label: 'Twice a week or more', value: 4 },
+          ],
+        },
+        {
+          id: 'TA7', part: 2, partLabel: 'Training audit', type: 'choice', category: 'skill',
+          // Not just a frequency check — the real gap is usually not doing
+          // it at ALL weekly, it's doing it self-directed with no plan. The
+          // top tier requires structure; self-directed-but-weekly lands
+          // yellow (a decent starting point) rather than being lumped in
+          // with "rarely or never".
+          text: 'How do you practise throwing outside team training?',
+          standardLabel: 'Structured throwing practice, weekly', metIndexes: [3],
+          options: [
+            { label: 'Rarely or never', value: 0 },
+            { label: 'Self-directed, less than weekly', value: 1 },
+            { label: 'Self-directed, at least weekly', value: 2 },
+            { label: 'Structured (specific drills or a coached plan), at least weekly', value: 4 },
+          ],
+        },
+        {
+          id: 'TA8', part: 2, partLabel: 'Training audit', type: 'choice', category: 'skill',
+          text: 'How do you train cutting or defensive footwork on its own?',
+          standardLabel: 'Structured footwork training, weekly', metIndexes: [3],
+          options: [
+            { label: 'Rarely or never', value: 0 },
+            { label: 'Self-directed, less than weekly', value: 1 },
+            { label: 'Self-directed, at least weekly', value: 2 },
+            { label: 'Structured (specific drills or a coached plan), at least weekly', value: 4 },
+          ],
+        },
+        {
+          id: 'TA9', part: 2, partLabel: 'Training audit', type: 'choice', category: 'gameiq',
+          text: 'How often do you review footage of your own games?',
+          standardLabel: 'Regular footage review', metIndexes: [3],
+          options: [
+            { label: 'Never', value: 0 },
+            { label: 'Once or twice a season', value: 1 },
+            { label: 'Monthly', value: 2 },
+            { label: 'After most tournaments', value: 4 },
+          ],
+        },
+        {
+          id: 'TA10', part: 2, partLabel: 'Training audit', type: 'choice', category: 'feedback',
+          text: 'How often do you get expert feedback on your skills and movement?',
+          standardLabel: 'Regular expert feedback', metIndexes: [3],
+          options: [
+            { label: 'Never', value: 0 },
+            { label: 'Once or twice a year', value: 1 },
+            { label: 'A few times a season', value: 2 },
+            { label: 'At least monthly', value: 4 },
+          ],
+        },
+        {
+          // Still asked and still scored (feeds the Feedback & accountability
+          // category) but no longer its own checklist row — it was
+          // redundant next to TA10's "Regular expert feedback" standard.
+          id: 'TA11', part: 2, partLabel: 'Training audit', type: 'choice', category: 'feedback',
+          text: 'When you get feedback, what do you leave with?',
+          options: [
+            { label: "I don't get feedback", value: 0 },
+            { label: 'General tips', value: 1 },
+            { label: 'A rough idea of what to work on', value: 2 },
+            { label: 'A specific plan and someone checking in', value: 4 },
+          ],
+        },
+        {
+          // Reframed from "do you complete your planned sessions" (a weak
+          // signal — completing sessions means nothing if they were never
+          // structured in the first place) to "do you actually have a
+          // structured plan at all".
+          id: 'TA12', part: 2, partLabel: 'Training audit', type: 'choice', category: 'structure',
+          text: 'Which best describes how your week of training is organised?',
+          standardLabel: 'Following a structured, ultimate-specific plan', metIndexes: [3],
+          options: [
+            { label: "I don't have a plan — I train based on how I feel", value: 0 },
+            { label: "I have a rough idea, but it's not written down", value: 1 },
+            { label: 'I follow a general plan, but not specific to ultimate', value: 2 },
+            { label: 'I follow a structured, ultimate-specific plan', value: 4 },
+          ],
+        },
+        {
+          id: 'TA13', part: 2, partLabel: 'Training audit', type: 'choice', category: 'structure',
+          text: 'Does your training change across the year (off-season, pre-season, in-season, peaking for tryouts)?',
+          standardLabel: 'Training that progresses with you through the year', metIndexes: [2],
+          options: [
+            { label: "No, it's the same all year", value: 0 },
+            { label: 'Somewhat, but not planned', value: 2 },
+            { label: 'Yes, planned around my calendar', value: 4 },
+          ],
+        },
+      ],
+
+      // ── Part 3: Your game (scored, shuffled once per session) ─────
+      part3: [
+        { id: 'YG1', part: 3, partLabel: 'Your game', type: 'scale5', category: 'athleticism', text: "I'm explosive over my first 3 to 5 steps." },
+        { id: 'YG2', part: 3, partLabel: 'Your game', type: 'scale5', category: 'athleticism', text: 'I change direction hard off either leg with full confidence.' },
+        { id: 'YG3', part: 3, partLabel: 'Your game', type: 'scale5', category: 'athleticism', text: 'On a long point, my third or fourth hard cut is still close to full speed.' },
+        { id: 'YG4', part: 3, partLabel: 'Your game', type: 'scale5', category: 'athleticism', text: 'My legs hold up in the last game of a tournament day.' },
+        { id: 'YG5', part: 3, partLabel: 'Your game', type: 'scale5', category: 'skill', text: 'I can hit an inside or around break against a mark in games, not just in warm-ups.' },
+        { id: 'YG6', part: 3, partLabel: 'Your game', type: 'scale5', category: 'skill', text: 'My hucks land where I intend, with a catchable flight.' },
+        { id: 'YG7', part: 3, partLabel: 'Your game', type: 'scale5', category: 'skill', text: 'My footwork gets me separation without relying on raw speed.' },
+        { id: 'YG8', part: 3, partLabel: 'Your game', type: 'scale5', category: 'skill', text: 'On defence, my positioning lets me stay with my player while seeing the disc.' },
+        { id: 'YG9', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: 'I recognise the patterns that keep coming up in games, like a defender fronting me, and know how to beat them.' },
+        { id: 'YG10', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: "My cuts arrive on time with the thrower's window, not early or late." },
+        { id: 'YG11', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: 'I know where block chances come from, and I get blocks rather than just staying close.' },
+        { id: 'YG12', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: "Before each point, I know my job and what our line is trying to do." },
+        { id: 'YG13', part: 3, partLabel: 'Your game', type: 'scale5', category: 'feedback', text: 'I can see my training gains showing up in how I play in games.' },
+      ],
+    };
+
+    // Category → the question ids whose points count toward it.
+    // TA1 deliberately appears in both athleticism and structure — see the
+    // comment on ASSESSMENT.categories.athleticism above.
+    const CATEGORY_ITEMS = {
+      athleticism: ['TA1', 'TA2', 'TA4', 'TA5', 'TA6', 'YG1', 'YG2', 'YG3', 'YG4'],
+      skill:       ['TA7', 'TA8', 'YG5', 'YG6', 'YG7', 'YG8'],
+      gameiq:      ['TA9', 'YG9', 'YG10', 'YG11', 'YG12'],
+      structure:   ['TA1', 'TA3', 'TA12', 'TA13'],
+      feedback:    ['TA10', 'TA11', 'YG13'],
+    };
+
+    // ════════════════════════════════════════════════════════════════
+    // Scoring engine — pure functions of an `answers` map, so the same
+    // code powers the on-screen results and the self-tests below.
+    // answers[id] = { index, value, label } (index/value omitted for P1's
+    // free text; value is the raw text for P1, the 1–10 number for P2).
+    // ════════════════════════════════════════════════════════════════
+
+    function computeCategoryScores(answers) {
+      const scores = {};
+      for (const cat in CATEGORY_ITEMS) {
+        const items = CATEGORY_ITEMS[cat];
+        const sum = items.reduce((s, id) => s + (answers[id] ? answers[id].value : 0), 0);
+        scores[cat] = Math.round((sum / ASSESSMENT.categories[cat].max) * 100);
+      }
+      // Hard cap, not just a point discount: without an actual
+      // ultimate-specific strength program (TA1's top answer), Athleticism
+      // caps at the top of "Developing" (69) — NOT "Solid" (70-84). Session
+      // frequency alone, with no real program behind it, is a real gap, not
+      // a near-miss — it shouldn't read as a positive/green rating.
+      const ta1 = answers['TA1'];
+      if (!ta1 || ta1.index < 3) {
+        scores.athleticism = Math.min(scores.athleticism, 69);
+      }
+      return scores;
+    }
+
+    function computeOverall(categoryScores) {
+      const vals = Object.values(categoryScores);
+      return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+    }
+
+    // playFreq (0,1,2,3="3+") → how many dedicated top-speed sessions/week
+    // are the target. Floors at 1 — pure top-speed sprinting rarely happens
+    // during ultimate itself, so it's never fully replaced by playing more.
+    function computeTopSpeedTarget(playFreq) {
+      return playFreq <= 1 ? 2 : 1;
+    }
+
+    // playFreq → how many dedicated acceleration/COD sessions/week are the
+    // target, so that (playing + accel/COD) adds up to 3 sessions. Floors
+    // at 0 — games themselves provide real COD stimulus, so a high playing
+    // load can cover this entirely.
+    function computeAccelCodTarget(playFreq) {
+      return Math.max(0, 3 - playFreq);
+    }
+
+    // index/minMetIndex → 'green' (met) / 'yellow' (one step below the
+    // standard — a decent starting point, not a priority) / 'red' (two or
+    // more steps below). minMetIndex < 0 means "always met" (e.g. accel/COD
+    // fully covered by playing load).
+    function tierFromIndex(index, minMetIndex) {
+      if (minMetIndex < 0 || index >= minMetIndex) return 'green';
+      if (index === minMetIndex - 1) return 'yellow';
+      return 'red';
+    }
+
+    function computeStandards(answers) {
+      const playFreq = answers['PF'] ? answers['PF'].value : 0;
+      return ASSESSMENT.part2
+        .filter(q => q.standardLabel) // PF itself isn't a standard
+        .map(q => {
+          const ans = answers[q.id];
+          const minMetIndex = q.dynamicMinMetIndex ? q.dynamicMinMetIndex(playFreq) : Math.min.apply(null, q.metIndexes);
+          const tier = ans ? tierFromIndex(ans.index, minMetIndex) : 'red';
+          const label = q.dynamicLabel ? q.dynamicLabel(playFreq) : q.standardLabel;
+          return { id: q.id, label: label, tier: tier, met: tier === 'green', userLabel: ans ? ans.label : '—' };
+        });
+    }
+
+    // Short plain-language summary of the standards checklist, for the
+    // block between the checklist and "How to close your gaps" — distinct
+    // from the category-level "Your Top 3 Gaps" above it, this one calls
+    // out specific training behaviors rather than broad categories.
+    function computeStandardsSummary(standards) {
+      const red = standards.filter(s => s.tier === 'red').map(s => s.label);
+      const yellow = standards.filter(s => s.tier === 'yellow').map(s => s.label);
+      if (red.length > 0) {
+        return 'Right now, your biggest gaps are: ' + red.join('; ') + '. Fixing these first will move the needle fastest.';
+      }
+      if (yellow.length > 0) {
+        return "You've got the fundamentals in place — these are still just developing: " + yellow.join('; ') + '. Tightening these up is what gets you the rest of the way.';
+      }
+      return "You're meeting every training standard we track. From here, your biggest gains come from feedback and game-specific coaching, not more training volume.";
+    }
+
+    function computeSessionEstimate(answers) {
+      const ta2 = answers['TA2'];
+      let total = ta2 ? ta2.index : 0; // 0,1,2,3 directly represents "0,1,2,3+" sessions
+      ['TA4', 'TA5', 'TA6', 'TA7', 'TA8'].forEach(id => {
+        const a = answers[id];
+        if (!a) return;
+        if (a.index === 2) total += 1;
+        else if (a.index === 3) total += 2;
+      });
+      return total;
+    }
+
+    // Shared between the on-page checklist and the PDF checklist.
+    const TIER_ICON = { green: '✓', yellow: '●', red: '✗' };
+    const TIER_LABEL = { green: 'Met', yellow: 'Developing', red: 'Not yet' };
+    const TIER_COLOR = { green: '#16A34A', yellow: '#D97706', red: '#DC2626' };
+
+    function bandFor(score) {
+      if (score >= 85) return { key: 'strength', label: 'Strength', color: '#16A34A' };
+      if (score >= 70) return { key: 'solid', label: 'Solid', color: '#0D9488' };
+      if (score >= 50) return { key: 'developing', label: 'Developing', color: '#D97706' };
+      return { key: 'priority', label: 'Priority gap', color: '#DC2626' };
+    }
+
+    function computeFlag(categoryScores, answers, sessionEstimate) {
+      if (categoryScores.athleticism >= 70 && (categoryScores.skill < 55 || categoryScores.gameiq < 55)) {
+        return { key: 'fitNotShowing', message: "Your physical base is ahead of your game. The gains aren't reaching the field yet." };
+      }
+      const yg13 = answers['YG13'];
+      if (yg13 && yg13.index <= 1 && sessionEstimate >= 4) {
+        return { key: 'workingHard', message: "You're putting in the work, but you can't feel it in games. That points to missing structure and feedback, not missing effort." };
+      }
+      return null;
+    }
+
+    function computeTopGaps(categoryScores, answers) {
+      const order = ASSESSMENT.tieBreakOrder;
+      const items = Object.keys(categoryScores).map(key => ({
+        key: key,
+        score: categoryScores[key],
+        tie: order.indexOf(key),
+      }));
+      items.sort((a, b) => a.score - b.score || a.tie - b.tie);
+      const gaps = items.slice(0, 3).map(i => Object.assign(
+        { key: i.key, score: i.score, label: ASSESSMENT.categories[i.key].label, band: bandFor(i.score) },
+        ASSESSMENT.gapCopy[i.key]
+      ));
+
+      // Force an ultimate-specific strength program to the #1 gap whenever
+      // it's the reason Athleticism is capped (see computeCategoryScores).
+      // That's the core thing the program offers, so it should never get
+      // buried behind an aggregate Athleticism score the cap itself is
+      // already flagging as not fully trustworthy — a merely-okay score
+      // from session frequency alone shouldn't push this out of the top 3.
+      const ta1 = answers ? answers['TA1'] : null;
+      if (!ta1 || ta1.index < 3) {
+        const athleticismGap = {
+          key: 'athleticism',
+          score: categoryScores.athleticism,
+          label: ASSESSMENT.categories.athleticism.label,
+          band: bandFor(categoryScores.athleticism),
+          whatItLooksLike: "You're putting in real time, but without an ultimate-specific strength and conditioning program behind it, that time isn't converting into the explosiveness, speed and durability that show up on the field.",
+          howToCloseIt: "A structured, ultimate-specific strength and conditioning program — not generic gym workouts — built around the movements and demands of ultimate.",
+        };
+        return [athleticismGap].concat(gaps.filter(g => g.key !== 'athleticism')).slice(0, 3);
+      }
+
+      return gaps;
+    }
+
+    // Bracket thresholds are tuned for the CURRENT standards total (12, see
+    // computeStandards — TA1-TA13 minus TA11, which was folded into TA10).
+    // If the standards checklist grows or shrinks again, re-tune these.
+    function computeGoalHeadline(answers, standardsMetCount, totalStandards) {
+      const p1 = answers['P1'] ? answers['P1'].value : '';
+      const p2 = answers['P2'] ? answers['P2'].value : '';
+      const p3 = answers['P3'];
+      let line;
+      if (standardsMetCount <= 4) {
+        line = "Your training isn't set up for this goal yet. The gaps below are why it feels further away than it should.";
+      } else if (standardsMetCount <= 7) {
+        line = "You're doing some things right, but the gaps below are holding back your progress.";
+      } else if (standardsMetCount <= 10) {
+        line = "Your base is solid. Closing the last few gaps is what separates you from the next level.";
+      } else {
+        line = "Your training is close to the standard. Your biggest gains now come from feedback on your game.";
+      }
+      let extra = null;
+      if (p3 && p3.value === 'lt3' && standardsMetCount <= 7) {
+        extra = "With under 3 months to go, which gaps you close first matters.";
+      }
+      return { goal: p1, importance: p2, standardsMetCount: standardsMetCount, totalStandards: totalStandards, line: line, extra: extra };
+    }
+
+    function computeResults(answers) {
+      const categoryScores = computeCategoryScores(answers);
+      const overall = computeOverall(categoryScores);
+      const standards = computeStandards(answers);
+      const standardsMetCount = standards.filter(s => s.met).length;
+      const standardsSummary = computeStandardsSummary(standards);
+      const sessionEstimate = computeSessionEstimate(answers);
+      const flag = computeFlag(categoryScores, answers, sessionEstimate);
+      const topGaps = computeTopGaps(categoryScores, answers);
+      const goalHeadline = computeGoalHeadline(answers, standardsMetCount, standards.length);
+      return { categoryScores, overall, standards, standardsMetCount, standardsSummary, sessionEstimate, flag, topGaps, goalHeadline };
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // Quiz flow / rendering
+    // ════════════════════════════════════════════════════════════════
+
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    let allQuestions = [];
+    let state = {};
+
+    function resetState() {
+      allQuestions = ASSESSMENT.part1.concat(ASSESSMENT.part2, shuffle(ASSESSMENT.part3));
+      state = { screen: 'intro', qIndex: 0, answers: {}, name: '' };
+    }
+    resetState();
+
+    const app = document.getElementById('app');
+
+    // onReady fires AFTER the new HTML is actually in the DOM — the fade-out
+    // path delays that swap by 160ms, so event wiring must happen inside
+    // this callback rather than right after calling transitionTo(), or it
+    // attaches listeners to the screen that's on its way out.
+    function transitionTo(html, onReady) {
+      const current = app.firstElementChild;
+      if (!current) {
+        app.innerHTML = html;
+        if (onReady) onReady();
+        return;
+      }
+      current.classList.add('qf-fade-out');
+      setTimeout(() => {
+        app.innerHTML = html;
+        const next = app.firstElementChild;
+        if (next) {
+          next.classList.add('qf-fade-in');
+          requestAnimationFrame(() => next.classList.add('qf-fade-in-active'));
+          setTimeout(() => next.classList.remove('qf-fade-in', 'qf-fade-in-active'), 220);
+        }
+        if (onReady) onReady();
+      }, 160);
+    }
+
+    function cardWrap(innerHtml) {
+      return '<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8">' + innerHtml + '</div>';
+    }
+
+    function progressHtml(stepNumber) {
+      // Total steps = every question + the name screen. Derived from
+      // allQuestions.length rather than hardcoded, so adding/removing a
+      // question (like PF below) never silently breaks the progress bar.
+      const totalSteps = allQuestions.length + 1;
+      const pct = Math.round((stepNumber / totalSteps) * 100);
+      return '' +
+        '<div class="progress-track mb-5"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+    }
+
+    function partDotsHtml(currentPart) {
+      const parts = [
+        { n: 1, label: 'Goal' },
+        { n: 2, label: 'Training audit' },
+        { n: 3, label: 'Your game' },
+      ];
+      return '<div class="flex items-center justify-center gap-3 mb-6 pb-5 border-b border-gray-100 text-xs sm:text-sm">' +
+        parts.map((p, i) => {
+          const active = p.n === currentPart;
+          const done = p.n < currentPart;
+          const cls = active ? 'font-bold text-brand' : done ? 'font-medium text-gray-400' : 'font-medium text-gray-300';
+          const dotCls = active ? 'bg-brand' : done ? 'bg-gray-300' : 'bg-gray-200';
+          return '<span class="flex items-center gap-1.5 ' + cls + '"><span class="w-2 h-2 rounded-full ' + dotCls + '"></span>' + p.label + '</span>' +
+            (i < parts.length - 1 ? '<span class="text-gray-300">·</span>' : '');
+        }).join('') +
+        '</div>';
+    }
+
+    function backButtonHtml(enabled) {
+      if (!enabled) return '';
+      return '<button type="button" id="back-btn" class="text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors mb-4">← Back</button>';
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function render() {
+      if (state.screen === 'intro') return renderIntro();
+      if (state.screen === 'question') return renderQuestion();
+      if (state.screen === 'name') return renderName();
+      if (state.screen === 'results') return renderResults();
+    }
+
+    function renderIntro() {
+      const html = cardWrap(
+        '<div class="text-center">' +
+        '<h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight mb-3">' + escapeHtml(ASSESSMENT.intro.heading) + '</h1>' +
+        '<p class="text-base text-gray-500 leading-relaxed mb-7">' + escapeHtml(ASSESSMENT.intro.sub) + '</p>' +
+        '<button type="button" id="start-btn" class="w-full bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-lg">' + ASSESSMENT.intro.button + '</button>' +
+        '</div>'
+      );
+      transitionTo(html, () => {
+        document.getElementById('start-btn').addEventListener('click', () => {
+          state.screen = 'question';
+          state.qIndex = 0;
+          render();
+        });
+      });
+    }
+
+    function renderQuestion() {
+      const q = allQuestions[state.qIndex];
+      const stepNumber = state.qIndex + 1; // 1-indexed, out of 32
+      const saved = state.answers[q.id];
+
+      let bodyHtml = '';
+      if (q.type === 'text') {
+        bodyHtml =
+          '<form id="q-form">' +
+          '<input type="text" id="q-text-input" maxlength="' + q.maxLength + '" placeholder="' + escapeHtml(q.placeholder || '') + '" value="' + escapeHtml(saved ? saved.value : '') + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition mb-4" />' +
+          '<button type="submit" id="q-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm disabled:opacity-40 disabled:cursor-not-allowed" ' + (saved && saved.value ? '' : 'disabled') + '>Next →</button>' +
+          '</form>';
+      } else if (q.type === 'scale10') {
+        const nums = [1,2,3,4,5,6,7,8,9,10];
+        bodyHtml =
+          '<div class="grid grid-cols-5 gap-2" id="opts">' +
+          nums.map(n => '<button type="button" class="num-btn' + (saved && saved.value === n ? ' selected' : '') + '" data-val="' + n + '">' + n + '</button>').join('') +
+          '</div>' +
+          '<div class="flex justify-between text-xs text-gray-400 mt-2 px-1"><span>Not important</span><span>Critical</span></div>';
+      } else {
+        // 'choice' (unscored P3–P5, or scored TA) and 'scale5' (YG) share
+        // the same big-stacked-button rendering.
+        const options = q.type === 'scale5' ? ASSESSMENT.scale5 : q.options;
+        bodyHtml =
+          (q.type === 'scale5' ? '<p class="text-sm text-gray-400 mb-3">How true is this for you?</p>' : '') +
+          '<div class="space-y-2.5" id="opts">' +
+          options.map((opt, idx) => {
+            const isSelected = saved && saved.index === idx;
+            return '<button type="button" class="opt-btn' + (isSelected ? ' selected' : '') + '" data-idx="' + idx + '">' + escapeHtml(opt.label) + '</button>';
+          }).join('') +
+          '</div>';
+      }
+
+      const html = cardWrap(
+        backButtonHtml(true) +
+        progressHtml(stepNumber) +
+        partDotsHtml(q.part) +
+        '<p class="text-xs font-semibold text-brand uppercase tracking-widest mb-2">Part ' + q.part + ' of 3 · ' + q.partLabel + '</p>' +
+        '<h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-snug mb-5">' + escapeHtml(q.text) + '</h2>' +
+        bodyHtml
+      );
+
+      transitionTo(html, () => wireQuestionEvents(q));
+    }
+
+    function wireQuestionEvents(q) {
+      const backBtn = document.getElementById('back-btn');
+      if (backBtn) backBtn.addEventListener('click', goBack);
+
+      if (q.type === 'text') {
+        const input = document.getElementById('q-text-input');
+        const nextBtn = document.getElementById('q-next-btn');
+        input.addEventListener('input', () => {
+          nextBtn.disabled = input.value.trim().length === 0;
+        });
+        document.getElementById('q-form').addEventListener('submit', e => {
+          e.preventDefault();
+          const val = input.value.trim();
+          if (!val) return;
+          state.answers[q.id] = { value: val };
+          goNext();
+        });
+        input.focus();
+        return;
+      }
+
+      const optsContainer = document.getElementById('opts');
+      const buttons = optsContainer.querySelectorAll('button');
+
+      if (q.type === 'scale10') {
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const val = parseInt(btn.getAttribute('data-val'), 10);
+            buttons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            state.answers[q.id] = { value: val };
+            buttons.forEach(b => b.disabled = true);
+            setTimeout(() => { buttons.forEach(b => b.disabled = false); goNext(); }, 250);
+          });
+        });
+        return;
+      }
+
+      // 'choice' / 'scale5'
+      const options = q.type === 'scale5' ? ASSESSMENT.scale5 : q.options;
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-idx'), 10);
+          const opt = options[idx];
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          state.answers[q.id] = { index: idx, value: opt.value, label: opt.label };
+          buttons.forEach(b => b.disabled = true);
+          setTimeout(() => { buttons.forEach(b => b.disabled = false); goNext(); }, 250);
+        });
+      });
+    }
+
+    function renderName() {
+      const html = cardWrap(
+        backButtonHtml(true) +
+        progressHtml(allQuestions.length + 1) +
+        '<h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-snug mb-2">' + escapeHtml(ASSESSMENT.nameScreen.heading) + '</h2>' +
+        '<p class="text-sm text-gray-500 mb-5">' + escapeHtml(ASSESSMENT.nameScreen.sub) + '</p>' +
+        '<form id="name-form">' +
+        '<input type="text" id="name-input" required placeholder="First name" value="' + escapeHtml(state.name) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition mb-4" />' +
+        '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">' + ASSESSMENT.nameScreen.button + '</button>' +
+        '</form>'
+      );
+      transitionTo(html, () => {
+        document.getElementById('back-btn').addEventListener('click', goBack);
+        const input = document.getElementById('name-input');
+        document.getElementById('name-form').addEventListener('submit', e => {
+          e.preventDefault();
+          const val = input.value.trim();
+          if (!val) return;
+          state.name = val;
+          state.screen = 'results';
+          render();
+        });
+        input.focus();
+      });
+    }
+
+    function goNext() {
+      if (state.qIndex < allQuestions.length - 1) {
+        state.qIndex += 1;
+        render();
+      } else {
+        state.screen = 'name';
+        render();
+      }
+    }
+
+    function goBack() {
+      if (state.screen === 'name') {
+        state.screen = 'question';
+        state.qIndex = allQuestions.length - 1;
+        render();
+        return;
+      }
+      if (state.screen === 'question') {
+        if (state.qIndex === 0) {
+          state.screen = 'intro';
+        } else {
+          state.qIndex -= 1;
+        }
+        render();
+      }
+    }
+
+    // ── Results screen ───────────────────────────────────────────────
+
+    function barRow(label, score, band) {
+      return '' +
+        '<div class="mb-3">' +
+        '<div class="flex items-center justify-between text-sm mb-1">' +
+        '<span class="font-semibold text-gray-700">' + escapeHtml(label) + '</span>' +
+        '<span class="font-bold" style="color:' + band.color + '">' + score + '/100 · ' + band.label + '</span>' +
+        '</div>' +
+        '<div class="cat-bar-track"><div class="cat-bar-fill" style="width:' + score + '%;background:' + band.color + '"></div></div>' +
+        '</div>';
+    }
+
+    function renderResults() {
+      const r = computeResults(state.answers);
+      const name = state.name;
+      const role = state.answers['P4'] ? state.answers['P4'].label : '—';
+      const level = state.answers['P5'] ? state.answers['P5'].label : '—';
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      const cats = ASSESSMENT.categories;
+
+      let html = cardWrap(
+        '<div class="text-center mb-6">' +
+        '<p class="text-xs font-semibold text-brand uppercase tracking-widest mb-2">Your Results</p>' +
+        '<h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight">' + escapeHtml(name) + "'s Skill Assessment</h2>" +
+        '<p class="text-sm text-gray-400 mt-1">' + escapeHtml(role) + ' · ' + escapeHtml(level) + ' · ' + today + '</p>' +
+        '</div>' +
+
+        '<div class="bg-brand-light border border-orange-100 rounded-2xl p-5 mb-6">' +
+        '<p class="text-base text-gray-900 leading-relaxed">Your goal: <b>' + escapeHtml(r.goalHeadline.goal) + '</b>. You rated it <b>' + r.goalHeadline.importance + '/10</b>. You\'re meeting <b>' + r.goalHeadline.standardsMetCount + ' of ' + r.goalHeadline.totalStandards + '</b> training standards.</p>' +
+        '<p class="text-base text-gray-900 leading-relaxed mt-2">' + escapeHtml(r.goalHeadline.line) + '</p>' +
+        (r.goalHeadline.extra ? '<p class="text-base text-gray-900 leading-relaxed mt-2 font-semibold">' + escapeHtml(r.goalHeadline.extra) + '</p>' : '') +
+        '</div>' +
+
+        '<div class="text-center mb-7">' +
+        '<p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Overall Score</p>' +
+        '<p class="text-5xl font-extrabold" style="color:' + bandFor(r.overall).color + '">' + r.overall + '<span class="text-xl text-gray-300">/100</span></p>' +
+        '</div>' +
+
+        '<div class="mb-7">' +
+        '<p class="text-sm font-bold text-gray-900 mb-3">Your game</p>' +
+        barRow(cats.athleticism.label, r.categoryScores.athleticism, bandFor(r.categoryScores.athleticism)) +
+        barRow(cats.skill.label, r.categoryScores.skill, bandFor(r.categoryScores.skill)) +
+        barRow(cats.gameiq.label, r.categoryScores.gameiq, bandFor(r.categoryScores.gameiq)) +
+        '<p class="text-sm font-bold text-gray-900 mb-3 mt-5">Your training</p>' +
+        barRow(cats.structure.label, r.categoryScores.structure, bandFor(r.categoryScores.structure)) +
+        barRow(cats.feedback.label, r.categoryScores.feedback, bandFor(r.categoryScores.feedback)) +
+        '</div>' +
+
+        (r.flag ? '<div class="bg-[#1f223c] rounded-2xl p-5 mb-7"><p class="text-white font-semibold leading-relaxed">' + escapeHtml(r.flag.message) + '</p></div>' : '') +
+
+        '<div class="mb-7">' +
+        '<p class="text-sm font-bold text-gray-900 mb-3">Your top 3 gaps</p>' +
+        r.topGaps.map(g =>
+          '<div class="border border-gray-100 rounded-2xl p-4 mb-3">' +
+          '<div class="flex items-center justify-between mb-1">' +
+          '<p class="font-bold text-gray-900">' + escapeHtml(g.label) + '</p>' +
+          '<p class="font-bold text-sm" style="color:' + g.band.color + '">' + g.score + '/100 · ' + g.band.label + '</p>' +
+          '</div>' +
+          '<p class="text-sm text-gray-500 leading-relaxed">' + escapeHtml(g.whatItLooksLike) + '</p>' +
+          '</div>'
+        ).join('') +
+        '</div>' +
+
+        '<div class="mb-7">' +
+        '<p class="text-sm font-bold text-gray-900 mb-3">Training standards checklist</p>' +
+        '<div class="space-y-1.5">' +
+        r.standards.map(s =>
+          '<div class="flex items-start gap-2 text-sm py-1.5 border-b border-gray-50">' +
+          '<span class="font-bold flex-shrink-0" style="color:' + TIER_COLOR[s.tier] + '">' + TIER_ICON[s.tier] + '</span>' +
+          '<span class="text-gray-700"><span class="font-medium">' + escapeHtml(s.label) + '</span> — You: ' + escapeHtml(s.userLabel) + '</span>' +
+          '</div>'
+        ).join('') +
+        '</div>' +
+        '<p class="text-sm text-gray-600 leading-relaxed mt-4">' + escapeHtml(r.standardsSummary) + '</p>' +
+        '</div>' +
+
+        '<div class="mb-7">' +
+        '<p class="text-sm font-bold text-gray-900 mb-2">How to close your gaps</p>' +
+        '<p class="text-sm text-gray-600 leading-relaxed mb-3">To reach your goal, you need two things – a structured, ultimate-specific plan that fits your life, and feedback on the specific parts of your game holding you back.</p>' +
+        '<ul class="space-y-2">' +
+        r.topGaps.map(g => '<li class="flex gap-2 text-sm text-gray-700"><span class="text-brand font-bold flex-shrink-0">•</span><span>' + escapeHtml(g.howToCloseIt) + '</span></li>').join('') +
+        '</ul>' +
+        '</div>' +
+
+        '<button type="button" id="download-pdf-btn" class="w-full bg-white text-brand font-bold py-4 rounded-xl border-2 border-brand hover:bg-brand-light transition-colors text-base mb-5">DOWNLOAD MY REPORT (PDF)</button>' +
+
+        '<div class="bg-[#1f223c] rounded-2xl p-6 text-center">' +
+        '<p class="text-white text-base leading-relaxed mb-4">Based on what you\'ve shared, you could be a strong fit for one of our structured programs. Find out more below.</p>' +
+        '<a href="#qf-section" class="block w-full bg-brand text-white font-extrabold px-6 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm">SEE IF YOU\'RE A FIT ↓</a>' +
+        '</div>'
+      );
+
+      // ── "See if you're a fit" — ported from apply/index.html's
+      // qualification flow, same markup/IDs/logic, with two differences:
+      // (1) only 2 "what happens next" steps shown here (no "Get Onboarded"
+      // — that's a step on the apply page's own funnel, not relevant to a
+      // lead-magnet result), (2) first name is prefilled from the quiz's
+      // own name screen. This is a separate card below the results card,
+      // not nested inside it. The dark CTA box above now scrolls straight
+      // down into it (#qf-section) instead of linking out to /apply/ —
+      // keeps the athlete on this page rather than sending them elsewhere
+      // right as they're about to book.
+      html += qualificationSectionHtml(name);
+
+      transitionTo(html, () => {
+        document.getElementById('download-pdf-btn').addEventListener('click', () => downloadPdf(r, name, role, level, today));
+        wireQualificationSection();
+      });
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // "See if you're a fit" — qualification flow, adapted from
+    // apply/index.html (same contact-form/qualifying-question markup/IDs —
+    // see wireQualificationSection below for the JS half), but the
+    // "qualified" outcome links to the Skool about page instead of booking
+    // a Calendly call. Adding this means this page now DOES make one extra
+    // network call beyond jsPDF — submitting to the same Apps Script backend
+    // the apply page uses — a deliberate change from this page's original
+    // "nothing but jsPDF" design, now that it has its own qualification
+    // funnel.
+    // ════════════════════════════════════════════════════════════════
+
+    function qualificationSectionHtml(name) {
+      return '' +
+        '<div id="qf-section" class="mt-8 pt-8 border-t border-gray-200" style="scroll-margin-top: 80px;">' +
+        '<div class="text-center mb-8">' +
+        '<p class="text-xs font-semibold text-brand uppercase tracking-widest mb-2">What Happens Next</p>' +
+        '<h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight">See if you\'re a fit for one of our programs.</h2>' +
+        '</div>' +
+
+        '<div class="grid sm:grid-cols-2 gap-5 mb-10">' +
+        '<div class="text-center">' +
+        '<div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">1</div>' +
+        '<p class="text-base font-bold text-gray-900 mb-1">Fill Out The Form Below</p>' +
+        '<p class="text-sm text-gray-500 leading-relaxed">Answer a few questions below so we know you\'re the right kind of person.</p>' +
+        '</div>' +
+        '<div class="text-center">' +
+        '<div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">2</div>' +
+        '<p class="text-base font-bold text-gray-900 mb-1">See The Program Details</p>' +
+        '<p class="text-sm text-gray-500 leading-relaxed">Check out the full program and see if it\'s right for you.</p>' +
+        '</div>' +
+        '</div>' +
+
+        '<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" id="qf-card">' +
+
+        '<div class="flex items-center justify-center gap-2 mb-6 pb-5 border-b border-gray-100 text-sm">' +
+        '<span id="qf-progress-fill" class="flex items-center gap-1.5 font-bold text-brand">' +
+        '<span class="w-2 h-2 rounded-full bg-brand"></span>Fill out the form</span>' +
+        '<span class="text-gray-300">·</span>' +
+        '<span id="qf-progress-book" class="flex items-center gap-1.5 font-medium text-gray-400">' +
+        '<span class="w-2 h-2 rounded-full bg-gray-300"></span>See the program</span>' +
+        '</div>' +
+
+        '<div id="qf-contact" class="qf-step">' +
+        '<h3 class="text-xl font-bold text-gray-900 mb-3">See If You\'re A Fit</h3>' +
+        '<p class="text-base text-gray-500 leading-relaxed">Excited to share our ultimate-specific program with you.</p>' +
+        '<p class="text-base text-gray-500 leading-relaxed mb-5">Fill out the details below, and answer a few quick questions, to see if you\'re a fit.</p>' +
+        '<form id="qf-contact-form" class="space-y-3" novalidate>' +
+        '<input type="email" id="qf-email" required placeholder="Email address" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
+        '<div class="grid grid-cols-2 gap-3">' +
+        '<input type="text" id="qf-first" required placeholder="First name *" value="' + escapeHtml(name) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
+        '<input type="text" id="qf-last" required placeholder="Last name *" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
+        '</div>' +
+        '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">Next →</button>' +
+        '</form>' +
+        '</div>' +
+
+        '<div id="qf-questions" class="qf-step hidden">' +
+        '<h3 class="text-xl font-bold text-gray-900 mb-5">A few quick qualifying questions.</h3>' +
+        '<form id="qf-questions-form" class="space-y-4" novalidate>' +
+
+        '<div>' +
+        '<label for="qf-q1" class="block text-lg font-medium text-gray-900 mb-2">Which of the following best describes where you mostly play ultimate?</label>' +
+        '<div class="relative">' +
+        '<select id="qf-q1" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
+        '<option value="" disabled selected>Select</option>' +
+        '<option value="pickups">Pick ups</option>' +
+        '<option value="leagues">Leagues</option>' +
+        '<option value="club">Club trainings/tournaments</option>' +
+        '<option value="other">Other</option>' +
+        '</select>' +
+        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
+        '</div>' +
+        '</div>' +
+        '<div id="qf-q1-other" class="hidden">' +
+        '<label for="qf-q1-other-text" class="block text-lg font-medium text-gray-900 mb-2">Where do you mostly play?</label>' +
+        '<input type="text" id="qf-q1-other-text" placeholder="Tell us where..." class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 transition" />' +
+        '</div>' +
+
+        '<div>' +
+        '<label for="qf-q2" class="block text-lg font-medium text-gray-900 mb-2">Are you able to commit to a structured training plan to start making a bigger on-field impact in the next 90 days?</label>' +
+        '<div class="relative">' +
+        '<select id="qf-q2" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
+        '<option value="" disabled selected>Select</option>' +
+        '<option value="yes">Yes, I can commit</option>' +
+        '<option value="no">No, I can\'t commit</option>' +
+        '</select>' +
+        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
+        '</div>' +
+        '</div>' +
+
+        '<div>' +
+        '<label for="qf-q3" class="block text-lg font-medium text-gray-900 mb-2">Are you prepared to financially invest in a structured program?</label>' +
+        '<div class="relative">' +
+        '<select id="qf-q3" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
+        '<option value="" disabled selected>Select</option>' +
+        '<option value="yes">Yes, I\'m prepared to invest</option>' +
+        '<option value="no">No, I\'m not prepared to invest</option>' +
+        '</select>' +
+        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
+        '</div>' +
+        '</div>' +
+
+        '<div>' +
+        '<label for="qf-q4" class="block text-lg font-medium text-gray-900 mb-2">How soon are you looking to start?</label>' +
+        '<div class="relative">' +
+        '<select id="qf-q4" required class="qf-select w-full appearance-none bg-gray-50 border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 transition">' +
+        '<option value="" disabled selected>Select</option>' +
+        '<option value="immediate">Immediately, within the next 2 weeks</option>' +
+        '<option value="exploring">Within the next 60 days, still exploring</option>' +
+        '<option value="no_timeline">No set timeline</option>' +
+        '</select>' +
+        '<svg class="w-4 h-4 text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
+        '</div>' +
+        '</div>' +
+
+        '<div>' +
+        '<label for="qf-instagram" class="block text-lg font-medium text-gray-900 mb-2">What\'s your Instagram handle? (in case we need to reach you with any questions)</label>' +
+        '<input type="text" id="qf-instagram" placeholder="@yourhandle" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 transition" />' +
+        '</div>' +
+
+        '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">Apply →</button>' +
+        '</form>' +
+        '</div>' +
+
+        '<div id="qf-approved" class="qf-step hidden text-center">' +
+        '<div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
+        '<svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>' +
+        '</div>' +
+        '<p class="text-2xl font-extrabold text-gray-900 mb-3">Congrats - it looks like you could be a fit.</p>' +
+        '<p class="text-base text-gray-900 leading-relaxed max-w-sm mx-auto mb-7">Check out the full program details and see if it\'s the right next step for you.</p>' +
+        '<a href="https://www.skool.com/ultimate/about" target="_blank" class="block w-full bg-brand text-white font-extrabold px-6 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm">VIEW THE PROGRAM ON SKOOL</a>' +
+        '</div>' +
+
+        '</div>' + // #qf-card
+        '</div>' + // wrapper
+
+        '<div id="qf-popup" class="hidden fixed inset-0 z-50 items-center justify-center p-6">' +
+        '<div class="absolute inset-0 bg-gray-900/50" onclick="closeQfPopup()"></div>' +
+        '<div class="relative bg-white rounded-3xl shadow-xl border border-gray-100 max-w-sm w-full p-6 md:p-8 text-center">' +
+        '<button type="button" onclick="closeQfPopup()" aria-label="Close" class="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors">' +
+        '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+        '</button>' +
+        '<div id="qf-popup-icon" class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
+        '<svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+        '</div>' +
+        '<p id="qf-popup-title" class="text-xl font-extrabold text-gray-900 mb-3"></p>' +
+        '<p id="qf-popup-message" class="text-lg text-gray-900 leading-relaxed mb-6"></p>' +
+        '<div id="qf-popup-social">' +
+        '<p class="text-base font-semibold text-gray-700 mb-3">In the meantime, here\'s free stuff to keep leveling up:</p>' +
+        '<div class="flex flex-wrap items-center justify-center gap-3">' +
+        '<a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">YouTube</a>' +
+        '<a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">Instagram</a>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+    }
+
+    // Reset on every wireQualificationSection() call (i.e. every time the
+    // results screen renders) rather than once at page load — a "retake"
+    // should start the qualification flow fresh too.
+    let qfAnswers = {};
+    let qfEscapeListenerAdded = false;
+
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
+
+    function submitApplicationData(data) {
+      if (!APPS_SCRIPT_URL) return;
+      const params = new URLSearchParams(data);
+      fetch(APPS_SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' }).catch(() => {});
+    }
+
+    function setQfProgressPhase(phase) {
+      const fillEl = document.getElementById('qf-progress-fill');
+      const bookEl = document.getElementById('qf-progress-book');
+      const active = 'flex items-center gap-1.5 font-bold text-brand';
+      const inactive = 'flex items-center gap-1.5 font-medium text-gray-400';
+      fillEl.className = phase === 'book' ? inactive : active;
+      fillEl.querySelector('span').className = 'w-2 h-2 rounded-full ' + (phase === 'book' ? 'bg-gray-300' : 'bg-brand');
+      bookEl.className = phase === 'book' ? active : inactive;
+      bookEl.querySelector('span').className = 'w-2 h-2 rounded-full ' + (phase === 'book' ? 'bg-brand' : 'bg-gray-300');
+    }
+
+    function showQfStep(id) {
+      setQfProgressPhase(id === 'qf-approved' ? 'book' : 'fill');
+      const current = document.querySelector('#qf-card .qf-step:not(.hidden)');
+      const next = document.getElementById(id);
+      document.getElementById('qf-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      if (!current || current === next) {
+        next.classList.remove('hidden');
+        return;
+      }
+      current.classList.add('qf-fade-out');
+      setTimeout(() => {
+        current.classList.add('hidden');
+        current.classList.remove('qf-fade-out');
+        next.classList.remove('hidden');
+        next.classList.add('qf-fade-in');
+        requestAnimationFrame(() => next.classList.add('qf-fade-in-active'));
+        setTimeout(() => next.classList.remove('qf-fade-in', 'qf-fade-in-active'), 220);
+      }, 180);
+    }
+
+    function openQfPopup(reasonKey) {
+      document.getElementById('qf-popup-title').textContent = 'Not quite the right fit, right now.';
+      document.getElementById('qf-popup-message').textContent = "Thanks for applying. Based on your answers, it looks like this might not be the right fit for you right now — and that's okay.";
+      document.getElementById('qf-popup').classList.remove('hidden');
+      document.getElementById('qf-popup').classList.add('flex');
+    }
+
+    function closeQfPopup() {
+      const popup = document.getElementById('qf-popup');
+      if (!popup) return;
+      popup.classList.add('hidden');
+      popup.classList.remove('flex');
+    }
+
+    function wireQualificationSection() {
+      qfAnswers = {};
+
+      document.getElementById('qf-contact-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!this.reportValidity()) return;
+        qfAnswers.email = document.getElementById('qf-email').value.trim();
+        qfAnswers.firstName = document.getElementById('qf-first').value.trim();
+        qfAnswers.lastName = document.getElementById('qf-last').value.trim();
+        submitApplicationData({
+          type: 'qualification_lead',
+          timestamp: new Date().toISOString(),
+          source: 'eric-deng-ultimate.com/skill-assessment-tool',
+          email: qfAnswers.email,
+          firstName: qfAnswers.firstName,
+          lastName: qfAnswers.lastName
+        });
+        showQfStep('qf-questions');
+      });
+
+      document.getElementById('qf-q1').addEventListener('change', function () {
+        document.getElementById('qf-q1-other').classList.toggle('hidden', this.value !== 'other');
+      });
+
+      document.getElementById('qf-questions-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!this.reportValidity()) return;
+
+        const q1 = document.getElementById('qf-q1').value;
+        const q2 = document.getElementById('qf-q2').value;
+        const q3 = document.getElementById('qf-q3').value;
+        const q4 = document.getElementById('qf-q4').value;
+        qfAnswers.q1 = q1;
+        if (q1 === 'other') qfAnswers.q1Other = document.getElementById('qf-q1-other-text').value.trim();
+        qfAnswers.q2 = q2;
+        qfAnswers.q3 = q3;
+        qfAnswers.q4 = q4;
+        qfAnswers.instagram = document.getElementById('qf-instagram').value.trim();
+        qfAnswers.timestamp = new Date().toISOString();
+        qfAnswers.source = 'eric-deng-ultimate.com/skill-assessment-tool';
+        qfAnswers.type = 'qualification_application';
+
+        const disqualifyReason = q2 === 'no' ? 'training' : q3 === 'no' ? 'budget' : '';
+        qfAnswers.qualified = !disqualifyReason;
+        qfAnswers.exitReason = disqualifyReason;
+
+        submitApplicationData(qfAnswers);
+
+        if (disqualifyReason) return openQfPopup(disqualifyReason);
+        showQfStep('qf-approved');
+      });
+
+      if (!qfEscapeListenerAdded) {
+        qfEscapeListenerAdded = true;
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') closeQfPopup();
+        });
+      }
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // PDF report (jsPDF) — drawn with text/rect primitives, not a
+    // screenshot, so it stays sharp and the apply link stays clickable.
+    // ════════════════════════════════════════════════════════════════
+
+    function hexToRgb(hex) {
+      const n = parseInt(hex.replace('#', ''), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    // jsPDF's standard fonts (helvetica/times/courier) only support the
+    // WinAnsi/Latin-1 glyph set. r.goalHeadline.goal is free text the
+    // athlete typed themselves (Q1) — if it contains an emoji or a
+    // character outside that range, handing it straight to jsPDF can
+    // break the render, so strip anything outside printable ASCII/Latin-1
+    // before it reaches the PDF (the on-screen HTML version is untouched —
+    // the browser renders full Unicode fine, this is a PDF-only concern).
+    function pdfSafeText(str) {
+      return String(str).replace(/[^\x20-\xFF]/g, '');
+    }
+
+    function downloadPdf(r, name, role, level, today) {
+      if (!window.jspdf) {
+        alert('The PDF library is still loading — please wait a moment and try again.');
+        return;
+      }
+      try {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const marginX = 48;
+      const contentW = pageW - marginX * 2;
+      const brandRgb = hexToRgb('#E05C2A');
+      const darkRgb = hexToRgb('#1f223c');
+      let y = 50;
+
+      function text(str, x, yPos, opts) {
+        opts = opts || {};
+        doc.setFont('helvetica', opts.bold ? 'bold' : 'normal');
+        doc.setFontSize(opts.size || 10);
+        if (opts.color) doc.setTextColor(opts.color[0], opts.color[1], opts.color[2]);
+        else doc.setTextColor(31, 41, 55);
+        doc.text(str, x, yPos);
+      }
+
+      function wrapped(str, x, yPos, size, lineHeight, maxWidth) {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(size);
+        doc.setTextColor(55, 65, 81);
+        const lines = doc.splitTextToSize(str, maxWidth || contentW);
+        lines.forEach((line, i) => doc.text(line, x, yPos + i * lineHeight));
+        return yPos + lines.length * lineHeight;
+      }
+
+      // ── Page 1 header ──
+      doc.setFillColor(darkRgb[0], darkRgb[1], darkRgb[2]);
+      doc.rect(0, 0, pageW, 70, 'F');
+      text('ERIC DENG ULTIMATE · SKILL ASSESSMENT', marginX, 32, { size: 12, bold: true, color: [255, 255, 255] });
+      text(name + "'s Report", marginX, 52, { size: 10, color: [230, 230, 230] });
+
+      y = 100;
+      text(name + '  ·  ' + role + '  ·  ' + level + '  ·  ' + today, marginX, y, { size: 9, color: [107, 114, 128] });
+      y += 22;
+
+      text('Your Goal', marginX, y, { size: 12, bold: true, color: brandRgb });
+      y += 16;
+      y = wrapped('Goal: ' + pdfSafeText(r.goalHeadline.goal) + '.  Rated ' + r.goalHeadline.importance + '/10 important.  Meeting ' + r.goalHeadline.standardsMetCount + ' of ' + r.goalHeadline.totalStandards + ' training standards.', marginX, y, 10, 13);
+      y += 4;
+      y = wrapped(r.goalHeadline.line, marginX, y, 10, 13);
+      if (r.goalHeadline.extra) { y = wrapped(r.goalHeadline.extra, marginX, y, 10, 13); }
+      y += 16;
+
+      // Overall score
+      const overallBand = bandFor(r.overall);
+      text('Overall Score', marginX, y, { size: 12, bold: true, color: brandRgb });
+      const obRgb = hexToRgb(overallBand.color);
+      text(r.overall + '/100  ·  ' + overallBand.label, marginX + 120, y, { size: 12, bold: true, color: obRgb });
+      y += 20;
+
+      // Category bars
+      function drawBarChart(groupLabel, keys) {
+        text(groupLabel, marginX, y, { size: 10, bold: true, color: [31, 41, 55] });
+        y += 12;
+        keys.forEach(key => {
+          const score = r.categoryScores[key];
+          const band = bandFor(score);
+          const rgb = hexToRgb(band.color);
+          text(ASSESSMENT.categories[key].label, marginX, y, { size: 9 });
+          text(score + '/100 · ' + band.label, pageW - marginX - 90, y, { size: 9, bold: true, color: rgb });
+          y += 4;
+          doc.setFillColor(229, 231, 235);
+          doc.roundedRect(marginX, y, contentW, 7, 3, 3, 'F');
+          doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+          doc.roundedRect(marginX, y, Math.max(contentW * (score / 100), 7), 7, 3, 3, 'F');
+          y += 16;
+        });
+        y += 6;
+      }
+      drawBarChart('Your game', ['athleticism', 'skill', 'gameiq']);
+      drawBarChart('Your training', ['structure', 'feedback']);
+
+      // Translation flag
+      if (r.flag) {
+        // splitTextToSize measures using the CURRENTLY active font — it must
+        // be set to the same font/size used to actually draw the text below,
+        // or the wrap width is computed against the wrong character widths
+        // and lines can render wider than the box they're measured for.
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        const flagLines = doc.splitTextToSize(r.flag.message, contentW - 20);
+        const boxH = flagLines.length * 13 + 16;
+        doc.setFillColor(darkRgb[0], darkRgb[1], darkRgb[2]);
+        doc.roundedRect(marginX, y, contentW, boxH, 6, 6, 'F');
+        doc.setTextColor(255, 255, 255);
+        flagLines.forEach((line, i) => doc.text(line, marginX + 10, y + 18 + i * 13));
+        y += boxH + 16;
+      }
+
+      // Top 3 gaps
+      text('Your Top 3 Gaps', marginX, y, { size: 12, bold: true, color: brandRgb });
+      y += 16;
+      r.topGaps.forEach(g => {
+        const rgb = hexToRgb(g.band.color);
+        text(g.label + '  —  ' + g.score + '/100 · ' + g.band.label, marginX, y, { size: 10, bold: true, color: rgb });
+        y += 13;
+        y = wrapped(g.whatItLooksLike, marginX, y, 9, 12);
+        y += 8;
+      });
+
+      // ── Page 2 ──
+      doc.addPage();
+      y = 50;
+      text('Training Standards Checklist', marginX, y, { size: 13, bold: true, color: brandRgb });
+      y += 18;
+      const TIER_RGB = { green: [22, 163, 74], yellow: [217, 119, 6], red: [220, 38, 38] };
+      const statusColW = 65; // wide enough for "Developing", the longest status word
+      r.standards.forEach(s => {
+        text(TIER_LABEL[s.tier], marginX, y, { size: 9, bold: true, color: TIER_RGB[s.tier] });
+        const lines = doc.splitTextToSize(s.label + ' — You: ' + s.userLabel, contentW - statusColW);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(55, 65, 81);
+        lines.forEach((line, i) => doc.text(line, marginX + statusColW, y + i * 11));
+        y += Math.max(11 * lines.length, 11) + 5;
+      });
+
+      y += 10;
+      y = wrapped(r.standardsSummary, marginX, y, 9.5, 12);
+      y += 14;
+      text('How To Close Your Gaps', marginX, y, { size: 13, bold: true, color: brandRgb });
+      y += 16;
+      y = wrapped('To reach your goal, you need two things – a structured, ultimate-specific plan that fits your life, and feedback on the specific parts of your game holding you back.', marginX, y, 10, 13);
+      y += 6;
+      r.topGaps.forEach(g => {
+        y = wrapped('•  ' + g.howToCloseIt, marginX, y, 9.5, 12);
+        y += 4;
+      });
+
+      y += 10;
+      const ctaMsg = "If you'd like our help closing these gaps, apply below. Based on what you've shared, you could be a strong fit for one of our structured programs.";
+      // Same rule as the flag box above: measure with the font that will
+      // actually render the text, not whatever was last active (here, the
+      // 9.5pt from the gap bullets just above).
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      const ctaLines = doc.splitTextToSize(ctaMsg, contentW - 20);
+      const ctaBoxH = ctaLines.length * 13 + 50;
+      doc.setFillColor(darkRgb[0], darkRgb[1], darkRgb[2]);
+      doc.roundedRect(marginX, y, contentW, ctaBoxH, 6, 6, 'F');
+      doc.setTextColor(255, 255, 255);
+      ctaLines.forEach((line, i) => doc.text(line, marginX + 10, y + 18 + i * 13));
+      const linkY = y + ctaLines.length * 13 + 32;
+      const linkLabel = 'Learn more and apply ->';
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      const linkW = doc.getTextWidth(linkLabel) + 24; // sized to the actual text, not a guessed constant
+      doc.setFillColor(brandRgb[0], brandRgb[1], brandRgb[2]);
+      doc.roundedRect(marginX + 10, linkY - 14, linkW, 22, 5, 5, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.textWithLink(linkLabel, marginX + 22, linkY, { url: 'https://eric-deng-ultimate.com/apply/' });
+
+      // Footer on both pages
+      const footerText = 'eric-deng-ultimate.com · © 2026 Eric Deng Ultimate';
+      [1, 2].forEach(p => {
+        doc.setPage(p);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(156, 163, 175);
+        doc.text(footerText, marginX, pageH - 24);
+      });
+
+      const safeName = (name || 'Athlete').replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '');
+      doc.save(safeName + '-Skill-Assessment.pdf');
+      } catch (err) {
+        console.error('PDF generation failed:', err);
+        alert('Something went wrong generating the PDF. Please try again — if it keeps happening, let us know.');
+      }
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // Self-tests — run `runSelfTests()` in the browser console.
+    // Covers all-lowest, all-highest, and a hand-calculated mixed case.
+    // ════════════════════════════════════════════════════════════════
+
+    function buildAnswers(part2Idx, part3Idx, extra) {
+      const answers = {};
+      ASSESSMENT.part2.forEach(q => {
+        const idx = part2Idx(q);
+        const opt = q.options[idx];
+        answers[q.id] = { index: idx, value: opt.value, label: opt.label };
+      });
+      ASSESSMENT.part3.forEach(q => {
+        const idx = part3Idx(q);
+        const opt = ASSESSMENT.scale5[idx];
+        answers[q.id] = { index: idx, value: opt.value, label: opt.label };
+      });
+      Object.assign(answers, extra);
+      return answers;
+    }
+
+    // Hand-built "realistic" answer set, shared by the self-tests and the
+    // ?preview= dev shortcut below — see runSelfTests' "mixed" case for the
+    // worked-out expected scores this produces.
+    const PREVIEW_MIXED_TA_IDX = {
+      PF: 2, TA1: 1, TA2: 3, TA3: 1, TA4: 3, TA5: 3, TA6: 3, TA7: 0, TA8: 0,
+      TA9: 2, TA10: 1, TA11: 1, TA12: 1, TA13: 1,
+    };
+    const PREVIEW_MIXED_YG_IDX = {
+      YG1: 4, YG2: 4, YG3: 4, YG4: 4,
+      YG5: 0, YG6: 0, YG7: 0, YG8: 0,
+      YG9: 2, YG10: 2, YG11: 2, YG12: 2,
+      YG13: 1,
+    };
+
+    // Jump straight to the results screen with canned answers — for dev
+    // testing only, so you don't have to click through all 32 questions
+    // every time you want to check the results/PDF layout. Load the page
+    // with ?preview=mixed (or low / high) to use it; see README note below
+    // render() at the bottom of this file for the full instructions.
+    function buildPreviewAnswers(kind) {
+      const common = {
+        P4: { index: 0, value: 'handler', label: 'Handler' },
+        P5: { index: 1, value: 'div2', label: 'Club Div 2' },
+      };
+      if (kind === 'low') {
+        return buildAnswers(() => 0, () => 0, Object.assign({
+          P1: { value: 'Make my club team' }, P2: { value: 7 },
+          P3: { index: 0, value: 'lt3', label: 'Within 3 months' },
+        }, common));
+      }
+      if (kind === 'high') {
+        return buildAnswers(q => q.options.length - 1, () => 4, Object.assign({
+          P1: { value: 'Make nationals' }, P2: { value: 10 },
+          P3: { index: 3, value: 'none', label: 'No set date' },
+        }, common));
+      }
+      // 'mixed' (default)
+      return buildAnswers(q => PREVIEW_MIXED_TA_IDX[q.id], q => PREVIEW_MIXED_YG_IDX[q.id], Object.assign({
+        P1: { value: 'Make NSW State Team' }, P2: { value: 9 },
+        P3: { index: 0, value: 'lt3', label: 'Within 3 months' },
+      }, common));
+    }
+
+    function runSelfTests() {
+      let pass = 0, fail = 0;
+      function check(label, actual, expected) {
+        const ok = JSON.stringify(actual) === JSON.stringify(expected);
+        console.log((ok ? '✓ PASS' : '✗ FAIL') + ' — ' + label, ok ? '' : { actual, expected });
+        ok ? pass++ : fail++;
+      }
+
+      // Case 1: all-lowest
+      const lowest = buildAnswers(() => 0, () => 0, {
+        P1: { value: 'Test goal' }, P2: { value: 1 }, P3: { index: 0, value: 'lt3', label: 'Within 3 months' },
+      });
+      const rLow = computeResults(lowest);
+      check('all-lowest category scores', rLow.categoryScores, { athleticism: 0, skill: 0, gameiq: 0, structure: 0, feedback: 0 });
+      check('all-lowest overall', rLow.overall, 0);
+      check('all-lowest standardsMet', rLow.standardsMetCount, 0);
+      check('all-lowest flag', rLow.flag, null);
+      check('all-lowest topGaps order (athleticism forced #1 — no program at all)', rLow.topGaps.map(g => g.key), ['athleticism', 'structure', 'feedback']);
+
+      // Case 2: all-highest
+      const highest = buildAnswers(q => q.options.length - 1, () => 4, {
+        P1: { value: 'Test goal' }, P2: { value: 10 }, P3: { index: 3, value: 'none', label: 'No set date' },
+      });
+      const rHigh = computeResults(highest);
+      check('all-highest category scores', rHigh.categoryScores, { athleticism: 100, skill: 100, gameiq: 100, structure: 100, feedback: 100 });
+      check('all-highest overall', rHigh.overall, 100);
+      check('all-highest standardsMet', rHigh.standardsMetCount, 12);
+      check('all-highest flag', rHigh.flag, null);
+      check('all-highest topGaps order', rHigh.topGaps.map(g => g.key), ['structure', 'feedback', 'gameiq']);
+
+      // Case 3: hand-calculated mixed case (see brief/code comments for the
+      // worked-out math) — high session frequency but ad-hoc strength
+      // training (TA1 not the top answer), weak skill/game-IQ work, and low
+      // reported training gains. Lands standardsMet in the 0–4 bracket with
+      // the <3-month extra line. Because TA1 isn't the top answer,
+      // athleticism is capped at 69 (Developing) rather than reaching 70+,
+      // which means this profile trips the "working hard, little to show"
+      // flag rather than "fit but not showing it" — physical base ahead of
+      // the game requires an actual program behind it, not just frequency.
+      const mixed = buildAnswers(q => PREVIEW_MIXED_TA_IDX[q.id], q => PREVIEW_MIXED_YG_IDX[q.id], {
+        P1: { value: 'Make NSW State Team' }, P2: { value: 9 }, P3: { index: 0, value: 'lt3', label: 'Within 3 months' },
+      });
+      const rMixed = computeResults(mixed);
+      check('mixed category scores', rMixed.categoryScores, { athleticism: 69, skill: 0, gameiq: 50, structure: 31, feedback: 25 });
+      check('mixed overall', rMixed.overall, 35);
+      check('mixed athleticism capped at Developing, not Solid/Strength (no ultimate-specific program)', bandFor(rMixed.categoryScores.athleticism).key, 'developing');
+      check('mixed standardsMet', rMixed.standardsMetCount, 4);
+      check('mixed flag', rMixed.flag && rMixed.flag.key, 'workingHard');
+      check('mixed topGaps order (athleticism forced #1 — ad-hoc strength training)', rMixed.topGaps.map(g => g.key), ['athleticism', 'skill', 'feedback']);
+      check('mixed goal headline bracket', rMixed.goalHeadline.line, "Your training isn't set up for this goal yet. The gaps below are why it feels further away than it should.");
+      check('mixed <3mo extra line', rMixed.goalHeadline.extra, "With under 3 months to go, which gaps you close first matters.");
+
+      // Case 4: a minimal answer set built specifically to trigger the
+      // *other* flag ("working hard, little to show") — low athleticism so
+      // flag A can't fire, trains 8 sessions/week by the estimate formula,
+      // but YG13 ("I can see my gains in games") is "Rarely true".
+      const flagBAnswers = {
+        TA2: { index: 3, value: 4 },
+        TA4: { index: 2, value: 2 }, TA5: { index: 2, value: 2 },
+        TA6: { index: 2, value: 2 }, TA7: { index: 2, value: 2 }, TA8: { index: 2, value: 2 },
+        YG13: { index: 1, value: 1 },
+      };
+      const sessionEst = computeSessionEstimate(flagBAnswers);
+      check('flagB session estimate', sessionEst, 8);
+      const flagBScores = computeCategoryScores(flagBAnswers);
+      check('flagB athleticism below 70 (so flag A cannot fire)', flagBScores.athleticism < 70, true);
+      const flagBResult = computeFlag(flagBScores, flagBAnswers, sessionEst);
+      check('flagB key', flagBResult && flagBResult.key, 'workingHard');
+
+      // Case 5: TA4/TA6 standards personalised to playing frequency (PF).
+      // At 2x/week playing, target drops to 1x/week for both — "Once a
+      // week" should now satisfy both, which it would NOT have under the
+      // old flat "twice a week" rule.
+      const standardsAtPf2 = computeStandards({
+        PF: { index: 2, value: 2 },
+        TA4: { index: 2, value: 2, label: 'Once a week' },
+        TA6: { index: 2, value: 2, label: 'Once a week' },
+      });
+      check('TA4 met at 2x/week playing + "Once a week" answer', standardsAtPf2.find(s => s.id === 'TA4').met, true);
+      check('TA6 met at 2x/week playing + "Once a week" answer', standardsAtPf2.find(s => s.id === 'TA6').met, true);
+
+      // At 3+/week playing: accel/COD target drops to 0 (games cover it —
+      // "Rarely or never" still passes), but top-speed target floors at 1
+      // (never fully replaced by playing more) — "Rarely or never" fails.
+      const standardsAtPf3 = computeStandards({
+        PF: { index: 3, value: 3 },
+        TA4: { index: 0, value: 0, label: 'Rarely or never' },
+        TA6: { index: 0, value: 0, label: 'Rarely or never' },
+      });
+      check('TA4 NOT met at 3+/week playing + "Rarely or never" (top-speed floor)', standardsAtPf3.find(s => s.id === 'TA4').met, false);
+      check('TA6 met at 3+/week playing + "Rarely or never" (accel/COD can hit 0)', standardsAtPf3.find(s => s.id === 'TA6').met, true);
+
+      // PF itself must never show up as a 14th "standard".
+      check('PF excluded from standards checklist (and TA11, folded into TA10)', computeStandards({}).length, 12);
+
+      // Case 6: the new yellow ("developing") tier — one step below the
+      // standard should be yellow, not lumped in with red.
+      const tierCheck = computeStandards({
+        PF: { index: 1, value: 1 }, // target for TA4 is 2x/week here
+        TA1: { index: 2, value: 2, label: 'A general gym program' }, // static: minMetIndex 3, one below = yellow
+        TA4: { index: 2, value: 2, label: 'Once a week' }, // dynamic: target 2 → minMetIndex 3, one below = yellow
+        TA6: { index: 0, value: 0, label: 'Rarely or never' }, // target = max(0,3-1)=2 → minMetIndex 3, two below = red
+      });
+      check('TA1 tier yellow (one step below static standard)', tierCheck.find(s => s.id === 'TA1').tier, 'yellow');
+      check('TA4 tier yellow (one step below personalised standard)', tierCheck.find(s => s.id === 'TA4').tier, 'yellow');
+      check('TA6 tier red (two steps below personalised standard)', tierCheck.find(s => s.id === 'TA6').tier, 'red');
+      check('Yellow does not count toward standardsMetCount', tierCheck.find(s => s.id === 'TA1').met, false);
+
+      // computeStandardsSummary: a red-heavy answer set should name the
+      // red standards; an all-green set should say so instead.
+      const summaryWithReds = computeStandardsSummary(tierCheck);
+      check('standards summary mentions a red item when reds exist', summaryWithReds.indexOf('biggest gaps') !== -1, true);
+      const summaryAllGreen = computeStandardsSummary(rHigh.standards);
+      check('standards summary is the all-green message when nothing is red/yellow', summaryAllGreen.indexOf('meeting every training standard') !== -1, true);
+
+      // Case 7: Athleticism Strength-band cap — maxed-out session frequency
+      // should NOT be enough on its own if TA1 isn't the top (ultimate-
+      // specific program) answer, even though every other athleticism item
+      // is at its max.
+      const maxFreqNoProgram = buildAnswers(
+        q => (q.id === 'TA1' ? 1 : q.options.length - 1), // everything maxed except TA1
+        () => 4,
+        { P1: { value: 'Test' }, P2: { value: 10 }, P3: { index: 3, value: 'none', label: 'No set date' } }
+      );
+      const cappedResult = computeResults(maxFreqNoProgram);
+      check('athleticism capped at 69 (Developing, not Solid) without an ultimate-specific program, even at max frequency', cappedResult.categoryScores.athleticism, 69);
+      const maxFreqWithProgram = buildAnswers(q => q.options.length - 1, () => 4, {
+        P1: { value: 'Test' }, P2: { value: 10 }, P3: { index: 3, value: 'none', label: 'No set date' },
+      });
+      check('athleticism reaches 100 when max frequency IS paired with an ultimate-specific program', computeResults(maxFreqWithProgram).categoryScores.athleticism, 100);
+
+      console.log(pass + ' passed, ' + fail + ' failed.');
+      return { pass, fail };
+    }
+    window.runSelfTests = runSelfTests;
+
+    // ── Dev shortcut: jump straight to results ─────────────────────
+    // Load this page with ?preview=mixed (or ?preview=low / ?preview=high)
+    // to skip the whole 32-question flow and land straight on the results
+    // screen with realistic canned answers — for checking results/PDF
+    // layout changes without re-answering everything each time. Has no
+    // effect without the query param; remove the param (or just reload
+    // without it) to go through the quiz normally.
+    const previewKind = new URLSearchParams(location.search).get('preview');
+    if (previewKind) {
+      state.answers = buildPreviewAnswers(previewKind);
+      state.name = 'Preview';
+      state.screen = 'results';
+    }
+
+    render();
+  </script>
+</body>
+</html>

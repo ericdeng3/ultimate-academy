@@ -2,9 +2,10 @@
  * Eric Deng Ultimate — form intake (Premium Application + Qualification flow)
  * ============================================================================
  *
- * Handles form submissions from BOTH:
- *   - index.html          (Premium Application modal — types: 'lead', 'application')
- *   - apply/index.html    (qualification flow — types: 'qualification_lead', 'qualification_application')
+ * Handles form submissions from:
+ *   - index.html               (Premium Application modal — types: 'lead', 'application')
+ *   - apply/index.html         (qualification flow — types: 'qualification_lead', 'qualification_application')
+ *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
  *
  * This is a fresh, standalone script — not tied to whatever project used to
  * back the old APPS_SCRIPT_URL. It doesn't read anything from that old
@@ -34,12 +35,14 @@
  * 5. Paste that URL into APPS_SCRIPT_URL in BOTH index.html and
  *    apply/index.html, replacing the old one.
  *
- * Every submission lands in one of four sheet tabs (auto-created on first
+ * Every submission lands in one of six sheet tabs (auto-created on first
  * write, no need to create them manually):
  *   "Premium Application Leads"   — homepage modal, step 1
  *   "Premium Applications"        — homepage modal, step 2 (full submission)
- *   "Qualification Leads"        — apply page, step 1
- *   "Qualification Applications" — apply page, step 2 (full submission)
+ *   "Qualification Leads"         — apply page, step 1
+ *   "Qualification Applications"  — apply page, step 2 (full submission)
+ *   "Coaching Fit Leads"          — qualification page, contact step
+ *   "Coaching Fit Applications"   — qualification page, full submission
  */
 
 // ── Entry point ─────────────────────────────────────────────────────────
@@ -56,6 +59,10 @@ function doGet(e) {
         return handleQualificationLead_(p);
       case 'qualification_application':
         return handleQualificationApplication_(p);
+      case 'coaching_fit_lead':
+        return handleCoachingFitLead_(p);
+      case 'coaching_fit_application':
+        return handleCoachingFitApplication_(p);
       default:
         return jsonResponse_({ ok: false, error: 'Unknown or missing type: ' + p.type });
     }
@@ -165,6 +172,57 @@ function handleQualificationApplication_(p) {
     ? mlGroupId_('MAILERLITE_GROUP_QUALIFIED_ID')
     : mlGroupId_('MAILERLITE_GROUP_NOT_QUALIFIED_ID');
   syncToMailerLite_(p.email, p.firstName, p.lastName, groupId);
+
+  return jsonResponse_({ ok: true });
+}
+
+// ── Quick fit-check flow (qualification/index.html) ─────────────────────
+
+// No MailerLite sync on this flow — it only collects a first name, and
+// MailerLite requires an email to create/update a subscriber.
+
+function handleCoachingFitLead_(p) {
+  appendRow_('Coaching Fit Leads',
+    ['Timestamp', 'First Name', 'Instagram', 'Source'],
+    [p.timestamp, p.firstName, p.instagram || '', p.source]
+  );
+
+  return jsonResponse_({ ok: true });
+}
+
+function handleCoachingFitApplication_(p) {
+  const qualified = p.qualified === 'true';
+
+  appendRow_('Coaching Fit Applications',
+    ['Timestamp', 'Status', 'Exit Reason', 'First Name', 'Instagram',
+     'Struggling With', 'Training Gaps', 'Primary Skill', 'Scenario',
+     'Ready To Invest?', 'Timeline', 'Need (1-10)', 'Source'],
+    [p.timestamp, qualified ? 'Qualified' : 'Not qualified', p.exitReason || '',
+     p.firstName, p.instagram || '',
+     p.struggles, p.gaps, p.primarySkill, p.scenario,
+     p.budget, p.timeline, p.need, p.source]
+  );
+
+  sendNotifyEmail_(
+    `New fit check (${qualified ? 'QUALIFIED ✅' : 'not qualified'}): ${p.firstName || ''}`.trim(),
+    [
+      `Status: ${qualified ? 'Qualified' : 'Not qualified'}`,
+      p.exitReason ? `Exit reason: ${p.exitReason}` : null,
+      '',
+      `Name: ${p.firstName || ''}`,
+      p.instagram ? `Instagram: ${p.instagram}` : null,
+      '',
+      `Struggling with: ${p.struggles || ''}`,
+      `Training gaps: ${p.gaps || ''}`,
+      `Primary skill: ${p.primarySkill || ''}`,
+      `Scenario: ${p.scenario || ''}`,
+      `Ready to invest? ${p.budget || ''}`,
+      `Timeline: ${p.timeline || ''}`,
+      `Need (1-10): ${p.need || ''}`,
+      '',
+      `Submitted: ${p.timestamp || ''}`
+    ].filter(Boolean).join('\n')
+  );
 
   return jsonResponse_({ ok: true });
 }

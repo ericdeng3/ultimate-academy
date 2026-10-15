@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qualification — Ultimate Academy 🥏</title>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    .qf-fade-out {
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+    .qf-fade-in {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .qf-fade-in-active { opacity: 1; transform: translateY(0); }
+
+    .qf-input {
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .qf-input:focus {
+      border-color: #E05C2A;
+      box-shadow: 0 0 0 3px rgba(224,92,42,0.15);
+    }
+
+    /* Single-select: tap to choose and auto-advance. */
+    .opt-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: 2px solid #E5E7EB;
+      background: #F9FAFB;
+      border-radius: 0.75rem;
+      padding: 1rem 1.25rem;
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: #1F2937;
+      transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+      min-height: 56px;
+    }
+    .opt-btn.selected {
+      border-color: #E05C2A;
+      background: #FFF0EA;
+      color: #C44E20;
+      font-weight: 700;
+    }
+
+    /* Multi-select: same look, but with a checkbox indicator since more
+       than one can be chosen and it doesn't auto-advance. */
+    .opt-btn-multi {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      text-align: left;
+      border: 2px solid #E5E7EB;
+      background: #F9FAFB;
+      border-radius: 0.75rem;
+      padding: 1rem 1.25rem;
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: #1F2937;
+      transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+      min-height: 56px;
+    }
+    .opt-btn-multi.selected {
+      border-color: #E05C2A;
+      background: #FFF0EA;
+      color: #C44E20;
+      font-weight: 700;
+    }
+    .opt-check {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid #D1D5DB;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .opt-btn-multi.selected .opt-check {
+      border-color: #E05C2A;
+      background: #E05C2A;
+    }
+    .opt-check svg { opacity: 0; width: 14px; height: 14px; }
+    .opt-btn-multi.selected .opt-check svg { opacity: 1; }
+
+    .progress-track { background: #F3F4F6; border-radius: 9999px; height: 6px; overflow: hidden; }
+    .progress-fill { background: #E05C2A; height: 100%; transition: width 0.25s ease; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+
+  <!-- ─── TOP BAR ──────────────────────────────────────────────────── -->
+  <div class="sticky top-0 z-50 flex items-center justify-center py-4 px-4 bg-[#232321]">
+    <a href="#" id="top-bar-restart" class="inline-flex items-center gap-2.5 bg-white rounded-lg px-5 py-2.5 hover:bg-gray-50 transition-colors">
+      <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+      </span>
+      <span class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-wide">Start Your Fit Check</span>
+    </a>
+  </div>
+
+  <main class="px-4 sm:px-6 py-8 sm:py-12">
+    <div id="app" class="max-w-xl mx-auto"></div>
+  </main>
+
+  <!-- ─── FOOTER ──────────────────────────────────────────────────── -->
+  <footer class="py-8 px-6 border-t border-gray-100 mt-6">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ════════════════════════════════════════════════════════════════
+    // ALL content lives here — wording, options, qualification rule.
+    // ════════════════════════════════════════════════════════════════
+    const QUAL = {
+      intro: {
+        heading: 'Want to improve your on-field impact in ultimate frisbee?',
+        sub: "Answer a few quick questions and we'll let you know whether our coaching program is the right next step for you right now.",
+        button: "SEE IF I'M A FIT →",
+      },
+      contact: {
+        heading: 'First, who are we talking to?',
+        sub: "We'll only use this to follow up if it's a good fit.",
+        button: 'Next →',
+      },
+      outcomeQualified: {
+        heading: "Congrats - looks like you'd be a fit!",
+        button: 'VIEW THE PROGRAM',
+        url: 'https://www.skool.com/ultimate/about',
+      },
+      outcomeNotQualified: {
+        heading: 'Not quite the right fit, right now.',
+        sub: "That's okay — here's some free stuff to keep leveling up in the meantime:",
+      },
+
+      // Linear step sequence. 'multi' = select any number, explicit Next.
+      // 'single' = tap-to-select, auto-advances. 'scale10' = 1-10 tap row,
+      // auto-advances.
+      steps: [
+        {
+          id: 'struggles', type: 'multi', required: true,
+          text: 'What are you struggling with most?',
+          sub: 'Select all that apply.',
+          options: [
+            { key: 'gameiq', label: 'Game IQ (timing, spacing, reading the game, etc.)' },
+            { key: 'skill', label: 'Skill Development (throwing, cutting technique, defensive footwork, etc.)' },
+            { key: 'athleticism', label: 'Athleticism (speed/acceleration, vertical jump, ultimate-specific conditioning, etc.)' },
+          ],
+        },
+        {
+          id: 'gaps', type: 'multi', required: true,
+          text: "And in your training, what's missing?",
+          sub: 'Select all that apply.',
+          options: [
+            { key: 'structure', label: 'Having a structured, ultimate-specific plan' },
+            { key: 'feedback', label: 'Getting regular feedback' },
+            { key: 'accountability', label: 'Accountability' },
+          ],
+        },
+        {
+          id: 'primarySkill', type: 'single', required: true,
+          text: "Which specific skill are you struggling with the most right now, that you'd like to solve first?",
+          options: [
+            { key: 'throwing', label: 'Throwing' },
+            { key: 'defense', label: 'Defense' },
+            { key: 'cutting', label: 'Cutting' },
+            { key: 'catching', label: 'Catching' },
+          ],
+        },
+        {
+          id: 'scenario', type: 'single', required: true,
+          text: 'Which of the scenarios below best describes your current situation outside of ultimate?',
+          options: [
+            { key: 'working', label: 'Primarily working' },
+            { key: 'studying', label: 'Primarily studying' },
+            { key: 'other', label: 'Something else' },
+          ],
+        },
+        {
+          id: 'budget', type: 'single', required: true,
+          text: 'Our programs do involve a financial investment. Are you prepared to invest in your growth?',
+          options: [
+            { key: 'yes', label: "Yes, I'm ready to invest in my growth" },
+            { key: 'no', label: 'No, not right now' },
+          ],
+        },
+        {
+          id: 'timeline', type: 'single', required: true,
+          text: 'When are you ready to start?',
+          options: [
+            { key: 'immediate', label: 'Immediately, within the next 2 weeks' },
+            { key: 'exploring', label: 'Within the next 60 days' },
+            { key: 'no_timeline', label: 'No set timeline' },
+          ],
+        },
+        {
+          id: 'need', type: 'scale10', required: true,
+          text: 'Out of 10, how important is it to solve this for your game in the next 90 days?',
+        },
+      ],
+    };
+
+    // ── Qualification rule ───────────────────────────────────────────
+    // No budget → automatic disqualify, full stop, regardless of anything
+    // else. Otherwise, qualify only if their need score clears the bar for
+    // their scenario — working has a lower bar (6+) than studying (8+),
+    // since working is taken as a (rough) proxy for steadier capacity to
+    // commit. "Something else" wasn't covered in the brief — defaulted to
+    // the stricter 8+ bar (same as studying) as the safer assumption until
+    // told otherwise; flagged as a judgment call.
+    // timeline is still asked and still recorded, but no longer part of
+    // the qualify/disqualify decision — this replaces the previous
+    // budget+timeline+need rule entirely.
+    const SCENARIO_NEED_THRESHOLD = { working: 6, studying: 8, other: 8 };
+
+    function computeQualified(answers) {
+      if (answers.budget === 'no') {
+        return { qualified: false, exitReason: 'budget' };
+      }
+      const threshold = SCENARIO_NEED_THRESHOLD[answers.scenario];
+      const needMet = (answers.need || 0) >= threshold;
+      return { qualified: needMet, exitReason: needMet ? '' : 'need' };
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // Flow / rendering
+    // ════════════════════════════════════════════════════════════════
+
+    let state = {};
+    function resetState() {
+      state = { screen: 'intro', stepIndex: 0, answers: { struggles: [], gaps: [] }, firstName: '', instagram: '' };
+    }
+    resetState();
+
+    const app = document.getElementById('app');
+
+    function transitionTo(html, onReady) {
+      const current = app.firstElementChild;
+      if (!current) {
+        app.innerHTML = html;
+        if (onReady) onReady();
+        return;
+      }
+      current.classList.add('qf-fade-out');
+      setTimeout(() => {
+        app.innerHTML = html;
+        const next = app.firstElementChild;
+        if (next) {
+          next.classList.add('qf-fade-in');
+          requestAnimationFrame(() => next.classList.add('qf-fade-in-active'));
+          setTimeout(() => next.classList.remove('qf-fade-in', 'qf-fade-in-active'), 220);
+        }
+        if (onReady) onReady();
+      }, 160);
+    }
+
+    function cardWrap(innerHtml) {
+      return '<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8">' + innerHtml + '</div>';
+    }
+
+    function progressHtml(stepNumber) {
+      const totalSteps = QUAL.steps.length;
+      const pct = Math.round((stepNumber / totalSteps) * 100);
+      return '<div class="progress-track mb-5"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+    }
+
+    function backButtonHtml() {
+      return '<button type="button" id="back-btn" class="text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors mb-4">← Back</button>';
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function render() {
+      if (state.screen === 'intro') return renderIntro();
+      if (state.screen === 'contact') return renderContact();
+      if (state.screen === 'step') return renderStep();
+      if (state.screen === 'outcome') return renderOutcome();
+    }
+
+    function renderIntro() {
+      const html = cardWrap(
+        '<div class="text-center">' +
+        '<h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight mb-3">' + escapeHtml(QUAL.intro.heading) + '</h1>' +
+        '<p class="text-base text-gray-500 leading-relaxed mb-5">' + escapeHtml(QUAL.intro.sub) + '</p>' +
+        // Static image for now — a short intro video goes here later.
+        '<div class="rounded-2xl overflow-hidden shadow-sm mb-5">' +
+        '<img src="Coaching%20Eric.jpg" alt="Coach Eric" class="w-full h-56 object-cover" />' +
+        '</div>' +
+        '<button type="button" id="start-btn" class="w-full bg-brand text-white font-extrabold px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm text-lg">' + QUAL.intro.button + '</button>' +
+        '</div>'
+      );
+      transitionTo(html, () => {
+        document.getElementById('start-btn').addEventListener('click', () => {
+          state.screen = 'contact';
+          render();
+        });
+      });
+    }
+
+    function renderContact() {
+      const html = cardWrap(
+        backButtonHtml() +
+        progressHtml(0) +
+        '<h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-snug mb-2">' + escapeHtml(QUAL.contact.heading) + '</h2>' +
+        '<p class="text-sm text-gray-500 mb-5">' + escapeHtml(QUAL.contact.sub) + '</p>' +
+        '<form id="contact-form" class="space-y-3" novalidate>' +
+        '<input type="text" id="first-name" required placeholder="First name" value="' + escapeHtml(state.firstName) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
+        '<input type="text" id="instagram" placeholder="Instagram handle (optional)" value="' + escapeHtml(state.instagram) + '" class="qf-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50 transition" />' +
+        '<button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-2">' + QUAL.contact.button + '</button>' +
+        '</form>'
+      );
+      transitionTo(html, () => {
+        document.getElementById('back-btn').addEventListener('click', () => {
+          state.screen = 'intro';
+          render();
+        });
+        const firstInput = document.getElementById('first-name');
+        const instagramInput = document.getElementById('instagram');
+        document.getElementById('contact-form').addEventListener('submit', e => {
+          e.preventDefault();
+          if (!e.target.reportValidity()) return;
+          state.firstName = firstInput.value.trim();
+          state.instagram = instagramInput.value.trim();
+
+          // Capture a partial lead here, same "capture on contact, full
+          // record at the end" pattern used on apply/index.html and
+          // skill-assessment-tool — so they're on record even if they
+          // don't finish the questions.
+          submitQualData({
+            type: 'coaching_fit_lead',
+            timestamp: new Date().toISOString(),
+            source: 'eric-deng-ultimate.com/qualification',
+            firstName: state.firstName,
+            instagram: state.instagram,
+          });
+
+          state.screen = 'step';
+          state.stepIndex = 0;
+          render();
+        });
+        firstInput.focus();
+      });
+    }
+
+    function renderStep() {
+      const step = QUAL.steps[state.stepIndex];
+      const stepNumber = state.stepIndex + 1;
+      const saved = state.answers[step.id];
+
+      let bodyHtml = '';
+      if (step.type === 'multi') {
+        const selected = saved || [];
+        bodyHtml =
+          (step.sub ? '<p class="text-sm text-gray-400 mb-3">' + escapeHtml(step.sub) + '</p>' : '') +
+          '<div class="space-y-2.5 mb-5" id="opts">' +
+          step.options.map(opt => {
+            const isSelected = selected.indexOf(opt.key) !== -1;
+            return '<button type="button" class="opt-btn-multi' + (isSelected ? ' selected' : '') + '" data-key="' + opt.key + '">' +
+              '<span class="opt-check"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span>' +
+              escapeHtml(opt.label) + '</button>';
+          }).join('') +
+          '</div>' +
+          '<button type="button" id="multi-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm disabled:opacity-40 disabled:cursor-not-allowed" ' + (selected.length > 0 ? '' : 'disabled') + '>Next →</button>';
+      } else if (step.type === 'scale10') {
+        const val = saved || 5;
+        bodyHtml =
+          '<div class="text-center mb-4"><span id="scale-value" class="text-5xl font-extrabold text-brand">' + val + '</span></div>' +
+          '<input type="range" id="scale-slider" min="1" max="10" step="1" value="' + val + '" class="w-full" style="accent-color:#E05C2A; height: 8px;" />' +
+          '<div class="flex justify-between text-xs text-gray-400 mt-2 px-1"><span>Not important</span><span>Critical</span></div>' +
+          '<button type="button" id="scale-next-btn" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm mt-6">Next →</button>';
+      } else {
+        // 'single'
+        bodyHtml =
+          '<div class="space-y-2.5" id="opts">' +
+          step.options.map(opt => {
+            const isSelected = saved === opt.key;
+            return '<button type="button" class="opt-btn' + (isSelected ? ' selected' : '') + '" data-key="' + opt.key + '">' + escapeHtml(opt.label) + '</button>';
+          }).join('') +
+          '</div>';
+      }
+
+      const html = cardWrap(
+        backButtonHtml() +
+        progressHtml(stepNumber) +
+        '<h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-snug mb-5">' + escapeHtml(step.text) + '</h2>' +
+        bodyHtml
+      );
+
+      transitionTo(html, () => {
+        document.getElementById('back-btn').addEventListener('click', goBack);
+        wireStepEvents(step);
+      });
+    }
+
+    function wireStepEvents(step) {
+      if (step.type === 'multi') {
+        const optsContainer = document.getElementById('opts');
+        const buttons = optsContainer.querySelectorAll('button');
+        const nextBtn = document.getElementById('multi-next-btn');
+        if (!state.answers[step.id]) state.answers[step.id] = [];
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const key = btn.getAttribute('data-key');
+            const arr = state.answers[step.id];
+            const idx = arr.indexOf(key);
+            if (idx === -1) arr.push(key); else arr.splice(idx, 1);
+            btn.classList.toggle('selected');
+            nextBtn.disabled = arr.length === 0;
+          });
+        });
+        nextBtn.addEventListener('click', () => goNextStep());
+        return;
+      }
+
+      if (step.type === 'scale10') {
+        const slider = document.getElementById('scale-slider');
+        const valueLabel = document.getElementById('scale-value');
+        state.answers[step.id] = parseInt(slider.value, 10);
+        slider.addEventListener('input', () => {
+          const val = parseInt(slider.value, 10);
+          state.answers[step.id] = val;
+          valueLabel.textContent = val;
+        });
+        document.getElementById('scale-next-btn').addEventListener('click', () => goNextStep());
+        return;
+      }
+
+      const optsContainer = document.getElementById('opts');
+      const buttons = optsContainer.querySelectorAll('button');
+
+      // 'single'
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-key');
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          state.answers[step.id] = key;
+          buttons.forEach(b => b.disabled = true);
+          setTimeout(() => { buttons.forEach(b => b.disabled = false); goNextStep(); }, 250);
+        });
+      });
+    }
+
+    function goNextStep() {
+      if (state.stepIndex < QUAL.steps.length - 1) {
+        state.stepIndex += 1;
+        render();
+      } else {
+        finishAndShowOutcome();
+      }
+    }
+
+    function goBack() {
+      if (state.screen === 'step') {
+        if (state.stepIndex === 0) {
+          state.screen = 'contact';
+        } else {
+          state.stepIndex -= 1;
+        }
+        render();
+      }
+    }
+
+    function finishAndShowOutcome() {
+      const result = computeQualified(state.answers);
+      state.result = result;
+
+      const payload = {
+        type: 'coaching_fit_application',
+        timestamp: new Date().toISOString(),
+        source: 'eric-deng-ultimate.com/qualification',
+        firstName: state.firstName,
+        instagram: state.instagram,
+        struggles: state.answers.struggles.join(', '),
+        gaps: state.answers.gaps.join(', '),
+        primarySkill: state.answers.primarySkill,
+        scenario: state.answers.scenario,
+        budget: state.answers.budget,
+        timeline: state.answers.timeline,
+        need: state.answers.need,
+        qualified: String(result.qualified),
+        exitReason: result.exitReason,
+      };
+      submitQualData(payload);
+
+      gtag('event', result.qualified ? 'coaching_fit_qualified' : 'coaching_fit_not_qualified', {
+        event_category: 'qualification',
+        reason: result.exitReason
+      });
+
+      state.screen = 'outcome';
+      render();
+    }
+
+    // "X, Y and Z" — used to personalise the qualified outcome from
+    // whatever combination of gaps/struggles they actually picked.
+    function joinList(items) {
+      if (items.length === 0) return '';
+      if (items.length === 1) return items[0];
+      if (items.length === 2) return items[0] + ' and ' + items[1];
+      return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
+    }
+
+    const GAP_PHRASE = {
+      structure: 'a structured, ultimate-specific plan',
+      feedback: 'regular feedback',
+      accountability: 'accountability',
+    };
+    const SKILL_PHRASE = { throwing: 'throwing', defense: 'defense', cutting: 'cutting', catching: 'catching' };
+
+    function buildQualifiedMessage() {
+      const gapsList = joinList((state.answers.gaps || []).map(k => GAP_PHRASE[k]).filter(Boolean));
+      const skillPhrase = SKILL_PHRASE[state.answers.primarySkill] || '';
+
+      return {
+        diagnosis: "You said you currently don't have " + gapsList + ", and that you're mostly struggling with your " + skillPhrase + " right now.",
+        // Leads with "We'll" (not the more hypothetical "We'd, if you were
+        // to...") — states what happens next as the plan, not a maybe.
+        process: "We'll kick off with a 1:1 strategy call and actually talk through these roadblocks in your game right now, then build a custom plan - around your schedule - to solve your biggest problem inside your first 30 days.",
+        support: "You'll also get my direct feedback and support every step of the way, so your gains actually show up in your game and you start seeing results.",
+        personalNote: "It'd be cool to work with you, so please view the program details below, and you can join us using that link if this looks like the right next move for you and your goals.",
+      };
+    }
+
+    function renderOutcome() {
+      const qualified = state.result && state.result.qualified;
+      let html;
+      if (qualified) {
+        const o = QUAL.outcomeQualified;
+        const msg = buildQualifiedMessage();
+        html = cardWrap(
+          '<div class="text-center">' +
+          '<div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
+          '<svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>' +
+          '</div>' +
+          '<p class="text-2xl font-extrabold text-gray-900 mb-5">' + escapeHtml(o.heading) + '</p>' +
+          '<div class="text-left max-w-sm mx-auto">' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.diagnosis) + '</p>' +
+          '<p class="text-xs font-semibold text-brand uppercase tracking-widest mb-2">What it looks like to start</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-4">' + escapeHtml(msg.process) + '</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.support) + '</p>' +
+          '<p class="text-base text-gray-900 leading-relaxed mb-6">' + escapeHtml(msg.personalNote) + '</p>' +
+          '<p class="text-base text-gray-900 italic">-Eric</p>' +
+          '</div>' +
+          '<a href="' + o.url + '" target="_blank" class="block w-full bg-brand text-white font-extrabold px-6 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm mt-8">' + o.button + '</a>' +
+          '</div>'
+        );
+      } else {
+        const o = QUAL.outcomeNotQualified;
+        html = cardWrap(
+          '<div class="text-center">' +
+          '<div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">' +
+          '<svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+          '</div>' +
+          '<p class="text-2xl font-extrabold text-gray-900 mb-3">' + escapeHtml(o.heading) + '</p>' +
+          '<p class="text-base text-gray-700 leading-relaxed max-w-sm mx-auto mb-6">' + escapeHtml(o.sub) + '</p>' +
+          '<div class="flex flex-wrap items-center justify-center gap-3">' +
+          '<a href="https://youtube.com/@itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">YouTube</a>' +
+          '<a href="https://instagram.com/itsericdee" target="_blank" class="bg-white border border-gray-200 text-gray-800 font-semibold px-5 py-2.5 rounded-xl hover:border-brand transition-colors text-base">Instagram</a>' +
+          '</div>' +
+          '</div>'
+        );
+      }
+      transitionTo(html);
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // Backend submission — same Apps Script deployment the rest of the
+    // site uses, with new 'coaching_fit_lead' / 'coaching_fit_application'
+    // types (see google-apps-script.gs for the handlers).
+    // ════════════════════════════════════════════════════════════════
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
+
+    function submitQualData(data) {
+      if (!APPS_SCRIPT_URL) return;
+      const params = new URLSearchParams(data);
+      fetch(APPS_SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' }).catch(() => {});
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // Self-tests — run `runSelfTests()` in the browser console. Proves out
+    // the qualification boundary cases given the ambiguous brief rule (see
+    // the comment above computeQualified).
+    // ════════════════════════════════════════════════════════════════
+    function runSelfTests() {
+      let pass = 0, fail = 0;
+      function check(label, actual, expected) {
+        const ok = JSON.stringify(actual) === JSON.stringify(expected);
+        console.log((ok ? '✓ PASS' : '✗ FAIL') + ' — ' + label, ok ? '' : { actual, expected });
+        ok ? pass++ : fail++;
+      }
+
+      check('no budget + working + need 10 → still disqualified (budget is an unconditional hard gate)',
+        computeQualified({ budget: 'no', scenario: 'working', need: 10 }).qualified, false);
+
+      check('working + budget + need 6 → qualified (meets the working threshold exactly)',
+        computeQualified({ budget: 'yes', scenario: 'working', need: 6 }).qualified, true);
+
+      check('working + budget + need 5 → disqualified (one below the working threshold)',
+        computeQualified({ budget: 'yes', scenario: 'working', need: 5 }).qualified, false);
+
+      check('studying + budget + need 8 → qualified (meets the studying threshold exactly)',
+        computeQualified({ budget: 'yes', scenario: 'studying', need: 8 }).qualified, true);
+
+      check('studying + budget + need 7 → disqualified (one below the studying threshold, even though 7 would pass for "working")',
+        computeQualified({ budget: 'yes', scenario: 'studying', need: 7 }).qualified, false);
+
+      check('"something else" + budget + need 8 → qualified (defaulted to the stricter studying-level bar)',
+        computeQualified({ budget: 'yes', scenario: 'other', need: 8 }).qualified, true);
+
+      check('"something else" + budget + need 7 → disqualified (below the defaulted bar)',
+        computeQualified({ budget: 'yes', scenario: 'other', need: 7 }).qualified, false);
+
+      check('exitReason is "budget" when budget is the disqualifier',
+        computeQualified({ budget: 'no', scenario: 'working', need: 10 }).exitReason, 'budget');
+
+      check('exitReason is "need" when the scenario threshold isn\'t met',
+        computeQualified({ budget: 'yes', scenario: 'studying', need: 3 }).exitReason, 'need');
+
+      console.log(pass + ' passed, ' + fail + ' failed.');
+      return { pass, fail };
+    }
+    window.runSelfTests = runSelfTests;
+
+    // Top-bar badge restarts the flow from the intro screen rather than
+    // navigating away — this page IS the "application," so "home" here
+    // means the start of the quiz, not the site homepage.
+    document.getElementById('top-bar-restart').addEventListener('click', e => {
+      e.preventDefault();
+      resetState();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
