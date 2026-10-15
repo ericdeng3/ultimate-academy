@@ -154,7 +154,7 @@
       },
       contact: {
         heading: 'First, who are we talking to?',
-        sub: "We'll only use this to follow up if it's a good fit.",
+        sub: "In case we need to reach you with any questions.",
         button: 'Next →',
       },
       outcomeQualified: {
@@ -171,6 +171,16 @@
       // 'single' = tap-to-select, auto-advances. 'scale10' = 1-10 tap row,
       // auto-advances.
       steps: [
+        {
+          id: 'playLocation', type: 'single', required: true,
+          text: 'Which of the following best describes where you mostly play ultimate?',
+          options: [
+            { key: 'pickups', label: 'Pick ups' },
+            { key: 'leagues', label: 'Leagues' },
+            { key: 'club', label: 'Club trainings/tournaments' },
+            { key: 'other', label: 'A combination' },
+          ],
+        },
         {
           id: 'struggles', type: 'multi', required: true,
           text: 'What are you struggling with most?',
@@ -507,6 +517,7 @@
         source: 'eric-deng-ultimate.com/qualification',
         firstName: state.firstName,
         instagram: state.instagram,
+        playLocation: state.answers.playLocation,
         struggles: state.answers.struggles.join(', '),
         gaps: state.answers.gaps.join(', '),
         primarySkill: state.answers.primarySkill,

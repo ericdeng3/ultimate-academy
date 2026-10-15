@@ -195,11 +195,11 @@ function handleCoachingFitApplication_(p) {
 
   appendRow_('Coaching Fit Applications',
     ['Timestamp', 'Status', 'Exit Reason', 'First Name', 'Instagram',
-     'Struggling With', 'Training Gaps', 'Primary Skill', 'Scenario',
+     'Where They Mostly Play', 'Struggling With', 'Training Gaps', 'Primary Skill', 'Scenario',
      'Ready To Invest?', 'Timeline', 'Need (1-10)', 'Source'],
     [p.timestamp, qualified ? 'Qualified' : 'Not qualified', p.exitReason || '',
      p.firstName, p.instagram || '',
-     p.struggles, p.gaps, p.primarySkill, p.scenario,
+     p.playLocation, p.struggles, p.gaps, p.primarySkill, p.scenario,
      p.budget, p.timeline, p.need, p.source]
   );
 
@@ -212,6 +212,7 @@ function handleCoachingFitApplication_(p) {
       `Name: ${p.firstName || ''}`,
       p.instagram ? `Instagram: ${p.instagram}` : null,
       '',
+      `Where they mostly play: ${p.playLocation || ''}`,
       `Struggling with: ${p.struggles || ''}`,
       `Training gaps: ${p.gaps || ''}`,
       `Primary skill: ${p.primarySkill || ''}`,
