@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Skill Assessment — Ultimate Academy 🥏</title>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- jsPDF, loaded blocking (no async/defer) so it's guaranteed ready by the
        time the athlete taps "Download my report" — this tool has no other
@@ -336,7 +344,7 @@
         {
           id: 'TA5', part: 2, partLabel: 'Training audit', type: 'choice', category: 'athleticism',
           text: 'How often do you do repeat-sprint conditioning, like shuttles or MAS running?',
-          standardLabel: 'Repeat-sprint conditioning 2x a week', metIndexes: [3],
+          standardLabel: 'Repeat-sprint conditioning 1-2x a week', metIndexes: [2, 3],
           options: [
             { label: 'Rarely or never', value: 0 },
             { label: 'Once a fortnight', value: 1 },
@@ -490,8 +498,8 @@
         { id: 'YG7', part: 3, partLabel: 'Your game', type: 'scale5', category: 'skill', text: 'My footwork gets me separation without relying on raw speed.' },
         { id: 'YG8', part: 3, partLabel: 'Your game', type: 'scale5', category: 'skill', text: 'On defence, my positioning lets me stay with my player while seeing the disc.' },
         { id: 'YG9', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: 'I recognise the patterns that keep coming up in games, like a defender fronting me, and know how to beat them.' },
-        { id: 'YG10', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: "My cuts arrive on time with the thrower's window, not early or late." },
-        { id: 'YG11', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: 'I know where block chances come from, and I get blocks rather than just staying close.' },
+        { id: 'YG10', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: "I'm able to create separation from my defender, and I often get thrown to because of it." },
+        { id: 'YG11', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: 'I know where to create block chances on the field, and I use my game IQ to reposition rather than just staying close.' },
         { id: 'YG12', part: 3, partLabel: 'Your game', type: 'scale5', category: 'gameiq', text: "Before each point, I know my job and what our line is trying to do." },
         { id: 'YG13', part: 3, partLabel: 'Your game', type: 'scale5', category: 'feedback', text: 'I can see my training gains showing up in how I play in games.' },
       ],
@@ -1767,7 +1775,7 @@
       doc.setFillColor(brandRgb[0], brandRgb[1], brandRgb[2]);
       doc.roundedRect(marginX + 10, linkY - 14, linkW, 22, 5, 5, 'F');
       doc.setTextColor(255, 255, 255);
-      doc.textWithLink(linkLabel, marginX + 22, linkY, { url: 'https://eric-deng-ultimate.com/apply/' });
+      doc.textWithLink(linkLabel, marginX + 22, linkY, { url: 'https://eric-deng-ultimate.com/qualification/' });
 
       // Footer on both pages
       const footerText = 'eric-deng-ultimate.com · © 2026 Eric Deng Ultimate';
