@@ -6,7 +6,8 @@
  *   - index.html               (Premium Application modal — types: 'lead', 'application')
  *   - apply/index.html         (qualification flow — types: 'qualification_lead', 'qualification_application')
  *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
- *   - lock-in-for-2027-challenge/index.html ("Join $9" — type: 'lockin_lite_lead')
+ *   - lock-in-for-2027-challenge/index.html ("Join $9" — type: 'lockin_lite_lead';
+ *                                            "Join $99" — type: 'lockin_vip_lead')
  *
  * This is a fresh, standalone script — not tied to whatever project used to
  * back the old APPS_SCRIPT_URL. It doesn't read anything from that old
@@ -25,6 +26,7 @@
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
  *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — overrides the built-in "2027 Challenge LITE" group (201733058542438260)
+ *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — group for Lock In "Join $99" (VIP) leads
  *
  *    Anything left blank is simply skipped (e.g. no MAILERLITE_API_KEY means
  *    no MailerLite calls at all, but Sheets + email still work).
@@ -46,6 +48,7 @@
  *   "Coaching Fit Leads"          — qualification page, contact step
  *   "Coaching Fit Applications"   — qualification page, full submission
  *   "Lock In Lite Leads"          — Lock In page, "Join $9" (before Stripe checkout)
+ *   "Lock In VIP Leads"           — Lock In page, "Join $99" (before the Calendly booking)
  *
  * ── Updating an existing deployment (keeps the same /exec URL) ─────────────
  * Paste the new code over the old, save, then Deploy > Manage deployments >
@@ -73,6 +76,8 @@ function doGet(e) {
         return handleCoachingFitApplication_(p);
       case 'lockin_lite_lead':
         return handleLockInLiteLead_(p);
+      case 'lockin_vip_lead':
+        return handleLockInVipLead_(p);
       default:
         return jsonResponse_({ ok: false, error: 'Unknown or missing type: ' + p.type });
     }
@@ -265,6 +270,32 @@ function handleLockInLiteLead_(p) {
   // A MAILERLITE_GROUP_LOCKIN_LITE_ID script property, if set, overrides it.
   const LOCKIN_LITE_GROUP_ID = '201733058542438260';
   syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_LITE_ID') || LOCKIN_LITE_GROUP_ID);
+
+  return jsonResponse_({ ok: true });
+}
+
+// "Join $99" collects first name + email, then opens the VIP Calendly popup.
+// Saved before they book, so this is everyone who STARTED the VIP booking.
+function handleLockInVipLead_(p) {
+  appendRow_('Lock In VIP Leads',
+    ['Timestamp', 'First Name', 'Email', 'Source'],
+    [p.timestamp, p.firstName, p.email, p.source]
+  );
+
+  sendNotifyEmail_(
+    `Lock In VIP booking started: ${p.firstName || ''}`.trim(),
+    [
+      `Name: ${p.firstName || ''}`,
+      `Email: ${p.email || ''}`,
+      '',
+      'They opened the $99 VIP Calendly booking - check Calendly to see if they booked.',
+      `Submitted: ${p.timestamp || ''}`
+    ].join('\n')
+  );
+
+  // MailerLite group for VIP - set MAILERLITE_GROUP_LOCKIN_VIP_ID in Script
+  // Properties. Until then they're added to MailerLite with no group.
+  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_VIP_ID'));
 
   return jsonResponse_({ ok: true });
 }
