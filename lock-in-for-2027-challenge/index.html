@@ -4,7 +4,7 @@
   <script>
     // ── Checkout links ── paste the real links here (an empty link = the button does nothing yet)
     const LINKS = {
-      stripeMinimumChallenge: "", // TODO: Stripe payment link for $9 option
+      stripeMinimumChallenge: "https://buy.stripe.com/6oUeVe05JgsscvWek2g360e", // Stripe payment link for the $9 option
       calendlyAccelerator: "",    // TODO: Calendly URL for $99 option
     };
   </script>
@@ -57,6 +57,10 @@
                   transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    /* Lite form fields - same focus style as the apply page form */
+    .lite-input { outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .lite-input:focus { border-color: #E05C2A; box-shadow: 0 0 0 3px rgba(224,92,42,0.15); }
 
     /* Land on the options with room for the sticky top bar above them */
     #options { scroll-margin-top: 72px; }
@@ -249,7 +253,16 @@
             <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>4-week ultimate-specific training program</span></li>
             
           </ul>
-          <button type="button" data-join="minimum" class="mt-auto w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Join $9</button>
+          <!-- First click reveals the two fields; second click saves the lead and goes to Stripe -->
+          <form id="lite-form" class="mt-auto" novalidate>
+            <div id="lite-fields" class="hidden space-y-3 mb-3">
+              <input type="text" id="lite-first" name="firstName" required autocomplete="given-name" placeholder="First name *"
+                     class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
+              <input type="email" id="lite-email" name="email" required autocomplete="email" placeholder="Email address *"
+                     class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
+            </div>
+            <button type="submit" data-join="minimum" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Join $9</button>
+          </form>
         </div>
 
         <!-- Option 2 -->
@@ -358,11 +371,48 @@
       setInterval(tick, 1000);
     })();
 
-    // ── Join buttons ──
-    function joinMinimum() {
-      if (!LINKS.stripeMinimumChallenge) { console.warn('Link not set yet', '(stripeMinimumChallenge)'); return; }
-      window.location.href = LINKS.stripeMinimumChallenge;     // Stripe payment link, same tab
+    // ── Join $9: reveal first name + email, save the lead, then go to Stripe ──
+    // Same Google Apps Script web app the apply page uses (google-apps-script.gs);
+    // it writes a sheet row and adds the person to MailerLite server-side, so no
+    // MailerLite key ever sits in this page.
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
+
+    function saveLiteLead(firstName, email) {
+      const params = new URLSearchParams({
+        type: 'lockin_lite_lead',
+        timestamp: new Date().toISOString(),
+        source: 'eric-deng-ultimate.com/lock-in-for-2027-challenge',
+        firstName, email,
+      });
+      // keepalive lets the request finish even though we navigate to Stripe straight after
+      return fetch(APPS_SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors', keepalive: true }).catch(() => {});
     }
+
+    document.getElementById('lite-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const fields = document.getElementById('lite-fields');
+      if (fields.classList.contains('hidden')) {          // first click: show the two rows
+        fields.classList.remove('hidden');
+        document.getElementById('lite-first').focus();
+        return;
+      }
+      if (!this.reportValidity()) return;
+      if (!LINKS.stripeMinimumChallenge) { console.warn('Link not set yet', '(stripeMinimumChallenge)'); return; }
+      const firstName = document.getElementById('lite-first').value.trim();
+      const email = document.getElementById('lite-email').value.trim();
+      const btn = this.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Taking you to checkout…';
+      gtag('event', 'lockin_lite_checkout', { event_category: 'lock_in_2027' });
+      saveLiteLead(firstName, email);
+      // Stripe pre-fills the email on its checkout page
+      const url = LINKS.stripeMinimumChallenge + '?prefilled_email=' + encodeURIComponent(email);
+      setTimeout(() => { window.location.href = url; }, 400);
+    });
+    // Coming back from Stripe with the Back button restores the page as it was - re-enable the button
+    window.addEventListener('pageshow', () => {
+      const btn = document.querySelector('#lite-form button');
+      btn.disabled = false; btn.textContent = 'Join $9';
+    });
     function joinAccelerator() {
       if (!LINKS.calendlyAccelerator) { console.warn('Link not set yet', '(calendlyAccelerator)'); return; }
       const open = () => Calendly.initPopupWidget({ url: LINKS.calendlyAccelerator });
@@ -373,7 +423,6 @@
         else if (++tries > 50) { clearInterval(wait); console.warn('Calendly did not load'); }
       }, 100);
     }
-    document.querySelector('[data-join="minimum"]').addEventListener('click', joinMinimum);
     document.querySelector('[data-join="accelerator"]').addEventListener('click', joinAccelerator);
   </script>
 </body>

@@ -6,6 +6,7 @@
  *   - index.html               (Premium Application modal — types: 'lead', 'application')
  *   - apply/index.html         (qualification flow — types: 'qualification_lead', 'qualification_application')
  *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
+ *   - lock-in-for-2027-challenge/index.html ("Join $9" — type: 'lockin_lite_lead')
  *
  * This is a fresh, standalone script — not tied to whatever project used to
  * back the old APPS_SCRIPT_URL. It doesn't read anything from that old
@@ -23,6 +24,7 @@
  *      MAILERLITE_GROUP_QUALIFIED_ID       optional — group for qualified apply-page applicants
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
+ *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — group for Lock In For 2027 "Join $9" sign-ups
  *
  *    Anything left blank is simply skipped (e.g. no MAILERLITE_API_KEY means
  *    no MailerLite calls at all, but Sheets + email still work).
@@ -43,6 +45,12 @@
  *   "Qualification Applications"  — apply page, step 2 (full submission)
  *   "Coaching Fit Leads"          — qualification page, contact step
  *   "Coaching Fit Applications"   — qualification page, full submission
+ *   "Lock In Lite Leads"          — Lock In page, "Join $9" (before Stripe checkout)
+ *
+ * ── Updating an existing deployment (keeps the same /exec URL) ─────────────
+ * Paste the new code over the old, save, then Deploy > Manage deployments >
+ * pencil icon on the live deployment > Version: "New version" > Deploy.
+ * (Creating a NEW deployment would give a different URL.)
  */
 
 // ── Entry point ─────────────────────────────────────────────────────────
@@ -63,6 +71,8 @@ function doGet(e) {
         return handleCoachingFitLead_(p);
       case 'coaching_fit_application':
         return handleCoachingFitApplication_(p);
+      case 'lockin_lite_lead':
+        return handleLockInLiteLead_(p);
       default:
         return jsonResponse_({ ok: false, error: 'Unknown or missing type: ' + p.type });
     }
@@ -224,6 +234,33 @@ function handleCoachingFitApplication_(p) {
       `Submitted: ${p.timestamp || ''}`
     ].filter(Boolean).join('\n')
   );
+
+  return jsonResponse_({ ok: true });
+}
+
+// ── Lock In For 2027 Challenge (lock-in-for-2027-challenge/index.html) ──
+
+// "Join $9" collects first name + email, then sends the person to Stripe.
+// Saved here before payment, so this is everyone who STARTED checkout -
+// Stripe's dashboard shows who actually paid.
+function handleLockInLiteLead_(p) {
+  appendRow_('Lock In Lite Leads',
+    ['Timestamp', 'First Name', 'Email', 'Source'],
+    [p.timestamp, p.firstName, p.email, p.source]
+  );
+
+  sendNotifyEmail_(
+    `Lock In Lite checkout started: ${p.firstName || ''}`.trim(),
+    [
+      `Name: ${p.firstName || ''}`,
+      `Email: ${p.email || ''}`,
+      '',
+      'They were sent to the $9 Stripe checkout - check Stripe to confirm payment.',
+      `Submitted: ${p.timestamp || ''}`
+    ].join('\n')
+  );
+
+  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_LITE_ID'));
 
   return jsonResponse_({ ok: true });
 }
