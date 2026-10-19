@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // ── Links ── paste the real ones here
+    const PAGE = {
+      loomEmbedUrl: "", // TODO: Loom embed URL, e.g. https://www.loom.com/embed/xxxxxxxx (empty = placeholder box)
+      calendlyUrl: "https://calendly.com/eric-deng-ultimate/vip-challenge-onboarding",
+    };
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIP Spot Saved | Eric Deng Ultimate</title>
+  <!-- Post-sign-up page: keep it out of search results -->
+  <meta name="robots" content="noindex, nofollow" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+
+  <!-- ─── HERO ─── navy panel, video straddling the navy/white edge (same as the apply page) -->
+  <section class="relative text-center">
+    <div id="hero-dark-panel" class="pt-14 px-6" style="background-color:#1f223c; padding-bottom:365px;">
+      <div class="max-w-4xl mx-auto">
+        <div class="reveal w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5" style="transition-delay:0.06s">
+          <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
+          We've saved you a spot.
+        </h1>
+        <p class="reveal text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl mx-auto mb-10" style="transition-delay:0.16s">
+          You're in for the VIP Challenge. Book your onboarding call below to lock it in.
+        </p>
+      </div>
+    </div>
+
+    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -365px;">
+      <div class="rounded-lg overflow-hidden shadow-xl">
+        <div id="hero-image" class="relative w-full bg-gray-800" style="padding-top: 56.25%;">
+          <!-- Filled from PAGE.loomEmbedUrl; until then this placeholder shows -->
+          <div id="loom-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-white/70">
+            <svg class="w-14 h-14 mb-3 text-white/60" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <p class="text-base font-semibold">Welcome video coming soon</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="hero-white-panel" class="pt-6 px-6" style="margin-top: -40px;"></div>
+  </section>
+
+  <!-- ─── NEXT STEPS ─── (overview list, then the two actions: book the call, save the date) -->
+  <section class="pt-12 pb-16 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal text-center mb-10">
+        <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-3">Your next steps</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">Here's what happens next.</h2>
+      </div>
+
+      <ol class="reveal space-y-7 mb-12">
+          <li class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">1</div>
+            <div>
+              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Book your VIP onboarding call</p>
+              <p class="text-base md:text-lg text-gray-700 leading-relaxed">Pick a time that suits you in the calendar below. We'll talk through your goals, where you're at right now, and how to get the most out of the challenge.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">2</div>
+            <div>
+              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">We'll process your investment on the call</p>
+              <p class="text-base md:text-lg text-gray-700 leading-relaxed">No payment is needed today. We'll take care of your $99/month investment together during your onboarding call.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">3</div>
+            <div>
+              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Get instant access and start straight away</p>
+              <p class="text-base md:text-lg text-gray-700 leading-relaxed">As soon as that's done, you'll get instant access to everything – your custom program, personalised feedback and the private community – so you can get started straight away.</p>
+            </div>
+          </li>
+      </ol>
+
+      <!-- Action: book the onboarding call (step 1 above) (Calendly inline embed, pre-filled from the Join $99 form) -->
+      <div class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6">
+        <div class="flex items-start gap-4 mb-5">
+          <div class="w-9 h-9 rounded-full bg-brand-light text-brand flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+          <div class="flex-1">
+            <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-2">Book your VIP onboarding call</h3>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">Choose a time below – it only takes a minute.</p>
+          </div>
+        </div>
+        <div id="calendly-embed" class="rounded-2xl overflow-hidden -mx-6 md:-mx-8 -mb-6 md:-mb-8" style="min-width:320px;height:700px;"></div>
+      </div>
+
+      <!-- Action: save the workshop date -->
+      <div class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8">
+        <div class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand-light text-brand flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+          <div class="flex-1">
+            <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-2">Save the workshop date</h3>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">Lock In For 2027 Workshop – Friday 4 December, 9–11am Sydney time. Add it to your calendar so you don't miss it.</p>
+            <a id="gcal-link" href="#" target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-brand text-white font-bold px-8 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors text-lg shadow-sm">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Add to Google Calendar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="py-8 px-6 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  <script>
+    // ── Loom video (placeholder until PAGE.loomEmbedUrl is set) ──
+    if (PAGE.loomEmbedUrl) {
+      const box = document.getElementById('hero-image');
+      box.innerHTML = '';
+      const f = document.createElement('iframe');
+      f.src = PAGE.loomEmbedUrl;
+      f.title = 'Welcome to the Lock In For 2027 VIP Challenge';
+      f.setAttribute('frameborder', '0');
+      f.setAttribute('allowfullscreen', '');
+      f.className = 'absolute inset-0 w-full h-full';
+      box.appendChild(f);
+    }
+
+    // ── Google Calendar link: Fri 4 Dec 2026, 9-11am Sydney = 22:00-00:00 UTC ──
+    (function () {
+      const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: 'Lock In For 2027 Workshop',
+        dates: '20261203T220000Z/20261204T000000Z',
+        details: 'Live 2-hour workshop with Eric Deng Ultimate. The joining link will be sent to your email before the workshop.',
+        location: 'Online (link sent by email)',
+      });
+      // dates must keep a literal "/" between start and end
+      document.getElementById('gcal-link').href = 'https://calendar.google.com/calendar/render?' + params.toString().replace('%2F', '/');
+    })();
+
+    // ── Calendly inline embed (widget.js loads async) ──
+    (function () {
+      // Name + email from the Join $99 form (sessionStorage, set on the Lock In page)
+      let prefill = {};
+      try { prefill = JSON.parse(sessionStorage.getItem('lockinVip') || '{}'); } catch (err) {}
+      const init = () => Calendly.initInlineWidget({ url: PAGE.calendlyUrl, parentElement: document.getElementById('calendly-embed'), prefill });
+      if (window.Calendly) return init();
+      let tries = 0;
+      const wait = setInterval(() => {
+        if (window.Calendly) { clearInterval(wait); init(); }
+        else if (++tries > 100) { clearInterval(wait); console.warn('Calendly did not load'); }
+      }, 100);
+    })();
+
+    // ── Hero split (same as the apply page) ──
+    function syncHeroSplit() {
+      const img = document.getElementById('hero-image');
+      const darkPanel = document.getElementById('hero-dark-panel');
+      const imageWrap = document.getElementById('hero-image-wrap');
+      const whitePanel = document.getElementById('hero-white-panel');
+      const h = img.getBoundingClientRect().height;
+      if (!h) return;
+      darkPanel.style.paddingBottom = (h * 0.9) + 'px';
+      imageWrap.style.marginTop = '-' + (h * 0.9) + 'px';
+      whitePanel.style.marginTop = '-' + (h * 0.1) + 'px';
+    }
+    syncHeroSplit();
+    window.addEventListener('resize', () => requestAnimationFrame(syncHeroSplit));
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

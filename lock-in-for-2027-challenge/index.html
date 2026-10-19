@@ -5,7 +5,7 @@
     // ── Checkout links ── paste the real links here (an empty link = the button does nothing yet)
     const LINKS = {
       stripeMinimumChallenge: "https://buy.stripe.com/6oUeVe05JgsscvWek2g360e", // Stripe payment link for the $9 option
-      calendlyAccelerator: "",    // TODO: Calendly URL for $99 option
+      vipConfirmedPage: "../vip-spot-confirmed/", // Join $99 goes here (VIP Calendly is embedded on that page)
     };
   </script>
   <meta charset="UTF-8" />
@@ -21,9 +21,6 @@
     gtag('config', 'G-PK7BFTYPJZ');
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Calendly popup widget - loaded on this page only, for the $99 option -->
-  <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
-  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
   <script>
     tailwind.config = {
       theme: {
@@ -248,7 +245,7 @@
             <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Personalised feedback at every step</span></li>
             <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Private community for support</span></li>
           </ul>
-          <!-- Same as Join $9: first click reveals the two fields; second click saves the lead and opens Calendly -->
+          <!-- Same as Join $9: first click reveals the two fields; second click saves the lead and goes to the VIP confirmation page -->
           <form id="vip-form" class="mt-auto" novalidate>
             <div id="vip-fields" class="hidden space-y-3 mb-3">
               <input type="text" id="vip-first" name="firstName" required autocomplete="given-name" placeholder="First name *"
@@ -370,7 +367,9 @@
       const btn = document.querySelector('#lite-form button');
       btn.disabled = false; btn.textContent = 'Join $9';
     });
-    // ── Join $99: same two fields, save the lead, then open Calendly with name + email pre-filled ──
+    // ── Join $99: same two fields, save the lead, then go to the VIP confirmation page ──
+    // Name + email travel in sessionStorage (not the URL, so they never land in
+    // analytics) and pre-fill the Calendly booking on that page.
     document.getElementById('vip-form').addEventListener('submit', function (e) {
       e.preventDefault();
       const fields = document.getElementById('vip-fields');
@@ -382,21 +381,17 @@
       if (!this.reportValidity()) return;
       const firstName = document.getElementById('vip-first').value.trim();
       const email = document.getElementById('vip-email').value.trim();
+      const btn = this.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Saving your spot…';
       gtag('event', 'lockin_vip_booking', { event_category: 'lock_in_2027' });
       saveLead('lockin_vip_lead', firstName, email);
-      joinAccelerator(firstName, email);
+      try { sessionStorage.setItem('lockinVip', JSON.stringify({ name: firstName, email })); } catch (err) {}
+      setTimeout(() => { window.location.href = LINKS.vipConfirmedPage; }, 400);
     });
-
-    function joinAccelerator(name, email) {
-      if (!LINKS.calendlyAccelerator) { console.warn('Link not set yet', '(calendlyAccelerator)'); return; }
-      const open = () => Calendly.initPopupWidget({ url: LINKS.calendlyAccelerator, prefill: { name, email } });
-      if (window.Calendly) return open();
-      let tries = 0;  // widget.js loads async - wait briefly if someone clicks very quickly
-      const wait = setInterval(() => {
-        if (window.Calendly) { clearInterval(wait); open(); }
-        else if (++tries > 50) { clearInterval(wait); console.warn('Calendly did not load'); }
-      }, 100);
-    }
+    window.addEventListener('pageshow', () => {
+      const btn = document.querySelector('#vip-form button');
+      btn.disabled = false; btn.textContent = 'Join $99';
+    });
   </script>
 </body>
 </html>
