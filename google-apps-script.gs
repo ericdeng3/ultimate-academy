@@ -289,7 +289,11 @@ function mlGroupId_(propertyName) {
 
 function syncToMailerLite_(email, firstName, lastName, groupId) {
   const apiKey = PropertiesService.getScriptProperties().getProperty('MAILERLITE_API_KEY');
-  if (!apiKey || !email) return;
+  if (!email) return;
+  if (!apiKey) {
+    logMailerLiteError_(email, groupId, 'skipped', 'MAILERLITE_API_KEY script property is not set');
+    return;
+  }
 
   // MailerLite "Connect" API (current, as of 2024+). If your account is
   // still on the legacy MailerLite Classic API, this endpoint/auth header
@@ -303,11 +307,29 @@ function syncToMailerLite_(email, firstName, lastName, groupId) {
     groups: groupId ? [groupId] : []
   };
 
-  UrlFetchApp.fetch('https://connect.mailerlite.com/api/subscribers', {
-    method: 'post',
-    contentType: 'application/json',
-    headers: { Authorization: 'Bearer ' + apiKey },
-    payload: JSON.stringify(payload),
-    muteHttpExceptions: true
-  });
+  try {
+    const res = UrlFetchApp.fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: { Authorization: 'Bearer ' + apiKey },
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+    const code = res.getResponseCode();
+    // 200 = existing subscriber updated, 201 = new subscriber created
+    if (code !== 200 && code !== 201) {
+      logMailerLiteError_(email, groupId, code, res.getContentText());
+    }
+  } catch (err) {
+    logMailerLiteError_(email, groupId, 'exception', String(err));
+  }
+}
+
+// Failed MailerLite syncs land in a "MailerLite Errors" tab so they're visible
+// (e.g. a mistyped group ID or an expired API key) instead of failing silently.
+function logMailerLiteError_(email, groupId, code, detail) {
+  appendRow_('MailerLite Errors',
+    ['Timestamp', 'Email', 'Group ID', 'Response code', 'Detail'],
+    [new Date().toISOString(), email, groupId || '(none)', String(code), String(detail).slice(0, 500)]
+  );
 }
