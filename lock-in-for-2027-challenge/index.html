@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lock In For 2027 Challenge | Eric Deng Ultimate</title>
   <meta name="description" content="Get the knowledge and structure you need to go into 2027 a step ahead of your competition." />
-  <!-- Google Analytics (same property as the rest of the site) -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -20,275 +20,329 @@
     gtag('js', new Date());
     gtag('config', 'G-PK7BFTYPJZ');
   </script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <!-- Calendly popup widget - loaded on this page only, for the $99 option -->
   <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
   <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-  <style>
-    /* Matched to the Secrets to Separation™ Workshop page (measured from its PDF export). */
-    :root {
-      --blue: #2346c2;     /* countdown banner + Times box */
-      --grey: #ababab;     /* countdown digits/labels, Times text */
-      --band: #fafafa;     /* backdrop behind the white cards */
-      --ink: #000000;
-      --ink-soft: #242424; /* form/field text on the template */
-      --line: #d4d4d4;     /* field/box borders */
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
     }
-    * { box-sizing: border-box; }
+  </script>
+  <style>
+    /* Same motion and helpers as the apply page (apply/index.html). */
     html { scroll-behavior: smooth; }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-    body {
-      margin: 0; background: #fff; color: var(--ink);
-      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-size: 18px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    p { margin: 0 0 16px; }
-    img { max-width: 100%; display: block; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* Layout: full-width grey bands holding a white card; plain white sections in between */
-    .band { background: var(--band); padding: 18px 18px; }
-    .card { background: #fff; max-width: 960px; margin: 0 auto; padding: 28px 24px 22px; }
-    .col  { max-width: 690px; margin: 0 auto; }
-    .plain { padding: 36px 24px 8px; }
-
-    /* Countdown banner */
-    .countdown { background: var(--blue); padding: 18px; }
-    .countdown-box { background: #fff; max-width: 960px; margin: 0 auto; padding: 6px 12px 10px;
-                     display: flex; justify-content: center; align-items: flex-start; gap: 4px; }
-    .cd-unit { text-align: center; min-width: 84px; }
-    .cd-num { display: block; font-size: 56px; font-weight: 700; color: var(--grey); line-height: 1.15;
-              font-variant-numeric: tabular-nums; }
-    .cd-label { display: block; font-size: 18px; color: var(--grey); line-height: 1.2; }
-    .cd-sep { font-family: "Times New Roman", Times, serif; font-size: 28px; color: var(--grey);
-              line-height: 1; padding-top: 22px; }
-
-    /* Type */
-    h1 { font-size: 42px; font-weight: 700; line-height: 1.5; text-align: center; margin: 0 0 18px; }
-    .hero-sub { font-size: 20px; text-align: center; margin: 0 0 18px; }
-    .hero-bold { font-size: 20px; font-weight: 700; text-align: center; margin: 0 0 26px; }
-    .hero-img { width: 100%; max-width: 570px; height: auto; margin: 0 auto; border-radius: 4px; }
-    .lead { font-size: 24px; font-weight: 700; font-style: italic; line-height: 1.36; margin: 0 0 28px; }
-    h2 { font-size: 22px; font-weight: 700; font-style: italic; line-height: 1.36; margin: 8px 0 20px; }
-    h2.register { font-style: normal; font-size: 28px; margin: 0 0 22px; }
-    .label { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; margin-bottom: 20px; }
-    .item-title { font-weight: 700; margin: 0 0 12px; }
-    .bullets p { margin: 0; }
-    .bullets { margin: 0 0 16px; }
-
-    /* Buttons: the template's plain bold text button */
-    .btn { display: inline-block; background: #fff; color: var(--ink); font: inherit; font-weight: 700;
-           border: 0; padding: 10px 22px; margin: 4px 0 20px; text-decoration: none; cursor: pointer;
-           border-radius: 4px; }
-    .btn:hover, .btn:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
-    .btn-lg { font-size: 22px; }
-
-    /* Options (styled like the template's register box) */
-    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
-    .option { border: 1px solid var(--line); border-radius: 4px; padding: 22px 20px 12px;
-              display: flex; flex-direction: column; }
-    .opt-label { font-size: 15px; font-weight: 700; color: var(--grey); text-transform: uppercase;
-                 letter-spacing: .06em; margin: 0 0 4px; }
-    .opt-title { font-size: 24px; font-weight: 700; margin: 0 0 10px; line-height: 1.3; }
-    .opt-price { font-size: 34px; font-weight: 700; margin: 0; line-height: 1.2; }
-    .opt-price small { font-size: 18px; font-weight: 700; }
-    .opt-price s { font-size: 20px; color: var(--grey); font-weight: 400; margin-right: 6px; }
-    .opt-note { color: var(--ink-soft); font-style: italic; font-size: 16px; margin: 6px 0 18px; }
-    .checks { list-style: none; padding: 0; margin: 0 0 18px; font-size: 18px; }
-    .checks li { display: flex; gap: 8px; margin: 0 0 6px; line-height: 1.4; }
-    .checks li span { flex-shrink: 0; }
-    .option .btn { margin: auto auto 6px; }
-
-    /* Times box */
-    .times { background: var(--blue); border-radius: 4px; padding: 14px 20px; margin: 0 0 30px; }
-    .times-row { background: #fff; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center;
-                 padding: 2px 8px; font-style: italic; font-size: 16px; color: var(--grey); line-height: 1.35; }
-    .times-row b { display: block; }
-    .times-row div { padding: 2px 4px; white-space: nowrap; }
-    @media (max-width: 760px) {
-      .times-row { grid-template-columns: repeat(2, 1fr); row-gap: 8px; padding: 8px 4px; }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
 
-    .signoff { padding-bottom: 60px; }
-
-    @media (max-width: 640px) {
-      body { font-size: 17px; }
-      .band { padding: 10px 8px; }
-      .card { padding: 22px 16px 16px; }
-      .plain { padding: 28px 20px 4px; }
-      .countdown { padding: 10px; }
-      .cd-unit { min-width: 62px; }
-      .cd-num { font-size: 40px; }
-      .cd-label { font-size: 15px; }
-      .cd-sep { font-size: 22px; padding-top: 14px; }
-      h1 { font-size: 32px; line-height: 1.35; }
-      .hero-sub, .hero-bold { font-size: 18px; }
-      .lead { font-size: 21px; }
-      h2 { font-size: 21px; }
-      h2.register { font-size: 25px; }
-      .options { grid-template-columns: 1fr; }
-      .times { padding: 10px; }
-      .times-row { font-size: 14px; }
-    }
+    /* Land on the options with room for the sticky top bar above them */
+    #options { scroll-margin-top: 72px; }
   </style>
 </head>
-<body>
+<body class="bg-white text-gray-900 font-sans antialiased">
 
-  <!-- Section 1: countdown to Fri 4 Dec 2026, 9:00am Sydney -->
-  <div class="countdown" aria-label="Time until the workshop starts">
-    <div class="countdown-box" id="countdown" data-target="2026-12-03T22:00:00Z">
-      <div class="cd-unit"><span class="cd-num" data-cd="days">00</span><span class="cd-label">Days</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" data-cd="hrs">00</span><span class="cd-label">Hrs</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" data-cd="mins">00</span><span class="cd-label">Mins</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" data-cd="secs">00</span><span class="cd-label">Secs</span></div>
-    </div>
+  <!-- ─── TOP BAR: countdown to Fri 4 Dec 2026, 9:00am Sydney (sticky, like the apply page) ─── -->
+  <div class="reveal sticky top-0 z-50 flex items-center justify-center py-4 px-4 bg-[#232321]" style="transition-delay:0.02s">
+    <a href="#options" id="countdown" data-target="2026-12-03T22:00:00Z" aria-label="Time until the workshop starts"
+       class="inline-flex items-center gap-2.5 sm:gap-3 bg-white rounded-lg px-4 sm:px-5 py-1 hover:bg-gray-50 transition-colors">
+      <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+      </span>
+      <span class="flex items-start gap-1.5 sm:gap-2">
+        <span class="text-center leading-none"><span data-cd="days" class="block text-base font-extrabold text-gray-900 tabular-nums">00</span><span class="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Days</span></span>
+        <span class="text-base font-extrabold text-gray-300 leading-none">:</span>
+        <span class="text-center leading-none"><span data-cd="hrs" class="block text-base font-extrabold text-gray-900 tabular-nums">00</span><span class="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Hrs</span></span>
+        <span class="text-base font-extrabold text-gray-300 leading-none">:</span>
+        <span class="text-center leading-none"><span data-cd="mins" class="block text-base font-extrabold text-gray-900 tabular-nums">00</span><span class="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Mins</span></span>
+        <span class="text-base font-extrabold text-gray-300 leading-none">:</span>
+        <span class="text-center leading-none"><span data-cd="secs" class="block text-base font-extrabold text-gray-900 tabular-nums">00</span><span class="block text-[10px] font-bold uppercase tracking-wide text-gray-500">Secs</span></span>
+      </span>
+    </a>
   </div>
 
-  <!-- Section 2: hero -->
-  <section class="band">
-    <div class="card">
-      <h1>Lock In For 2027 Challenge</h1>
-      <p class="hero-sub">Get the knowledge and structure you need to go into 2027 a step ahead of your competition.</p>
-      <p class="hero-bold">Lock in your spot today.</p>
-      <img class="hero-img" src="hero.jpg" alt="Eric holding a disc on an ultimate field at night" width="1400" height="800" />
+  <!-- ─── HERO ─── Same dark/white split as the apply page: the image straddles the
+       navy/white boundary. syncHeroSplit (bottom of page) sets the offsets from the
+       image box's real height; the inline values are only a pre-JS fallback. -->
+  <section class="relative text-center">
+    <div id="hero-dark-panel" class="pt-8 px-6" style="background-color:#1f223c; padding-bottom:395px;">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
+          Lock In For 2027 Challenge
+        </h1>
+        <p class="reveal text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed" style="transition-delay:0.16s">
+          Get the knowledge and structure you need to go into 2027 a step ahead of your competition.
+        </p>
+      </div>
     </div>
-  </section>
 
-  <!-- Section 3: intro -->
-  <section class="plain">
-    <div class="col">
-      <p class="lead">I'm running a challenge to help you build a structured training plan for ultimate, so you can go into 2027 a step ahead of your competition.</p>
-      <p class="label">Our goal is simple.</p>
-      <p>Give you the knowledge and structure you need to train properly for ultimate – strength training, field training and skills – and stay consistent long enough to see lasting results.</p>
-      <p>It starts with a 1:1 onboarding call to talk through your goals. Then you'll join a 2-hour live workshop where we'll build your training around your 2027 season.</p>
-      <p>We've coached 300+ athletes to train smarter for ultimate and turn their work into real on-field impact.</p>
-      <p>Before 2027 kicks off, it could be your turn.</p>
-      <a class="btn" href="#options">Choose your option →</a>
-    </div>
-  </section>
-
-  <!-- Sections 4 + 5: misconception and problems (one card, as on the template) -->
-  <section class="band">
-    <div class="card">
-      <div class="col">
-        <h2>The biggest misconception around getting better at ultimate:</h2>
-        <p>Most players think getting better means training harder.</p>
-        <p>But effort without structure is why most players stall. A gym session one week, a track session the next, then nothing for a fortnight.</p>
-        <p>The players who keep improving aren't always the most talented or the most motivated. They have structure.</p>
-        <p>And getting that right requires <b>3 things:</b></p>
-        <div class="bullets">
-          <p>• Knowing what to train for ultimate (and what to skip),</p>
-          <p>• A plan built around your goals and your schedule, and</p>
-          <p>• The support to stay consistent and turn your gym work into on-field results.</p>
+    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -395px;">
+      <div class="rounded-lg overflow-hidden shadow-xl">
+        <!-- 1400x800 photo: 57.14% keeps its real aspect ratio, so the height is known before it loads -->
+        <div id="hero-image" class="relative w-full" style="padding-top: 57.14%;">
+          <img src="hero.jpg" alt="Eric holding a disc on an ultimate field at night" class="absolute inset-0 w-full h-full object-cover" />
         </div>
-        <p><b>The fun part:</b> Getting <i>this</i> right doesn't have to take years.</p>
-        <p>With the right plan, you could start 2027 as the fittest, most prepared version of yourself.</p>
-        <a class="btn" href="#options">Choose your option →</a>
+      </div>
+    </div>
 
-        <h2>The top 3 problems that stop players from improving...</h2>
-        <p class="item-title">1. You're training hard, but without a plan</p>
-        <p>Random workouts, no progression and no clear reason behind what you're doing – so you put in the effort without seeing the results.</p>
-        <p class="item-title">2. You can't stay consistent</p>
-        <p>You start strong, then work, life and the season get in the way. A few missed weeks turns into a few missed months.</p>
-        <p class="item-title">3. Your training doesn't show up on the field</p>
-        <p>You might be getting stronger or fitter, but it's not translating into speed, explosiveness, or impact in games.</p>
+    <div id="hero-white-panel" class="pt-16 pb-5 px-6" style="margin-top: -44px;">
+      <p class="reveal text-xl font-bold text-gray-900 max-w-3xl mx-auto" style="transition-delay:0.28s">Lock in your spot today.</p>
+    </div>
+  </section>
+
+  <!-- ─── INTRO ─── -->
+  <section class="pt-10 pb-12 px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="reveal text-2xl md:text-3xl font-extrabold text-gray-900 leading-snug text-center mb-10">
+        I'm running a challenge to help you build a structured training plan for ultimate, so you can go into 2027 a step ahead of your competition.
+      </h2>
+      <div class="reveal">
+        <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-4">Our goal is simple.</p>
+        <div class="space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
+          <p>Give you the knowledge and structure you need to train properly for ultimate – strength training, field training and skills – and stay consistent long enough to see lasting results.</p>
+          <p>It starts with a 1:1 onboarding call to talk through your goals. Then you'll join a 2-hour live workshop where we'll build your training around your 2027 season.</p>
+          <p>We've coached 300+ athletes to train smarter for ultimate and turn their work into real on-field impact.</p>
+          <p>Before 2027 kicks off, it could be your turn.</p>
+        </div>
+      </div>
+      <div class="reveal mt-10">
+        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">Choose your option →</a>
       </div>
     </div>
   </section>
 
-  <!-- Section 6: what we'll cover -->
-  <section class="plain">
-    <div class="col">
-      <h2>Here's what we'll cover</h2>
-      <p class="item-title">Step 1 – Your 1:1 onboarding call</p>
-      <p>First, we'll jump on a call to talk through your training goals, where you're at right now, and how to get the most out of the challenge. You'll receive your ticket to the workshop on this call.</p>
-      <p class="item-title">Step 2 – Learn how to train for ultimate</p>
-      <p>At the live workshop, we'll cover the three pillars of training for ultimate: strength training, field training, and skills – and how to balance them across your week so they work together, not against each other.</p>
-      <p class="item-title">Step 3 – Set it into your 2027 goals</p>
-      <p>From there, we'll map your training to your 2027 season – your tournaments, tryouts and key dates – so you know exactly what to focus on and when.</p>
-      <p class="item-title">Step 4 – Turn physical gains into on-field impact</p>
-      <p>Then, we'll talk through how to transfer what you build in the gym and on the track into the moments that matter in games.</p>
-      <p class="item-title">Step 5 – Start your program</p>
-      <p>Lastly, you'll start your ultimate-specific training program, so you leave with a clear plan to follow from day one.</p>
-      <p><b>Workshop details:</b> Friday 4 December, 9–11am Sydney time (see times below for your time zone).</p>
+  <!-- ─── MISCONCEPTION ─── (paper card, like the apply page's testimonials block) -->
+  <section class="pt-2 pb-6 px-6">
+    <div class="max-w-4xl mx-auto rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat py-10 px-6 sm:px-10" style="background-image: url('../apply/Light%20Gray%20Background%20Paper.png');">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="reveal text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight text-center mb-8">The biggest misconception around getting better at ultimate:</h2>
+        <div class="reveal space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
+          <p>Most players think getting better means training harder.</p>
+          <p>But effort without structure is why most players stall. A gym session one week, a track session the next, then nothing for a fortnight.</p>
+          <p>The players who keep improving aren't always the most talented or the most motivated. <mark class="bg-orange-100 text-gray-900 rounded px-0.5">They have structure.</mark></p>
+          <p>And getting that right requires <b>3 things:</b></p>
+          <ul class="bg-white rounded-2xl shadow-sm p-5 sm:p-6 space-y-3">
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 rounded-full bg-brand flex-shrink-0"></span><span>Knowing what to train for ultimate (and what to skip),</span></li>
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 rounded-full bg-brand flex-shrink-0"></span><span>A plan built around your goals and your schedule, and</span></li>
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 rounded-full bg-brand flex-shrink-0"></span><span>The support to stay consistent and turn your gym work into on-field results.</span></li>
+          </ul>
+          <p><b>The fun part:</b> Getting <i>this</i> right doesn't have to take years.</p>
+          <p>With the right plan, you could start 2027 as the fittest, most prepared version of yourself.</p>
+        </div>
+        <div class="reveal mt-10">
+          <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">Choose your option →</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Section 7: who it's for -->
-  <section class="plain">
-    <div class="col">
-      <h2>Who this is for</h2>
-      <p>This challenge is built for adult ultimate players at a casual or semi-competitive level who want more structure in their training, and want to stay consistent to see lasting results.</p>
-      <p>If you're looking for a temporary fix, or you're not willing to put in the effort – this <b>isn't</b> for you.</p>
-      <p>But if you want a structured program, a clear system to follow, and you're ready to put in the reps – then 2027 could be the year things get <i>exciting</i>.</p>
+  <!-- ─── PROBLEMS ─── (three columns, like the apply page's "What you'll get") -->
+  <section class="pt-10 pb-12 px-6">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight text-center mb-10">The top 3 problems that stop players from improving...</h2>
+      <div class="reveal grid sm:grid-cols-3 gap-5">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mb-4">1</div>
+          <p class="text-xl font-bold text-gray-900 mb-3 leading-snug">You're training hard, but without a plan</p>
+          <p class="text-base text-gray-900 leading-relaxed">Random workouts, no progression and no clear reason behind what you're doing – so you put in the effort without seeing the results.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mb-4">2</div>
+          <p class="text-xl font-bold text-gray-900 mb-3 leading-snug">You can't stay consistent</p>
+          <p class="text-base text-gray-900 leading-relaxed">You start strong, then work, life and the season get in the way. A few missed weeks turns into a few missed months.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center mb-4">3</div>
+          <p class="text-xl font-bold text-gray-900 mb-3 leading-snug">Your training doesn't show up on the field</p>
+          <p class="text-base text-gray-900 leading-relaxed">You might be getting stronger or fitter, but it's not translating into speed, explosiveness, or impact in games.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Section 8: options -->
-  <section class="band" id="options">
-    <div class="card">
-      <div class="col" style="max-width: 820px">
-        <h2 class="register">Choose your option</h2>
-        <div class="options">
-          <div class="option">
-            <p class="opt-label">Option 1</p>
-            <p class="opt-title">Minimum Challenge</p>
-            <p class="opt-price">$9 <small>USD</small></p>
-            <p class="opt-note">for 1 month</p>
-            <ul class="checks">
-              <li><span>✅</span>1:1 onboarding call</li>
-              <li><span>✅</span>Ticket to the Lock In For 2027 Workshop</li>
-              <li><span>✅</span>Semi-custom ultimate-specific training program</li>
-              <li><span>✅</span>Program delivered on a Google Sheet</li>
-            </ul>
-            <button type="button" class="btn btn-lg" data-join="minimum">Join – $9</button>
+  <!-- ─── WHAT WE'LL COVER ─── (grey band + numbered steps, like "What Happens Next") -->
+  <section class="py-12 px-6 border-t border-gray-100 bg-gray-50">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight text-center mb-10">Here's what we'll cover</h2>
+      <ol class="reveal space-y-7">
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">1</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Step 1 – Your 1:1 onboarding call</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">First, we'll jump on a call to talk through your training goals, where you're at right now, and how to get the most out of the challenge. You'll receive your ticket to the workshop on this call.</p>
           </div>
-          <div class="option">
-            <p class="opt-label">Option 2</p>
-            <p class="opt-title">Accelerator Challenge</p>
-            <p class="opt-price"><s>$299/month</s> $99 <small>USD/month</small></p>
-            <p class="opt-note">$99 for your first month, then $99/month after that</p>
-            <ul class="checks">
-              <li><span>✅</span>1:1 onboarding call</li>
-              <li><span>✅</span>Ticket to the Lock In For 2027 Workshop</li>
-              <li><span>✅</span>Fully custom ultimate-specific training program</li>
-              <li><span>✅</span>Delivered on an easy-to-track app (with exercise demos)</li>
-              <li><span>✅</span>Custom feedback and support at every step</li>
-              <li><span>✅</span>Private community to stay accountable with your training</li>
-            </ul>
-            <button type="button" class="btn btn-lg" data-join="accelerator">Join – $99</button>
+        </li>
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">2</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Step 2 – Learn how to train for ultimate</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">At the live workshop, we'll cover the three pillars of training for ultimate: strength training, field training, and skills – and how to balance them across your week so they work together, not against each other.</p>
           </div>
+        </li>
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">3</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Step 3 – Set it into your 2027 goals</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">From there, we'll map your training to your 2027 season – your tournaments, tryouts and key dates – so you know exactly what to focus on and when.</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">4</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Step 4 – Turn physical gains into on-field impact</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">Then, we'll talk through how to transfer what you build in the gym and on the track into the moments that matter in games.</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">5</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Step 5 – Start your program</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">Lastly, you'll start your ultimate-specific training program, so you leave with a clear plan to follow from day one.</p>
+          </div>
+        </li>
+      </ol>
+      <p class="reveal mt-10 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 text-base md:text-lg text-gray-900 leading-relaxed"><b>Workshop details:</b> Friday 4 December, 9–11am Sydney time (see times below for your time zone).</p>
+    </div>
+  </section>
+
+  <!-- ─── WHO IT'S FOR ─── -->
+  <section class="py-12 px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight text-center mb-8">Who this is for</h2>
+      <div class="reveal space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
+        <p>This challenge is built for adult ultimate players at a casual or semi-competitive level who want more structure in their training, and want to stay consistent to see lasting results.</p>
+        <p>If you're looking for a temporary fix, or you're not willing to put in the effort – this <b>isn't</b> for you.</p>
+        <p>But if you want a structured program, a clear system to follow, and you're ready to put in the reps – then 2027 could be the year things get <i>exciting</i>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OPTIONS ─── (heading on the torn black paper, cards like the apply form card) -->
+  <section id="options" class="py-12 px-6 border-t border-gray-100 bg-gray-50">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal relative text-center mb-12 max-w-3xl mx-auto">
+        <img src="../apply/black%20paper%20background%20removed.png" alt="" class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" />
+        <h2 class="relative text-3xl md:text-4xl font-extrabold text-white leading-tight py-7 px-6">Choose your option</h2>
+      </div>
+
+      <div class="reveal grid md:grid-cols-2 gap-6 items-stretch">
+        <!-- Option 1 -->
+        <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8 flex flex-col">
+          <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-2">Option 1</p>
+          <h3 class="text-2xl font-extrabold text-gray-900 mb-4">Minimum Challenge</h3>
+          <p class="text-gray-900 leading-none"><span class="text-5xl font-extrabold">$9</span> <span class="text-lg font-bold text-gray-500">USD</span></p>
+          <p class="text-base text-gray-500 mt-2 mb-6">for 1 month</p>
+          <ul class="space-y-3 mb-8 text-base text-gray-900">
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>1:1 onboarding call</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Ticket to the Lock In For 2027 Workshop</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Semi-custom ultimate-specific training program</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Program delivered on a Google Sheet</span></li>
+          </ul>
+          <button type="button" data-join="minimum" class="mt-auto w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Join – $9</button>
+        </div>
+
+        <!-- Option 2 -->
+        <div class="bg-white rounded-3xl shadow-lg border-2 border-brand p-6 md:p-8 flex flex-col">
+          <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-2">Option 2</p>
+          <h3 class="text-2xl font-extrabold text-gray-900 mb-4">Accelerator Challenge</h3>
+          <p class="text-gray-900 leading-none"><span class="text-2xl font-bold text-gray-400 line-through mr-1">$299/month</span> <span class="text-5xl font-extrabold">$99</span> <span class="text-lg font-bold text-gray-500">USD/month</span></p>
+          <p class="text-base text-gray-500 mt-2 mb-6">$99 for your first month, then $99/month after that</p>
+          <ul class="space-y-3 mb-8 text-base text-gray-900">
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>1:1 onboarding call</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Ticket to the Lock In For 2027 Workshop</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Fully custom ultimate-specific training program</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Delivered on an easy-to-track app (with exercise demos)</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Custom feedback and support at every step</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Private community to stay accountable with your training</span></li>
+          </ul>
+          <button type="button" data-join="accelerator" class="mt-auto w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Join – $99</button>
+        </div>
+      </div>
+
+      <!-- ─── TIMES ─── (navy, like the apply page's FAQ buttons) -->
+      <div class="reveal mt-12">
+        <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900 text-center mb-5">Times</h3>
+        <div class="rounded-2xl bg-[#1f223c] grid grid-cols-2 md:grid-cols-4 gap-y-5 gap-x-4 px-6 py-6 text-center">
+          <div><p class="text-lg font-bold text-white">Los Angeles</p><p class="text-base text-white/70">2PM, Thu 3 December</p></div>
+          <div><p class="text-lg font-bold text-white">New York</p><p class="text-base text-white/70">5PM, Thu 3 December</p></div>
+          <div><p class="text-lg font-bold text-white">Singapore</p><p class="text-base text-white/70">6AM, Fri 4 December</p></div>
+          <div><p class="text-lg font-bold text-white">Sydney</p><p class="text-base text-white/70">9AM, Fri 4 December</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Section 9: times -->
-  <section class="plain">
-    <div class="col">
-      <h2>Times</h2>
-      <div class="times">
-        <div class="times-row">
-          <div><b>Los Angeles</b>2PM, Thu 3 December</div>
-          <div><b>New York</b>5PM, Thu 3 December</div>
-          <div><b>Singapore</b>6AM, Fri 4 December</div>
-          <div><b>Sydney</b>9AM, Fri 4 December</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 10: sign-off -->
-  <section class="plain signoff">
-    <div class="col">
+  <!-- ─── SIGN-OFF ─── -->
+  <section class="py-12 px-6">
+    <div class="reveal max-w-3xl mx-auto space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
       <p>As soon as you join, you'll receive everything you need to get started, including your onboarding call booking link and your workshop invite.</p>
       <p>Talk soon,</p>
-      <p><i>–Eric</i></p>
+      <p class="font-semibold"><i>–Eric</i></p>
     </div>
   </section>
 
+  <!-- ─── FOOTER ─── -->
+  <footer class="py-8 px-6 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
   <script>
+    // ── Hero dark/white split (same approach as the apply page) ──
+    function syncHeroSplit() {
+      const img = document.getElementById('hero-image');
+      const darkPanel = document.getElementById('hero-dark-panel');
+      const imageWrap = document.getElementById('hero-image-wrap');
+      const whitePanel = document.getElementById('hero-white-panel');
+      if (!img || !darkPanel || !imageWrap || !whitePanel) return;
+      const h = img.getBoundingClientRect().height;
+      if (!h) return;
+      darkPanel.style.paddingBottom = (h * 0.9) + 'px';
+      imageWrap.style.marginTop = '-' + (h * 0.9) + 'px';
+      whitePanel.style.marginTop = '-' + (h * 0.1) + 'px';
+    }
+    syncHeroSplit();
+    let resizeFrame = null;
+    window.addEventListener('resize', () => {
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(syncHeroSplit);
+    });
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
     // ── Countdown: counts to data-target, then holds at 00 (never negative) ──
     (function () {
       const box = document.getElementById('countdown');
@@ -318,8 +372,7 @@
       if (!LINKS.calendlyAccelerator) { console.warn('Link not set yet', '(calendlyAccelerator)'); return; }
       const open = () => Calendly.initPopupWidget({ url: LINKS.calendlyAccelerator });
       if (window.Calendly) return open();
-      // widget.js loads async - wait briefly if someone clicks very quickly
-      let tries = 0;
+      let tries = 0;  // widget.js loads async - wait briefly if someone clicks very quickly
       const wait = setInterval(() => {
         if (window.Calendly) { clearInterval(wait); open(); }
         else if (++tries > 50) { clearInterval(wait); console.warn('Calendly did not load'); }
