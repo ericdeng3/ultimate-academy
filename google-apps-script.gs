@@ -7,7 +7,7 @@
  *   - apply/index.html         (qualification flow — types: 'qualification_lead', 'qualification_application')
  *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
  *   - lock-in-for-2027-challenge/index.html ("Join $9" — type: 'lockin_lite_lead';
- *                                            "Join $99" — type: 'lockin_vip_lead')
+ *                                            VIP "$9 Deposit" — type: 'lockin_vip_lead')
  *
  * This is a fresh, standalone script — not tied to whatever project used to
  * back the old APPS_SCRIPT_URL. It doesn't read anything from that old
@@ -26,7 +26,7 @@
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
  *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — overrides the built-in "2027 Challenge LITE" group (201733058542438260)
- *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — group for Lock In "Join $99" (VIP) leads
+ *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — group for Lock In VIP ($9 deposit) leads
  *
  *    Anything left blank is simply skipped (e.g. no MAILERLITE_API_KEY means
  *    no MailerLite calls at all, but Sheets + email still work).
@@ -48,7 +48,7 @@
  *   "Coaching Fit Leads"          — qualification page, contact step
  *   "Coaching Fit Applications"   — qualification page, full submission
  *   "Lock In Lite Leads"          — Lock In page, "Join $9" (before Stripe checkout)
- *   "Lock In VIP Leads"           — Lock In page, "Join $99" (before the Calendly booking)
+ *   "Lock In VIP Leads"           — Lock In page, VIP "$9 Deposit" (before Stripe checkout)
  *
  * ── Updating an existing deployment (keeps the same /exec URL) ─────────────
  * Paste the new code over the old, save, then Deploy > Manage deployments >
@@ -274,8 +274,9 @@ function handleLockInLiteLead_(p) {
   return jsonResponse_({ ok: true });
 }
 
-// "Join $99" collects first name + email, then opens the VIP Calendly popup.
-// Saved before they book, so this is everyone who STARTED the VIP booking.
+// VIP "Save Your Spot - $9 Deposit" collects first name + email, then sends the
+// person to the deposit Stripe checkout. Saved before payment, so this is
+// everyone who STARTED checkout - Stripe's dashboard shows who actually paid.
 function handleLockInVipLead_(p) {
   appendRow_('Lock In VIP Leads',
     ['Timestamp', 'First Name', 'Email', 'Source'],
@@ -283,12 +284,12 @@ function handleLockInVipLead_(p) {
   );
 
   sendNotifyEmail_(
-    `Lock In VIP booking started: ${p.firstName || ''}`.trim(),
+    `Lock In VIP deposit checkout started: ${p.firstName || ''}`.trim(),
     [
       `Name: ${p.firstName || ''}`,
       `Email: ${p.email || ''}`,
       '',
-      'They opened the $99 VIP Calendly booking - check Calendly to see if they booked.',
+      'They were sent to the $9 VIP deposit Stripe checkout - check Stripe to confirm payment.',
       `Submitted: ${p.timestamp || ''}`
     ].join('\n')
   );

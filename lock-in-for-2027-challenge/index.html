@@ -5,7 +5,7 @@
     // ── Checkout links ── paste the real links here (an empty link = the button does nothing yet)
     const LINKS = {
       stripeMinimumChallenge: "https://buy.stripe.com/6oUeVe05JgsscvWek2g360e", // Stripe payment link for the $9 option
-      vipConfirmedPage: "../vip-spot-confirmed/", // Join $99 goes here (VIP Calendly is embedded on that page)
+      stripeVipDeposit: "https://buy.stripe.com/9B68wQbOr3FG3Zq2Bkg360f", // Stripe payment link for the $9 VIP deposit (Stripe then redirects to /vip-spot-confirmed/)
     };
   </script>
   <meta charset="UTF-8" />
@@ -245,7 +245,7 @@
             <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Personalised feedback at every step</span></li>
             <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Private community for support</span></li>
           </ul>
-          <!-- Same as Join $9: first click reveals the two fields; second click saves the lead and goes to the VIP confirmation page -->
+          <!-- Same as Join $9: first click reveals the two fields; second click saves the lead and goes to the $9 deposit checkout -->
           <form id="vip-form" class="mt-auto" novalidate>
             <div id="vip-fields" class="hidden space-y-3 mb-3">
               <input type="text" id="vip-first" name="firstName" required autocomplete="given-name" placeholder="First name *"
@@ -253,7 +253,7 @@
               <input type="email" id="vip-email" name="email" required autocomplete="email" placeholder="Email address *"
                      class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
             </div>
-            <button type="submit" data-join="accelerator" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Join $99</button>
+            <button type="submit" data-join="accelerator" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Save Your Spot - $9 Deposit</button>
           </form>
         </div>
       </div>
@@ -330,7 +330,7 @@
     // MailerLite key ever sits in this page.
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
 
-    // type: 'lockin_lite_lead' (Join $9) or 'lockin_vip_lead' (Join $99)
+    // type: 'lockin_lite_lead' (Join $9) or 'lockin_vip_lead' (VIP $9 deposit)
     function saveLead(type, firstName, email) {
       const params = new URLSearchParams({
         type,
@@ -367,9 +367,10 @@
       const btn = document.querySelector('#lite-form button');
       btn.disabled = false; btn.textContent = 'Join $9';
     });
-    // ── Join $99: same two fields, save the lead, then go to the VIP confirmation page ──
-    // Name + email travel in sessionStorage (not the URL, so they never land in
-    // analytics) and pre-fill the Calendly booking on that page.
+    // ── VIP "Save Your Spot - $9 Deposit": same two fields, save the lead, then Stripe ──
+    // After payment Stripe redirects to /vip-spot-confirmed/. Name + email travel in
+    // sessionStorage (not the URL, so they never land in analytics) and pre-fill the
+    // Calendly booking on that page.
     document.getElementById('vip-form').addEventListener('submit', function (e) {
       e.preventDefault();
       const fields = document.getElementById('vip-fields');
@@ -382,15 +383,16 @@
       const firstName = document.getElementById('vip-first').value.trim();
       const email = document.getElementById('vip-email').value.trim();
       const btn = this.querySelector('button');
-      btn.disabled = true; btn.textContent = 'Saving your spot…';
+      btn.disabled = true; btn.textContent = 'Taking you to checkout…';
       gtag('event', 'lockin_vip_booking', { event_category: 'lock_in_2027' });
       saveLead('lockin_vip_lead', firstName, email);
       try { sessionStorage.setItem('lockinVip', JSON.stringify({ name: firstName, email })); } catch (err) {}
-      setTimeout(() => { window.location.href = LINKS.vipConfirmedPage; }, 400);
+      const url = LINKS.stripeVipDeposit + '?prefilled_email=' + encodeURIComponent(email);
+      setTimeout(() => { window.location.href = url; }, 400);
     });
     window.addEventListener('pageshow', () => {
       const btn = document.querySelector('#vip-form button');
-      btn.disabled = false; btn.textContent = 'Join $99';
+      btn.disabled = false; btn.textContent = 'Save Your Spot - $9 Deposit';
     });
   </script>
 </body>
