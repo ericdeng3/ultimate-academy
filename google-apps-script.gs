@@ -24,7 +24,7 @@
  *      MAILERLITE_GROUP_QUALIFIED_ID       optional — group for qualified apply-page applicants
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
- *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — group for Lock In For 2027 "Join $9" sign-ups
+ *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — overrides the built-in "2027 Challenge LITE" group (201733058542438260)
  *
  *    Anything left blank is simply skipped (e.g. no MAILERLITE_API_KEY means
  *    no MailerLite calls at all, but Sheets + email still work).
@@ -260,7 +260,11 @@ function handleLockInLiteLead_(p) {
     ].join('\n')
   );
 
-  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_LITE_ID'));
+  // MailerLite group "2027 Challenge LITE". Kept as a string - the ID is too
+  // long to be stored as a JavaScript number without losing digits.
+  // A MAILERLITE_GROUP_LOCKIN_LITE_ID script property, if set, overrides it.
+  const LOCKIN_LITE_GROUP_ID = '201733058542438260';
+  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_LITE_ID') || LOCKIN_LITE_GROUP_ID);
 
   return jsonResponse_({ ok: true });
 }
