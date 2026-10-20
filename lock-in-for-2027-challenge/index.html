@@ -225,14 +225,19 @@
               <input type="email" id="lite-email" name="email" required autocomplete="email" placeholder="Email address *"
                      class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
             </div>
-            <button type="submit" data-join="minimum" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Join $9</button>
+            <button type="submit" data-join="minimum" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">JOIN $9</button>
           </form>
+          <!-- Invisible copy of the VIP spots-left bar, so both buttons line up side by side (desktop only) -->
+          <div class="hidden md:block mt-4 invisible" aria-hidden="true">
+            <div class="text-sm font-bold mb-1.5">&nbsp;</div>
+            <div class="h-3"></div>
+          </div>
         </div>
 
         <!-- Option 2 -->
         <div class="relative bg-white rounded-3xl shadow-lg border-2 border-brand p-6 md:p-8 flex flex-col">
-          <!-- "Recommended" badge, straddling the top edge -->
-          <span class="absolute -top-3.5 right-6 inline-flex items-center bg-brand text-white text-xs font-extrabold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md">Recommended</span>
+          <!-- "20 spots only" badge, straddling the top edge -->
+          <span class="absolute -top-3.5 right-6 inline-flex items-center bg-brand text-white text-xs font-extrabold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md">20 Spots Only</span>
           <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-2">Option 2</p>
           <h3 class="text-2xl font-extrabold text-gray-900 mb-4">VIP Challenge</h3>
           <p class="text-gray-900 leading-none"> <span class="text-5xl font-extrabold">$99</span> <span class="text-lg font-bold text-gray-500">/ month</span></p>
@@ -253,8 +258,22 @@
               <input type="email" id="vip-email" name="email" required autocomplete="email" placeholder="Email address *"
                      class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
             </div>
-            <button type="submit" data-join="accelerator" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">Save Your Spot - $9 Deposit</button>
+            <button type="submit" data-join="accelerator" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SAVE YOUR SPOT ($9 DEPOSIT)</button>
           </form>
+          <!-- Spots-left bar. Update by hand as spots fill:
+               1. change the "19" in the text below
+               2. set the bar width to (spots taken ÷ 20) × 100%, e.g. 1 taken = 5%, 5 taken = 25%, 10 taken = 50% -->
+          <div class="mt-4">
+            <div class="flex items-center justify-between text-sm font-bold mb-1.5">
+              <span class="text-brand">Only 19 spots left</span>
+              <span class="text-gray-500">of 20</span>
+            </div>
+            <div class="relative h-3 w-full rounded-full bg-gray-200 overflow-hidden">
+              <div class="h-full bg-brand" style="width:5%"></div>
+              <!-- White divider every 5% = one marker per spot (20 spots) -->
+              <div class="absolute inset-0 pointer-events-none" style="background:repeating-linear-gradient(to right, transparent 0, transparent calc(5% - 2px), #fff calc(5% - 2px), #fff 5%);"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -365,9 +384,9 @@
     // Coming back from Stripe with the Back button restores the page as it was - re-enable the button
     window.addEventListener('pageshow', () => {
       const btn = document.querySelector('#lite-form button');
-      btn.disabled = false; btn.textContent = 'Join $9';
+      btn.disabled = false; btn.textContent = 'JOIN $9';
     });
-    // ── VIP "Save Your Spot - $9 Deposit": same two fields, save the lead, then Stripe ──
+    // ── VIP "Save Your Spot ($9 Deposit)": same two fields, save the lead, then Stripe ──
     // After payment Stripe redirects to /vip-spot-confirmed/. Name + email travel in
     // sessionStorage (not the URL, so they never land in analytics) and pre-fill the
     // Calendly booking on that page.
@@ -392,7 +411,7 @@
     });
     window.addEventListener('pageshow', () => {
       const btn = document.querySelector('#vip-form button');
-      btn.disabled = false; btn.textContent = 'Save Your Spot - $9 Deposit';
+      btn.disabled = false; btn.textContent = 'SAVE YOUR SPOT ($9 DEPOSIT)';
     });
   </script>
 </body>

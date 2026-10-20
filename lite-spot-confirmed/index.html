@@ -96,7 +96,7 @@
           <div class="flex-1">
             <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-2">Save the workshop date</h3>
             <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">Lock In For 2027 Workshop – Friday 4 December, 9–11am Sydney time. Add it to your calendar so you don't miss it.</p>
-            <a id="gcal-link" href="#" target="_blank" rel="noopener"
+            <a id="gcal-link" href="https://calendar.app.google/HqGE2afzEFZv7XLz6" target="_blank" rel="noopener"
                class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-brand text-white font-bold px-8 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors text-lg shadow-sm">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               Add to Google Calendar
@@ -140,19 +140,6 @@
       f.className = 'absolute inset-0 w-full h-full';
       box.appendChild(f);
     }
-
-    // ── Google Calendar link: Fri 4 Dec 2026, 9-11am Sydney = 22:00-00:00 UTC ──
-    (function () {
-      const params = new URLSearchParams({
-        action: 'TEMPLATE',
-        text: 'Lock In For 2027 Workshop',
-        dates: '20261203T220000Z/20261204T000000Z',
-        details: 'Live 2-hour workshop with Eric Deng Ultimate. The joining link will be sent to your email before the workshop.',
-        location: 'Online (link sent by email)',
-      });
-      // dates must keep a literal "/" between start and end
-      document.getElementById('gcal-link').href = 'https://calendar.google.com/calendar/render?' + params.toString().replace('%2F', '/');
-    })();
 
     // ── Calendly inline embed (widget.js loads async) ──
     (function () {

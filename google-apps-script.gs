@@ -26,7 +26,7 @@
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
  *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — overrides the built-in "2027 Challenge LITE" group (201733058542438260)
- *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — group for Lock In VIP ($9 deposit) leads
+ *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — overrides the built-in "2027 Challenge VIP" group (201810746446710725)
  *
  *    Anything left blank is simply skipped (e.g. no MAILERLITE_API_KEY means
  *    no MailerLite calls at all, but Sheets + email still work).
@@ -294,9 +294,10 @@ function handleLockInVipLead_(p) {
     ].join('\n')
   );
 
-  // MailerLite group for VIP - set MAILERLITE_GROUP_LOCKIN_VIP_ID in Script
-  // Properties. Until then they're added to MailerLite with no group.
-  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_VIP_ID'));
+  // MailerLite group "2027 Challenge VIP" (string, same reason as the LITE ID).
+  // A MAILERLITE_GROUP_LOCKIN_VIP_ID script property, if set, overrides it.
+  const LOCKIN_VIP_GROUP_ID = '201810746446710725';
+  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_VIP_ID') || LOCKIN_VIP_GROUP_ID);
 
   return jsonResponse_({ ok: true });
 }
