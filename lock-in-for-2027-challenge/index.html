@@ -233,9 +233,9 @@
             </ul>
           </div>
 
-          <!-- First click reveals the two fields; second click saves the lead and goes to Stripe -->
+          <!-- Name + email are always shown; JOIN $9 saves the lead and goes straight to Stripe -->
           <form id="lite-form" novalidate>
-            <div id="lite-fields" class="hidden space-y-3 mb-3">
+            <div id="lite-fields" class="space-y-3 mb-3">
               <input type="text" id="lite-first" name="firstName" required autocomplete="given-name" placeholder="First name *"
                      class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
               <input type="email" id="lite-email" name="email" required autocomplete="email" placeholder="Email address *"
@@ -312,7 +312,7 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
 
-    // ── Join $9: reveal first name + email, save the lead, then go to Stripe ──
+    // ── Join $9: check first name + email, save the lead, then go to Stripe ──
     // Same Google Apps Script web app the apply page uses (google-apps-script.gs);
     // it writes a sheet row and adds the person to MailerLite server-side, so no
     // MailerLite key ever sits in this page.
@@ -332,12 +332,6 @@
 
     document.getElementById('lite-form').addEventListener('submit', function (e) {
       e.preventDefault();
-      const fields = document.getElementById('lite-fields');
-      if (fields.classList.contains('hidden')) {          // first click: show the two rows
-        fields.classList.remove('hidden');
-        document.getElementById('lite-first').focus();
-        return;
-      }
       if (!this.reportValidity()) return;
       if (!LINKS.stripeMinimumChallenge) { console.warn('Link not set yet', '(stripeMinimumChallenge)'); return; }
       const firstName = document.getElementById('lite-first').value.trim();
