@@ -5,7 +5,6 @@
     // ── Checkout links ── paste the real links here (an empty link = the button does nothing yet)
     const LINKS = {
       stripeMinimumChallenge: "https://buy.stripe.com/6oUeVe05JgsscvWek2g360e", // Stripe payment link for the $9 option
-      stripeVipDeposit: "https://buy.stripe.com/9B68wQbOr3FG3Zq2Bkg360f", // Stripe payment link for the $9 VIP deposit (Stripe then redirects to /vip-spot-confirmed/)
     };
   </script>
   <meta charset="UTF-8" />
@@ -197,7 +196,7 @@
     </div>
   </section>
 
-  <!-- ─── OPTIONS ─── (heading on the torn black paper, cards like the apply form card) -->
+  <!-- ─── OFFER ─── (heading on the torn black paper, one offer card) -->
   <section id="options" class="py-12 px-6 border-t border-gray-100">
     <div class="max-w-4xl mx-auto">
       <div class="reveal relative text-center mb-12 max-w-3xl mx-auto">
@@ -205,27 +204,37 @@
         <h2 class="relative text-3xl md:text-4xl font-extrabold text-white leading-tight py-7 px-6">We make it easy to get started</h2>
       </div>
 
-      <div class="reveal grid md:grid-cols-2 gap-6 items-stretch">
-        <!-- Option 1 -->
-        <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8 flex flex-col">
-          <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-2">Option 1</p>
-          <h3 class="text-2xl font-extrabold text-gray-900 mb-4">Lite Challenge</h3>
+      <!-- Single offer: the $9 workshop. (The VIP option is parked - see commit 6a4fac0 to restore it.) -->
+      <div class="reveal max-w-xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-lg border-2 border-brand p-6 md:p-8">
+          <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-2">Live workshop</p>
+          <h3 class="text-2xl font-extrabold text-gray-900 mb-4">Lock In For 2027 Workshop</h3>
           <!-- Was $99 (red strike-through), now $9, with a 91% off tag -->
           <p class="text-gray-900 leading-none flex items-end gap-3 flex-wrap">
             <span class="relative text-3xl font-extrabold text-gray-400" aria-label="Was $99">$99<span class="absolute left-[-4px] right-[-4px] top-[47%] h-[3px] bg-red-600 rounded-full" style="transform:translateY(-50%) rotate(-12deg)" aria-hidden="true"></span></span>
             <span class="text-5xl font-extrabold">$9</span>
             <span class="self-center relative top-[3px] inline-flex items-center bg-red-600 text-white text-xs font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full">91% Off</span>
           </p>
-          <p class="text-base text-gray-500 mt-2 mb-6">for those that are ready to make a start</p>
-          <ul class="space-y-3 mb-8 text-base text-gray-900">
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>1:1 onboarding call with Eric</span></li>
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Ticket to the workshop and Q&amp;A (worth $99)</span></li>
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>4-week ultimate-specific training program</span></li>
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Drag-and-drop 2027 training planner</span></li>
-            
+          <p class="text-base text-gray-500 mt-2 mb-6">2-hour interactive workshop + live Q&amp;A</p>
+          <p class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">You'll leave with</p>
+          <ul class="space-y-3 mb-6 text-base text-gray-900">
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Your invite to the live workshop</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>The full workshop recording</span></li>
+            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>A custom gameplan to level up for 2027</span></li>
           </ul>
+
+          <!-- Early-bird bonuses: remove or update this box after 16 Nov -->
+          <div class="rounded-2xl bg-brand-light border border-orange-200 p-5 mb-6">
+            <p class="text-sm font-extrabold text-brand uppercase tracking-wider mb-3">Bonus: join before 16 Nov and get</p>
+            <ul class="space-y-3 text-base text-gray-900">
+              <li class="flex gap-3"><span class="w-6 h-6 bg-brand text-white rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></span><span>A 1:1 strategy call to get tailored help with your unique goals</span></li>
+              <li class="flex gap-3"><span class="w-6 h-6 bg-brand text-white rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></span><span>An ultimate-specific workout template with exercise examples, sent after the workshop</span></li>
+              <li class="flex gap-3"><span class="w-6 h-6 bg-brand text-white rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></span><span>2 workshop recordings on offensive and defensive game IQ (valued at $99)</span></li>
+            </ul>
+          </div>
+
           <!-- First click reveals the two fields; second click saves the lead and goes to Stripe -->
-          <form id="lite-form" class="mt-auto" novalidate>
+          <form id="lite-form" novalidate>
             <div id="lite-fields" class="hidden space-y-3 mb-3">
               <input type="text" id="lite-first" name="firstName" required autocomplete="given-name" placeholder="First name *"
                      class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
@@ -234,53 +243,6 @@
             </div>
             <button type="submit" data-join="minimum" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">JOIN $9</button>
           </form>
-          <!-- Invisible copy of the VIP spots-left bar, so both buttons line up side by side (desktop only) -->
-          <div class="hidden md:block mt-4 invisible" aria-hidden="true">
-            <div class="text-sm font-bold mb-1.5">&nbsp;</div>
-            <div class="h-3"></div>
-          </div>
-        </div>
-
-        <!-- Option 2 -->
-        <div class="relative bg-white rounded-3xl shadow-lg border-2 border-brand p-6 md:p-8 flex flex-col">
-          <!-- "8 spots only" badge, straddling the top edge -->
-          <span class="absolute -top-3.5 right-6 inline-flex items-center bg-brand text-white text-xs font-extrabold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md">8 Spots Only</span>
-          <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-2">Option 2</p>
-          <h3 class="text-2xl font-extrabold text-gray-900 mb-4">VIP Challenge</h3>
-<p class="text-gray-900 leading-none"><span class="text-5xl font-extrabold">$200</span> <span class="text-lg font-bold text-gray-500">/ month</span></p>
-          <p class="text-base text-gray-500 mt-2 mb-6">for those that are ready for lasting results</p>
-          <ul class="space-y-3 mb-8 text-base text-gray-900">
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>1:1 onboarding call with Eric</span></li>
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Ticket to the workshop and Q&amp;A (worth $99)</span></li>
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Custom program that builds each month</span></li>
-            
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Personalised feedback at every step</span></li>
-            <li class="flex gap-3"><span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span><span>Private community for support</span></li>
-          </ul>
-          <!-- Same as Join $9: first click reveals the two fields; second click saves the lead and goes to the $9 deposit checkout -->
-          <form id="vip-form" class="mt-auto" novalidate>
-            <div id="vip-fields" class="hidden space-y-3 mb-3">
-              <input type="text" id="vip-first" name="firstName" required autocomplete="given-name" placeholder="First name *"
-                     class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
-              <input type="email" id="vip-email" name="email" required autocomplete="email" placeholder="Email address *"
-                     class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
-            </div>
-            <button type="submit" data-join="accelerator" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SAVE YOUR SPOT ($9 DEPOSIT)</button>
-          </form>
-          <!-- Spots-left bar. Update by hand as spots fill:
-               1. change the "7" in the text below
-               2. set the bar width to (spots taken ÷ 8) × 100%, e.g. 1 taken = 12.5%, 2 taken = 25%, 4 taken = 50%, 6 taken = 75% -->
-          <div class="mt-4">
-            <div class="flex items-center justify-between text-sm font-bold mb-1.5">
-              <span class="text-brand">Only 7 spots left</span>
-              <span class="text-gray-500">of 8</span>
-            </div>
-            <div class="relative h-3 w-full rounded-full bg-gray-200 overflow-hidden">
-              <div class="h-full bg-brand" style="width:12.5%"></div>
-              <!-- White divider every 1/8 = one marker per spot (8 spots) -->
-              <div class="absolute inset-0 pointer-events-none" style="background:repeating-linear-gradient(to right, transparent 0, transparent calc(100% / 8 - 2px), #fff calc(100% / 8 - 2px), #fff calc(100% / 8));"></div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -305,7 +267,7 @@
   <!-- ─── SIGN-OFF ─── (top padding comes from the section above) -->
   <section class="pt-2 pb-14 px-6">
     <div class="reveal max-w-3xl mx-auto space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
-      <p>As soon as you join, you'll receive everything you need to get started, including your onboarding call booking link and your workshop invite.</p>
+      <p>As soon as you join, you'll receive everything you need to get started, including your workshop invite – and, if you join before 16 Nov, the link to book your 1:1 strategy call.</p>
       <p>Talk soon,</p>
       <p class="font-semibold"><i>–Eric</i></p>
     </div>
@@ -356,7 +318,7 @@
     // MailerLite key ever sits in this page.
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
 
-    // type: 'lockin_lite_lead' (Join $9) or 'lockin_vip_lead' (VIP $9 deposit)
+    // type: 'lockin_lite_lead' (Join $9)
     function saveLead(type, firstName, email) {
       const params = new URLSearchParams({
         type,
@@ -392,33 +354,6 @@
     window.addEventListener('pageshow', () => {
       const btn = document.querySelector('#lite-form button');
       btn.disabled = false; btn.textContent = 'JOIN $9';
-    });
-    // ── VIP "Save Your Spot ($9 Deposit)": same two fields, save the lead, then Stripe ──
-    // After payment Stripe redirects to /vip-spot-confirmed/. Name + email travel in
-    // sessionStorage (not the URL, so they never land in analytics) and pre-fill the
-    // Calendly booking on that page.
-    document.getElementById('vip-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const fields = document.getElementById('vip-fields');
-      if (fields.classList.contains('hidden')) {          // first click: show the two rows
-        fields.classList.remove('hidden');
-        document.getElementById('vip-first').focus();
-        return;
-      }
-      if (!this.reportValidity()) return;
-      const firstName = document.getElementById('vip-first').value.trim();
-      const email = document.getElementById('vip-email').value.trim();
-      const btn = this.querySelector('button');
-      btn.disabled = true; btn.textContent = 'Taking you to checkout…';
-      gtag('event', 'lockin_vip_booking', { event_category: 'lock_in_2027' });
-      saveLead('lockin_vip_lead', firstName, email);
-      try { sessionStorage.setItem('lockinVip', JSON.stringify({ name: firstName, email })); } catch (err) {}
-      const url = LINKS.stripeVipDeposit + '?prefilled_email=' + encodeURIComponent(email);
-      setTimeout(() => { window.location.href = url; }, 400);
-    });
-    window.addEventListener('pageshow', () => {
-      const btn = document.querySelector('#vip-form button');
-      btn.disabled = false; btn.textContent = 'SAVE YOUR SPOT ($9 DEPOSIT)';
     });
   </script>
 </body>
