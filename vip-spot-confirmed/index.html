@@ -4,7 +4,7 @@
   <script>
     // ── Links ── paste the real ones here
     const PAGE = {
-      loomEmbedUrl: "", // TODO: Loom embed URL, e.g. https://www.loom.com/embed/xxxxxxxx (empty = placeholder box)
+      loomEmbedUrl: "https://www.loom.com/embed/8605bbb653a144f8b9af8a224941a5db", // welcome video (Loom share link -> /embed/ form)
       calendlyUrl: "https://calendly.com/eric-deng-ultimate/vip-challenge-onboarding",
     };
   </script>
@@ -61,7 +61,7 @@
           <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
         </div>
         <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
-          Congrats - we've saved you a spot!
+          Congrats - you've been accepted!
         </h1>
         <p class="reveal text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl mx-auto mb-10" style="transition-delay:0.16s">
           Book your VIP onboarding call below to get started.
@@ -104,8 +104,8 @@
           <li class="flex gap-4">
             <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">2</div>
             <div>
-              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">We'll credit your deposit to the program on the call</p>
-              <p class="text-base md:text-lg text-gray-700 leading-relaxed">We'll credit your deposit to the program during your onboarding call.</p>
+              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">We'll help you get set up via our onboarding process</p>
+              <p class="text-base md:text-lg text-gray-700 leading-relaxed">We'll also credit the deposit you made to your first investment during the call.</p>
             </div>
           </li>
           <li class="flex gap-4">
@@ -117,7 +117,7 @@
           </li>
       </ol>
 
-      <!-- Action: book the onboarding call (step 1 above) (Calendly inline embed, pre-filled from the Join $99 form) -->
+      <!-- Action: book the onboarding call (step 1 above) (Calendly inline embed, pre-filled from the VIP deposit form) -->
       <div id="book" class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6" style="scroll-margin-top:24px">
         <div class="flex items-start gap-4 mb-5">
           <div class="w-9 h-9 rounded-full bg-brand-light text-brand flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
@@ -135,7 +135,8 @@
           <div class="w-9 h-9 rounded-full bg-brand-light text-brand flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
           <div class="flex-1">
             <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-2">Save the workshop date</h3>
-            <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">Lock In For 2027 Workshop – Friday 4 December, 9–11am Sydney time. Add it to your calendar so you don't miss it.</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">Lock In For 2027 Workshop – 2 hours, live online. Find your local time below, then add it to your calendar so you don't miss it.</p>
+            <p class="text-sm md:text-base text-gray-500 leading-relaxed mb-5">Can't make it live? No stress – we'll send you the full recording after the event.</p>
             <a id="gcal-link" href="https://calendar.app.google/HqGE2afzEFZv7XLz6" target="_blank" rel="noopener"
                class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-brand text-white font-bold px-8 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors text-lg shadow-sm">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -143,6 +144,14 @@
             </a>
           </div>
         </div>
+      </div>
+      <!-- Workshop start times, in time order (same moment: 3 Dec 2026, 22:00 UTC) - sits below the save-the-date card -->
+      <div class="reveal rounded-2xl bg-[#1f223c] flex flex-wrap justify-center gap-x-4 gap-y-5 px-5 py-5 mt-6 text-center">
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base font-bold text-white">Los Angeles</p><p class="text-sm text-white/70">2PM</p><p class="text-sm text-white/70">Thu 3 December</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base font-bold text-white">New York</p><p class="text-sm text-white/70">5PM</p><p class="text-sm text-white/70">Thu 3 December</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base font-bold text-white">London</p><p class="text-sm text-white/70">10PM</p><p class="text-sm text-white/70">Thu 3 December</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base font-bold text-white">Singapore</p><p class="text-sm text-white/70">6AM</p><p class="text-sm text-white/70">Fri 4 December</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base font-bold text-white">Sydney</p><p class="text-sm text-white/70">9AM</p><p class="text-sm text-white/70">Fri 4 December</p></div>
       </div>
     </div>
   </section>
@@ -171,7 +180,7 @@
 
     // ── Calendly inline embed (widget.js loads async) ──
     (function () {
-      // Name + email from the Join $99 form (sessionStorage, set on the Lock In page)
+      // Name + email from the VIP deposit form (sessionStorage, set on the Lock In page)
       let prefill = {};
       try { prefill = JSON.parse(sessionStorage.getItem('lockinVip') || '{}'); } catch (err) {}
       const init = () => Calendly.initInlineWidget({ url: PAGE.calendlyUrl, parentElement: document.getElementById('calendly-embed'), prefill });
