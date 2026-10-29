@@ -53,6 +53,17 @@
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
 
+  <!-- ─── TOP BAR: live countdown to the workshop (sticky). Start: Fri 27 Nov 2026, 9:00am Sydney = 26 Nov 22:00 UTC ─── -->
+  <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
+    <a href="#book" id="countdown" data-target="2026-11-26T22:00:00Z" aria-label="Time until the workshop starts"
+       class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
+      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Starts in</span>
+      <span class="flex items-start gap-2 sm:gap-3">
+        <span class="text-center leading-none"><span data-cd="days" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Days</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="hrs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Hrs</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="mins" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Mins</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="secs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Secs</span></span>
+      </span>
+    </a>
+  </div>
+
   <!-- ─── HERO ─── navy panel, video straddling the navy/white edge (same as the apply page) -->
   <section class="relative text-center">
     <div id="hero-dark-panel" class="pt-14 px-6" style="background-color:#1f223c; padding-bottom:365px;">
@@ -155,6 +166,23 @@
       f.className = 'absolute inset-0 w-full h-full';
       box.appendChild(f);
     }
+
+    // ── Countdown: counts to data-target, then holds at 00 (never negative) ──
+    (function () {
+      const box = document.getElementById('countdown');
+      const target = Date.parse(box.dataset.target);
+      const el = k => box.querySelector('[data-cd="' + k + '"]');
+      const pad = n => String(n).padStart(2, '0');
+      function tick() {
+        let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+        el('days').textContent = pad(Math.floor(s / 86400)); s %= 86400;
+        el('hrs').textContent = pad(Math.floor(s / 3600)); s %= 3600;
+        el('mins').textContent = pad(Math.floor(s / 60));
+        el('secs').textContent = pad(s % 60);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
 
     // ── Calendly inline embed (widget.js loads async) ──
     (function () {
