@@ -6,6 +6,8 @@
  *   - index.html               (Premium Application modal — types: 'lead', 'application')
  *   - apply/index.html         (qualification flow — types: 'qualification_lead', 'qualification_application')
  *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
+ *   - lock-in-for-2027-workshop/index.html ("Join $9" — type: 'lockin_lite_lead';
+ *                                            VIP "$9 Deposit" — type: 'lockin_vip_lead')
  *
  * This is a fresh, standalone script — not tied to whatever project used to
  * back the old APPS_SCRIPT_URL. It doesn't read anything from that old
@@ -23,6 +25,8 @@
  *      MAILERLITE_GROUP_QUALIFIED_ID       optional — group for qualified apply-page applicants
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
+ *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — overrides the built-in "2027 Challenge LITE" group (201733058542438260)
+ *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — overrides the built-in "2027 Challenge VIP" group (201810746446710725)
  *
  *    Anything left blank is simply skipped (e.g. no MAILERLITE_API_KEY means
  *    no MailerLite calls at all, but Sheets + email still work).
@@ -43,6 +47,13 @@
  *   "Qualification Applications"  — apply page, step 2 (full submission)
  *   "Coaching Fit Leads"          — qualification page, contact step
  *   "Coaching Fit Applications"   — qualification page, full submission
+ *   "Lock In Lite Leads"          — Lock In page, "Join $9" (before Stripe checkout)
+ *   "Lock In VIP Leads"           — Lock In page, VIP "$9 Deposit" (before Stripe checkout)
+ *
+ * ── Updating an existing deployment (keeps the same /exec URL) ─────────────
+ * Paste the new code over the old, save, then Deploy > Manage deployments >
+ * pencil icon on the live deployment > Version: "New version" > Deploy.
+ * (Creating a NEW deployment would give a different URL.)
  */
 
 // ── Entry point ─────────────────────────────────────────────────────────
@@ -63,6 +74,10 @@ function doGet(e) {
         return handleCoachingFitLead_(p);
       case 'coaching_fit_application':
         return handleCoachingFitApplication_(p);
+      case 'lockin_lite_lead':
+        return handleLockInLiteLead_(p);
+      case 'lockin_vip_lead':
+        return handleLockInVipLead_(p);
       default:
         return jsonResponse_({ ok: false, error: 'Unknown or missing type: ' + p.type });
     }
@@ -228,6 +243,65 @@ function handleCoachingFitApplication_(p) {
   return jsonResponse_({ ok: true });
 }
 
+// ── Lock In For 2027 Workshop (lock-in-for-2027-workshop/index.html) ──
+
+// "Join $9" collects first name + email, then sends the person to Stripe.
+// Saved here before payment, so this is everyone who STARTED checkout -
+// Stripe's dashboard shows who actually paid.
+function handleLockInLiteLead_(p) {
+  appendRow_('Lock In Lite Leads',
+    ['Timestamp', 'First Name', 'Email', 'Source'],
+    [p.timestamp, p.firstName, p.email, p.source]
+  );
+
+  sendNotifyEmail_(
+    `Lock In Lite checkout started: ${p.firstName || ''}`.trim(),
+    [
+      `Name: ${p.firstName || ''}`,
+      `Email: ${p.email || ''}`,
+      '',
+      'They were sent to the $9 Stripe checkout - check Stripe to confirm payment.',
+      `Submitted: ${p.timestamp || ''}`
+    ].join('\n')
+  );
+
+  // MailerLite group "2027 Challenge LITE". Kept as a string - the ID is too
+  // long to be stored as a JavaScript number without losing digits.
+  // A MAILERLITE_GROUP_LOCKIN_LITE_ID script property, if set, overrides it.
+  const LOCKIN_LITE_GROUP_ID = '201733058542438260';
+  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_LITE_ID') || LOCKIN_LITE_GROUP_ID);
+
+  return jsonResponse_({ ok: true });
+}
+
+// VIP "Save Your Spot - $9 Deposit" collects first name + email, then sends the
+// person to the deposit Stripe checkout. Saved before payment, so this is
+// everyone who STARTED checkout - Stripe's dashboard shows who actually paid.
+function handleLockInVipLead_(p) {
+  appendRow_('Lock In VIP Leads',
+    ['Timestamp', 'First Name', 'Email', 'Source'],
+    [p.timestamp, p.firstName, p.email, p.source]
+  );
+
+  sendNotifyEmail_(
+    `Lock In VIP deposit checkout started: ${p.firstName || ''}`.trim(),
+    [
+      `Name: ${p.firstName || ''}`,
+      `Email: ${p.email || ''}`,
+      '',
+      'They were sent to the $9 VIP deposit Stripe checkout - check Stripe to confirm payment.',
+      `Submitted: ${p.timestamp || ''}`
+    ].join('\n')
+  );
+
+  // MailerLite group "2027 Challenge VIP" (string, same reason as the LITE ID).
+  // A MAILERLITE_GROUP_LOCKIN_VIP_ID script property, if set, overrides it.
+  const LOCKIN_VIP_GROUP_ID = '201810746446710725';
+  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_VIP_ID') || LOCKIN_VIP_GROUP_ID);
+
+  return jsonResponse_({ ok: true });
+}
+
 // ── Shared helpers ──────────────────────────────────────────────────────
 
 function appendRow_(sheetName, header, row) {
@@ -252,7 +326,11 @@ function mlGroupId_(propertyName) {
 
 function syncToMailerLite_(email, firstName, lastName, groupId) {
   const apiKey = PropertiesService.getScriptProperties().getProperty('MAILERLITE_API_KEY');
-  if (!apiKey || !email) return;
+  if (!email) return;
+  if (!apiKey) {
+    logMailerLiteError_(email, groupId, 'skipped', 'MAILERLITE_API_KEY script property is not set');
+    return;
+  }
 
   // MailerLite "Connect" API (current, as of 2024+). If your account is
   // still on the legacy MailerLite Classic API, this endpoint/auth header
@@ -266,11 +344,29 @@ function syncToMailerLite_(email, firstName, lastName, groupId) {
     groups: groupId ? [groupId] : []
   };
 
-  UrlFetchApp.fetch('https://connect.mailerlite.com/api/subscribers', {
-    method: 'post',
-    contentType: 'application/json',
-    headers: { Authorization: 'Bearer ' + apiKey },
-    payload: JSON.stringify(payload),
-    muteHttpExceptions: true
-  });
+  try {
+    const res = UrlFetchApp.fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: { Authorization: 'Bearer ' + apiKey },
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+    const code = res.getResponseCode();
+    // 200 = existing subscriber updated, 201 = new subscriber created
+    if (code !== 200 && code !== 201) {
+      logMailerLiteError_(email, groupId, code, res.getContentText());
+    }
+  } catch (err) {
+    logMailerLiteError_(email, groupId, 'exception', String(err));
+  }
+}
+
+// Failed MailerLite syncs land in a "MailerLite Errors" tab so they're visible
+// (e.g. a mistyped group ID or an expired API key) instead of failing silently.
+function logMailerLiteError_(email, groupId, code, detail) {
+  appendRow_('MailerLite Errors',
+    ['Timestamp', 'Email', 'Group ID', 'Response code', 'Detail'],
+    [new Date().toISOString(), email, groupId || '(none)', String(code), String(detail).slice(0, 500)]
+  );
 }

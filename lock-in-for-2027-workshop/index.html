@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // ── Checkout links ── paste the real links here (an empty link = the button does nothing yet)
+    const LINKS = {
+      stripeMinimumChallenge: "https://buy.stripe.com/6oUeVe05JgsscvWek2g360e", // Stripe payment link for the $9 option
+    };
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lock In For 2027 Workshop | Eric Deng Ultimate</title>
+  <meta name="description" content="Get the knowledge and structure you need to go into 2027 a step ahead." />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Same motion and helpers as the apply page (apply/index.html). */
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    /* Lite form fields - same focus style as the apply page form */
+    .lite-input { outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .lite-input:focus { border-color: #E05C2A; box-shadow: 0 0 0 3px rgba(224,92,42,0.15); }
+
+    /* Land on the options with room for the sticky top bar above them */
+    #options { scroll-margin-top: 72px; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+
+  <!-- ─── TOP BAR: live countdown to the workshop (sticky). Start: Fri 27 Nov 2026, 9:00am Sydney = 26 Nov 22:00 UTC ─── -->
+  <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
+    <a href="#options" id="countdown" data-target="2026-11-26T22:00:00Z" aria-label="Time until the workshop starts"
+       class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
+      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Starts in</span>
+      <span class="flex items-start gap-2 sm:gap-3">
+        <span class="text-center leading-none"><span data-cd="days" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Days</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="hrs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Hrs</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="mins" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Mins</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="secs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Secs</span></span>
+      </span>
+    </a>
+  </div>
+
+  <!-- ─── HERO ─── Same dark/white split as the apply page: the image straddles the
+       navy/white boundary. syncHeroSplit (bottom of page) sets the offsets from the
+       image box's real height; the inline values are only a pre-JS fallback. -->
+  <section class="relative text-center">
+    <div id="hero-dark-panel" class="pt-8 px-6" style="background-color:#1f223c; padding-bottom:395px;">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
+          Lock In For 2027 Workshop
+        </h1>
+        <p class="reveal text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed" style="transition-delay:0.16s">
+          Get the knowledge & structure you need to go into 2027 a step ahead.
+        </p>
+      </div>
+    </div>
+
+    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -395px;">
+      <div class="rounded-lg overflow-hidden shadow-xl">
+        <!-- 1400x800 photo: 57.14% keeps its real aspect ratio, so the height is known before it loads -->
+        <div id="hero-image" class="relative w-full" style="padding-top: 57.14%;">
+          <img src="hero.jpg" alt="Eric holding a disc on an ultimate field at night" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+      </div>
+    </div>
+
+    <div id="hero-white-panel" class="pt-6 px-6" style="margin-top: -44px;"></div>
+  </section>
+
+  <!-- ─── INTRO ─── -->
+  <section class="pt-14 pb-14 px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="reveal text-2xl md:text-3xl font-extrabold text-gray-900 leading-snug mb-10">
+        I'm running a workshop to help you execute on a plan for this off-season, so you can go into 2027 finally feeling confident with your game.
+      </h2>
+      <div class="reveal">
+        <p class="text-sm font-semibold text-brand uppercase tracking-widest mb-4">Our goal is simple.</p>
+        <div class="space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
+          <p>Give you the <mark class="bg-orange-100 text-gray-900 rounded px-0.5">knowledge</mark> you need to train properly for ultimate, and the <mark class="bg-orange-100 text-gray-900 rounded px-0.5">structure</mark> to be able to see lasting results.</p>
+          <p>Join our <mark class="bg-orange-100 text-gray-900 rounded px-0.5">2-hour interactive workshop</mark> where we'll build your exact plan together live to get a head start on the 2027 season.</p>
+          <p>We've helped 300+ athletes train smarter for ultimate so that they can turn their off-field gains into <mark class="bg-orange-100 text-gray-900 rounded px-0.5">on-field impact</mark>.</p>
+          <p>Right now, while your teammates are taking it easy, <mark class="bg-orange-100 text-gray-900 rounded px-0.5">it could be your turn to get ahead</mark>.</p>
+        </div>
+      </div>
+      <div class="reveal mt-10">
+        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">SAVE YOUR SPOT →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 3 MISTAKES ─── (flat grey band, full width; the only grey section) -->
+  <section class="py-14 px-6 bg-gray-50">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight text-center mb-8">The 3 biggest mistakes hopeful players make heading into the holiday season.</h2>
+      <ol class="reveal space-y-7">
+          <li class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">1</div>
+            <div>
+              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">You back off on your training (like everyone else).</p>
+              <p class="text-base md:text-lg text-gray-700 leading-relaxed">So your skills, athleticism and game IQ slip over the break, and you spend the first weeks (if not months) of next season just getting back to where you were before.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">2</div>
+            <div>
+              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">You don't know how to structure an ultimate-specific off-season.</p>
+              <p class="text-base md:text-lg text-gray-700 leading-relaxed">Which exercises actually matter, and how should you progress them as the season gets closer? Without knowing, you're left "hoping" and without an actual strategy.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">3</div>
+            <div>
+              <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">You don't have a plan you can stay accountable to.</p>
+              <p class="text-base md:text-lg text-gray-700 leading-relaxed">With so much happening over the holiday period, it's easy to fall off track and never get back on. Without a solid plan, your new year goals end up getting left behind.</p>
+            </div>
+          </li>
+      </ol>
+      <div class="reveal mt-10">
+        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">SAVE YOUR SPOT →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT WE'LL COVER ─── (numbered steps; each names the system that fixes one of the 3 mistakes) -->
+  <section class="py-12 px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="reveal text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight text-center mb-10">Here's what we'll cover</h2>
+      <ol class="reveal space-y-7">
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">1</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Our 3-Phase Off-Season Protocol</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">The 3-part plan every ultimate player needs to keep their skills sharp and stay fit over the break, so you start 2027 <b>ahead</b>, not behind.</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">2</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">The 4-Step Exercise Selection System</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">Learn the 4 steps to selecting the exercises that actually matter for ultimate, which ones you can skip, and how to progress so that you're <b>ready</b> when tryouts roll around.</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">3</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">The Real Holiday Scheduler</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">The holiday season gets hectic - and without a <b>realistic</b> plan, things will fall off the radar. We'll help you build a working plan live - plus tips to fit it all in as the seasons change.</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">4</div>
+          <div>
+            <p class="text-lg md:text-xl font-bold text-gray-900 mb-1.5">Lock In Your 2027 Growth Plan</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed">We'll get clear on your goals for the year and lock checkpoints into your calendar, so you know what you're training for and working towards.</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed mt-3">Then we'll wrap up with a live Q&amp;A, so you're ready to tackle any roadblocks going into the new year.</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed mt-3">And, you'll leave the workshop with a stress-tested, custom gameplan for 2027 that you can actually follow so that you start seeing results <b>before Christmas</b>.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─── OFFER ─── (heading on the torn black paper, one offer card) -->
+  <section id="options" class="pt-12 pb-8 px-6 border-t border-gray-100">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal relative text-center mb-12 max-w-3xl mx-auto">
+        <img src="../apply/black%20paper%20background%20removed.png" alt="" class="absolute inset-0 w-full h-full object-fill pointer-events-none select-none" />
+        <h2 class="relative text-3xl md:text-4xl font-extrabold text-white leading-tight py-7 px-6">We make it easy to get started</h2>
+      </div>
+
+      <!-- Single offer: the $9 workshop. (The VIP option is parked - see commit 6a4fac0 to restore it.) -->
+      <div class="reveal max-w-xl mx-auto bg-white rounded-3xl shadow-lg border-2 border-brand p-6 md:p-8">
+        <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">Lock In For 2027 Workshop</h3>
+        <p class="text-gray-900 leading-none mb-8"><span class="text-5xl font-extrabold">$9</span></p>
+
+        <div class="space-y-7 mb-8">
+          <div>
+            <p class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">What you'll get</p>
+            <ul class="space-y-3 text-base text-gray-900">
+              <li class="flex items-center gap-3"><span class="text-xl leading-none flex-shrink-0" aria-hidden="true">✅</span><span>An invite to the live workshop + Q&amp;A</span></li>
+              <li class="flex items-center gap-3"><span class="text-xl leading-none flex-shrink-0" aria-hidden="true">✅</span><span>The full workshop recording</span></li>
+              <li class="flex items-center gap-3"><span class="text-xl leading-none flex-shrink-0" aria-hidden="true">✅</span><span>A custom gameplan to level up for 2027</span></li>
+            </ul>
+          </div>
+          <!-- Bonuses: every buyer gets these, whatever month they join -->
+          <div>
+            <p class="text-sm font-bold text-brand uppercase tracking-wider mb-3">Bonuses when you join today</p>
+            <ul class="space-y-3 text-base text-gray-900">
+              <li class="flex items-center gap-3"><span class="text-xl leading-none flex-shrink-0" aria-hidden="true">🎁</span><span>1:1 onboarding call with Eric (for custom feedback)</span></li>
+              <li class="flex items-center gap-3"><span class="text-xl leading-none flex-shrink-0" aria-hidden="true">🎁</span><span>Ultimate off-season training template (when you attend live)</span></li>
+              <li class="flex items-center gap-3"><span class="text-xl leading-none flex-shrink-0" aria-hidden="true">🎁</span><span>2x workshop recordings: <b><i>Secrets to Separation™</i></b>, <b><i>Block Season™</i></b></span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Name + email are always shown; JOIN $9 saves the lead and goes straight to Stripe -->
+        <form id="lite-form" novalidate>
+          <div id="lite-fields" class="space-y-3">
+            <input type="text" id="lite-first" name="firstName" required autocomplete="given-name" placeholder="First name *"
+                   class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
+            <input type="email" id="lite-email" name="email" required autocomplete="email" placeholder="Email address *"
+                   class="lite-input w-full border-2 border-gray-200 rounded-xl px-5 py-4 text-lg font-medium text-gray-800 placeholder-gray-400 bg-gray-50" />
+            <button type="submit" data-join="minimum" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">JOIN $9</button>
+          </div>
+          <p class="flex items-center justify-center gap-1.5 mt-3 text-sm text-gray-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>Secure checkout with Stripe</p>
+        </form>
+      </div>
+
+      <!-- Recording + group quality (adapted from the workshop page) -->
+      <div class="reveal max-w-3xl mx-auto mt-12 space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
+        <p>In case you can't make it live or want to revisit the content, everyone who joins the workshop will receive a copy of the <mark class="bg-orange-100 text-gray-900 rounded px-0.5">full workshop recording</mark> so that you can watch it back at your own convenience.</p>
+        <p class="font-bold pt-4">We'd like to keep the group quality high.</p>
+        <p>If you're looking for a temporary fix or aren't willing to put in a bit of effort - this <b>isn't</b> for you.</p>
+        <p>But if you're ready to show up, want a clear system to follow, and are willing to put in the reps to see real results - then 2027 could be the year where things get <i>exciting</i>.</p>
+        <p class="font-bold pt-4">If you'd like to join us, get in quick.</p>
+        <p>Zoom has a meeting limit, so spots are <b>limited</b>.</p>
+        <p>Once we hit capacity, we physically <b>cannot</b> accept any more people.</p>
+        <p>If you're ready to go into 2027 with a structured plan and make a bigger impact on-field, don't miss out and save your spot below <b>while you still can</b>.</p>
+      </div>
+
+      <div class="reveal mt-10">
+        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">SAVE YOUR SPOT →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SIGN-OFF ─── (top padding comes from the section above) -->
+  <section class="pt-2 pb-14 px-6">
+    <div class="reveal max-w-3xl mx-auto space-y-4 text-lg md:text-xl text-gray-900 leading-relaxed">
+      <p>As soon as you join, you'll receive everything you need to get started, including your workshop invite and the link to book your 1:1 onboarding call.</p>
+      <p>Talk soon,</p>
+      <p class="font-semibold"><i>-Eric</i></p>
+    </div>
+
+    <!-- Workshop date + start times, in time order (same moment: 26 Nov 2026, 22:00 UTC) -->
+    <div class="reveal max-w-3xl mx-auto mt-12 rounded-2xl bg-[#232321] px-5 py-7 text-center">
+      <div class="flex flex-wrap justify-center gap-x-4 gap-y-6">
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">Los Angeles</p><p class="text-sm md:text-base text-white/70">2PM</p><p class="text-sm md:text-base text-white/70">Thu 26 Nov</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">New York</p><p class="text-sm md:text-base text-white/70">5PM</p><p class="text-sm md:text-base text-white/70">Thu 26 Nov</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">London</p><p class="text-sm md:text-base text-white/70">10PM</p><p class="text-sm md:text-base text-white/70">Thu 26 Nov</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">Singapore</p><p class="text-sm md:text-base text-white/70">6AM</p><p class="text-sm md:text-base text-white/70">Fri 27 Nov</p></div>
+        <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">Sydney</p><p class="text-sm md:text-base text-white/70">9AM</p><p class="text-sm md:text-base text-white/70">Fri 27 Nov</p></div>
+      </div>
+    </div>
+    <p class="reveal mt-4 text-center text-sm md:text-base text-gray-500">If you can't make it live, a recording will be sent to you after the workshop.</p>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="py-8 px-6 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── Hero dark/white split (same approach as the apply page) ──
+    function syncHeroSplit() {
+      const img = document.getElementById('hero-image');
+      const darkPanel = document.getElementById('hero-dark-panel');
+      const imageWrap = document.getElementById('hero-image-wrap');
+      const whitePanel = document.getElementById('hero-white-panel');
+      if (!img || !darkPanel || !imageWrap || !whitePanel) return;
+      const h = img.getBoundingClientRect().height;
+      if (!h) return;
+      darkPanel.style.paddingBottom = (h * 0.9) + 'px';
+      imageWrap.style.marginTop = '-' + (h * 0.9) + 'px';
+      whitePanel.style.marginTop = '-' + (h * 0.1) + 'px';
+    }
+    syncHeroSplit();
+    let resizeFrame = null;
+    window.addEventListener('resize', () => {
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(syncHeroSplit);
+    });
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+    // ── Countdown: counts to data-target, then holds at 00 (never negative) ──
+    (function () {
+      const box = document.getElementById('countdown');
+      const target = Date.parse(box.dataset.target);
+      const el = k => box.querySelector('[data-cd="' + k + '"]');
+      const pad = n => String(n).padStart(2, '0');
+      function tick() {
+        let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+        el('days').textContent = pad(Math.floor(s / 86400)); s %= 86400;
+        el('hrs').textContent = pad(Math.floor(s / 3600)); s %= 3600;
+        el('mins').textContent = pad(Math.floor(s / 60));
+        el('secs').textContent = pad(s % 60);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // ── Join $9: check first name + email, save the lead, then go to Stripe ──
+    // Same Google Apps Script web app the apply page uses (google-apps-script.gs);
+    // it writes a sheet row and adds the person to MailerLite server-side, so no
+    // MailerLite key ever sits in this page.
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
+
+    // type: 'lockin_lite_lead' (Join $9)
+    function saveLead(type, firstName, email) {
+      const params = new URLSearchParams({
+        type,
+        timestamp: new Date().toISOString(),
+        source: 'eric-deng-ultimate.com/lock-in-for-2027-workshop',
+        firstName, email,
+      });
+      // keepalive lets the request finish even though we navigate to Stripe straight after
+      return fetch(APPS_SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors', keepalive: true }).catch(() => {});
+    }
+
+    document.getElementById('lite-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!this.reportValidity()) return;
+      if (!LINKS.stripeMinimumChallenge) { console.warn('Link not set yet', '(stripeMinimumChallenge)'); return; }
+      const firstName = document.getElementById('lite-first').value.trim();
+      const email = document.getElementById('lite-email').value.trim();
+      const btn = this.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Taking you to checkout…';
+      gtag('event', 'lockin_lite_checkout', { event_category: 'lock_in_2027' });
+      saveLead('lockin_lite_lead', firstName, email);
+      // Stripe pre-fills the email on its checkout page
+      const url = LINKS.stripeMinimumChallenge + '?prefilled_email=' + encodeURIComponent(email);
+      setTimeout(() => { window.location.href = url; }, 400);
+    });
+    // Coming back from Stripe with the Back button restores the page as it was - re-enable the button
+    window.addEventListener('pageshow', () => {
+      const btn = document.querySelector('#lite-form button');
+      btn.disabled = false; btn.textContent = 'JOIN $9';
+    });
+  </script>
+</body>
+</html>
