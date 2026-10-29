@@ -6,7 +6,7 @@
  *   - index.html               (Premium Application modal — types: 'lead', 'application')
  *   - apply/index.html         (qualification flow — types: 'qualification_lead', 'qualification_application')
  *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
- *   - lock-in-for-2027-challenge/index.html ("Join $9" — type: 'lockin_lite_lead';
+ *   - lock-in-for-2027-workshop/index.html ("Join $9" — type: 'lockin_lite_lead';
  *                                            VIP "$9 Deposit" — type: 'lockin_vip_lead')
  *
  * This is a fresh, standalone script — not tied to whatever project used to
@@ -243,7 +243,7 @@ function handleCoachingFitApplication_(p) {
   return jsonResponse_({ ok: true });
 }
 
-// ── Lock In For 2027 Challenge (lock-in-for-2027-challenge/index.html) ──
+// ── Lock In For 2027 Workshop (lock-in-for-2027-workshop/index.html) ──
 
 // "Join $9" collects first name + email, then sends the person to Stripe.
 // Saved here before payment, so this is everyone who STARTED checkout -
