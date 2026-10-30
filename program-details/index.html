@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // ── The one CTA on this page: opens an Instagram DM to Eric ──
+    const LINKS = {
+      instagramDm: "https://ig.me/m/itsericdee",
+    };
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Details | Eric Deng Ultimate</title>
+  <meta name="description" content="Get the structure, feedback, and support you need to feel fully confident stepping on-field." />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Same motion and helpers as the workshop page (lock-in-for-2027-workshop/index.html). */
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    /* Land on the next steps with room for the sticky countdown bar above it */
+    #next-steps { scroll-margin-top: 88px; }
+
+    /* Section headings: highlighted like a doc heading, wrapping cleanly over two lines */
+    .doc-h { background: #e6eefa; padding: 0 0.3rem; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+  <!-- ─── TOP BAR: countdown to the weekly intake close (same look as the workshop page's bar).
+       Intake closes every Sunday at midnight Sydney time; the script rolls on to the next Sunday. -->
+  <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
+    <a href="#next-steps" id="countdown" aria-label="Time until the next intake closes"
+       class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
+      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Next intake closes in</span>
+      <span class="flex items-start gap-2 sm:gap-3">
+        <span class="text-center leading-none"><span data-cd="days" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Days</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="hrs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Hrs</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="mins" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Mins</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="secs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Secs</span></span>
+      </span>
+    </a>
+  </div>
+
+
+  <!-- ─── HERO ─── Same blue/white split as the workshop page: the photo straddles the boundary.
+       The photo box is a short letterbox (48%) so the opening text below stays in view;
+       syncHeroSplit (bottom of page) sets the offsets from its real height. -->
+  <section class="relative text-center">
+    <div id="hero-dark-panel" class="px-6 pt-12" style="background-color:#004fb8; padding-bottom:180px;">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight text-balance mb-5" style="transition-delay:0.12s">Ready to start an ultimate&#8209;specific program?</h1>
+      <p class="reveal text-xl md:text-2xl text-white leading-relaxed text-balance mb-8" style="transition-delay:0.16s">Get the structure, feedback, and support you need to feel fully confident stepping on-field.</p>
+    </div>
+    </div>
+
+    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -180px;">
+      <div class="rounded-lg overflow-hidden shadow-xl">
+        <!-- 1084x666 photo cropped to a 48% box, kept centred on Eric -->
+        <div id="hero-image" class="relative w-full" style="padding-top: 48%;">
+          <img src="hero.jpg" alt="Eric talking to his team in a huddle" class="absolute inset-0 w-full h-full object-cover" style="object-position: 50% 45%;" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OFFER DOCUMENT ─── (written like a letter: highlighted headings, short spoken paragraphs) -->
+  <div class="px-6 pt-10">
+    <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
+      <p class="reveal">I'm working with <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 ultimate players this month</mark> who are ready to start an ultimate-specific program - so that they can start seeing an on-field difference in their game within the next 60 days.</p>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The goal</span></h2>
+      <div class="reveal space-y-4">
+        <p>To help you make a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">bigger impact on the ultimate frisbee field</mark> with just a bit of focused effort per week - without having to sacrifice the other priorities you have in your life.</p>
+        <p>We've helped hundreds of players get started with a program that fits their unique goals and needs. We've got a great reputation because we only take on players we know we can help.</p>
+        <p>This month, it could be your turn.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">It's a small group, so I'm looking for the best fit here</span></h2>
+      <div class="reveal space-y-4">
+        <p>This is for you if you're a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">busy adult balancing ultimate with full-time work</mark>, and you're ready for a plan you can actually stick to.</p>
+        <p>If you're looking for a quick fix or you're not ready to put in a bit of consistency each week, this <b>isn't</b> the right fit for you.</p>
+        <p>But if you're ready for a change and you want to get the right support with an ultimate-specific structure so that you can make a bigger impact in a way that actually <mark class="bg-orange-100 text-gray-900 rounded px-0.5">fits with your life</mark>, then chances are we can help.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The plan is simple</span></h2>
+      <div class="reveal space-y-4">
+        <p>We'll start with a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">1:1 strategy call</mark> to talk through your goals, figure out where you're at right now, and pinpoint the gaps that are holding you back the most.</p>
+        <p>From there, you'll get a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">custom training plan</mark> built around your unique schedule, covering both your athletic and skill development, fit to the demands of ultimate.</p>
+        <p>Over your first few weeks, we'll run <mark class="bg-orange-100 text-gray-900 rounded px-0.5">structured check-ins</mark> to make sure the plan is working for you, make adjustments if needed, and help you build momentum.</p>
+        <p>And as you progress, you'll get <mark class="bg-orange-100 text-gray-900 rounded px-0.5">ongoing feedback and support</mark> so that your strength and speed gains actually <b>carry into games</b>.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">We make it easy to get started and see results quickly</span></h2>
+      <div class="reveal space-y-4">
+        <p>The investment is <b>$99 USD/month</b>, with a <b>$50 onboarding fee</b>.</p>
+        <p>After that, we'll go month by month so long as you're seeing results.</p>
+        <p>Join us during this week's intake, and we'll also throw in a <b>custom throwing form assessment</b> and a ticket to our <b>Lock In For 2027 Workshop</b> on 27 November, so that you can go into the new year feeling a step ahead.</p>
+        <p>Plus, in the spirit of the holidays, we'll <mark class="bg-orange-100 text-gray-900 rounded px-0.5">waive your $50 onboarding fee</mark> so that you can put it towards a Christmas present for a loved one instead.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Like I said, it's a small group and I'm looking for the right people</span></h2>
+      <div class="reveal space-y-4">
+        <p>We're only offering <mark class="bg-orange-100 text-gray-900 rounded px-0.5">6 spots during this intake period</mark> to keep the support quality high.</p>
+        <!-- #intake-close is filled in by the script: the same Sunday the countdown bar counts down to -->
+        <p>This intake will close on <b id="intake-close">Sunday</b>, or when the spots run out. We've sold out in prior months, so if this is the right time for you, let me know so you don't miss out.</p>
+      </div>
+
+      <div id="next-steps">
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Next steps</span></h2>
+      </div>
+      <div class="reveal space-y-4">
+        <p>If you're ready to get started:</p>
+        <p><b>Step 1:</b> Let me know you're in by <a id="dm-cta" href="https://ig.me/m/itsericdee" target="_blank" rel="noopener" class="font-bold text-blue-600 underline underline-offset-4 decoration-2 hover:text-blue-800">sending me a DM on Instagram</a>.</p>
+        <p><b>Step 2:</b> I'll send you an invitation link to join and get onboarded.</p>
+        <p class="pt-4">That's all. Excited to talk soon.</p>
+        <p class="font-semibold"><i>-Eric</i></p>
+        <p class="pt-6"><b>PS.</b> As soon as you join, you'll get access to our <b>Essential Patterns Activity Plan</b> - a list of key movement patterns designed to help you gain more separation and earn more blocks within the next 30 days.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-16"></div>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="py-8 px-6 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── Hero blue/white split (as on the workshop page): the blue ends 90% of the way down the photo ──
+    function syncHeroSplit() {
+      const img = document.getElementById('hero-image');
+      const darkPanel = document.getElementById('hero-dark-panel');
+      const imageWrap = document.getElementById('hero-image-wrap');
+      if (!img || !darkPanel || !imageWrap) return;
+      const h = img.getBoundingClientRect().height;
+      if (!h) return;
+      darkPanel.style.paddingBottom = (h * 0.9) + 'px';
+      imageWrap.style.marginTop = '-' + (h * 0.9) + 'px';
+    }
+    syncHeroSplit();
+    let resizeFrame = null;
+    window.addEventListener('resize', () => {
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(syncHeroSplit);
+    });
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+    // ── Countdown: to the end of the coming Sunday in Sydney (intake close), then rolls to the next week ──
+    // Works from Sydney's wall-clock time, so it's right for every visitor's timezone
+    // (it can be out by up to an hour in the week daylight saving starts or ends).
+    // Also writes that Sunday's date into the "This intake will close on ..." line.
+    (function () {
+      const box = document.getElementById('countdown');
+      const el = k => box.querySelector('[data-cd="' + k + '"]');
+      const pad = n => String(n).padStart(2, '0');
+      const fmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
+      const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+      const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', weekday: 'long', day: 'numeric', month: 'long' });
+      const closeEl = document.getElementById('intake-close');
+      function tick() {
+        const p = Object.fromEntries(fmt.formatToParts(new Date()).map(x => [x.type, x.value]));
+        const daysToSunday = (7 - DAYS[p.weekday]) % 7;
+        const intoDay = (+p.hour) * 3600 + (+p.minute) * 60 + (+p.second);
+        let s = daysToSunday * 86400 + (86400 - intoDay);
+        closeEl.textContent = closeFmt.format(new Date(Date.now() + daysToSunday * 86400000));
+        el('days').textContent = pad(Math.floor(s / 86400)); s %= 86400;
+        el('hrs').textContent = pad(Math.floor(s / 3600)); s %= 3600;
+        el('mins').textContent = pad(Math.floor(s / 60));
+        el('secs').textContent = pad(s % 60);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // ── DM CTA: link comes from LINKS; log the click before Instagram opens ──
+    const dmCta = document.getElementById('dm-cta');
+    dmCta.href = LINKS.instagramDm;
+    dmCta.addEventListener('click', () => {
+      gtag('event', 'program_dm_click', { event_category: 'program_details' });
+    });
+  </script>
+</body>
+</html>
