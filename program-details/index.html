@@ -63,7 +63,7 @@
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
   <!-- ─── TOP BAR: countdown to the weekly intake close (same look as the workshop page's bar).
-       Intake closes every Sunday at midnight Sydney time; the script rolls on to the next Sunday. -->
+       Intake closes every Sunday at midnight US Eastern time (New York, EST/EDT) - not shown on the page; the script rolls on to the next Sunday. -->
   <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
     <a href="#next-steps" id="countdown" aria-label="Time until the next intake closes"
        class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
@@ -190,24 +190,41 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
 
-    // ── Countdown: to the end of the coming Sunday in Sydney (intake close), then rolls to the next week ──
-    // Works from Sydney's wall-clock time, so it's right for every visitor's timezone
-    // (it can be out by up to an hour in the week daylight saving starts or ends).
-    // Also writes that Sunday's date into the "This intake will close on ..." line.
+    // ── Countdown: to the end of the coming Sunday in US Eastern time (intake close), then rolls to the next week ──
+    // The deadline is midnight at the end of Sunday, New York time (most clients are in the US and Canada), so it's the same moment for every
+    // visitor wherever they are. intakeClose() is also used for the "This intake will close on ..." date.
+    const TZ = 'America/New_York';   // follows EST/EDT automatically
+    const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: TZ, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
+    const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    function local(ms) {
+      const p = Object.fromEntries(tzParts.formatToParts(new Date(ms)).map(x => [x.type, x.value]));
+      return { y: +p.year, m: +p.month, d: +p.day, wd: DAYS[p.weekday], h: +p.hour, min: +p.minute, s: +p.second };
+    }
+    // New York's offset from UTC (in ms) at a given moment - changes with daylight saving
+    function tzOffset(ms) {
+      const t = local(ms);
+      return Date.UTC(t.y, t.m - 1, t.d, t.h, t.min, t.s) - Math.floor(ms / 1000) * 1000;
+    }
+    // { at: the exact close moment (ms), sunday: that Sunday's calendar date as a UTC-noon Date for labelling }
+    function intakeClose(now) {
+      const t = local(now);
+      const daysToSunday = (7 - t.wd) % 7;
+      const midnight = Date.UTC(t.y, t.m - 1, t.d + daysToSunday + 1);   // Monday 00:00 as New York wall-clock
+      let at = midnight - tzOffset(midnight);
+      at = midnight - tzOffset(at);                                      // second pass in case DST changed in between
+      return { at, sunday: new Date(Date.UTC(t.y, t.m - 1, t.d + daysToSunday, 12)) };
+    }
     (function () {
       const box = document.getElementById('countdown');
       const el = k => box.querySelector('[data-cd="' + k + '"]');
       const pad = n => String(n).padStart(2, '0');
-      const fmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
-      const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-      const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', weekday: 'long', day: 'numeric', month: 'long' });
+      const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
       const closeEl = document.getElementById('intake-close');
       function tick() {
-        const p = Object.fromEntries(fmt.formatToParts(new Date()).map(x => [x.type, x.value]));
-        const daysToSunday = (7 - DAYS[p.weekday]) % 7;
-        const intoDay = (+p.hour) * 3600 + (+p.minute) * 60 + (+p.second);
-        let s = daysToSunday * 86400 + (86400 - intoDay);
-        closeEl.textContent = closeFmt.format(new Date(Date.now() + daysToSunday * 86400000));
+        const now = Date.now();
+        const close = intakeClose(now);
+        let s = Math.max(0, Math.ceil((close.at - now) / 1000));
+        closeEl.textContent = closeFmt.format(close.sunday);
         el('days').textContent = pad(Math.floor(s / 86400)); s %= 86400;
         el('hrs').textContent = pad(Math.floor(s / 3600)); s %= 3600;
         el('mins').textContent = pad(Math.floor(s / 60));
