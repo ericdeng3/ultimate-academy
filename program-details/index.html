@@ -54,7 +54,7 @@
     }
     .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
 
-    /* Land on the next steps with room for the sticky countdown bar above it */
+    /* Land on the next steps with room for the sticky intake bar above it */
     #next-steps { scroll-margin-top: 88px; }
 
     /* Section headings: highlighted like a doc heading, wrapping cleanly over two lines */
@@ -62,15 +62,13 @@
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
-  <!-- ─── TOP BAR: countdown to the weekly intake close (same look as the workshop page's bar).
+  <!-- ─── TOP BAR: the next weekly intake close date (same look as the workshop page's bar).
        Intake closes every Sunday at midnight US Eastern time (New York, EST/EDT) - not shown on the page; the script rolls on to the next Sunday. -->
   <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
-    <a href="#next-steps" id="countdown" aria-label="Time until the next intake closes"
-       class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
-      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Next intake closes in</span>
-      <span class="flex items-start gap-2 sm:gap-3">
-        <span class="text-center leading-none"><span data-cd="days" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Days</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="hrs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Hrs</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="mins" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Mins</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="secs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Secs</span></span>
-      </span>
+    <a href="#next-steps" id="intake-bar"
+       class="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 py-3 px-4">
+      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Intake closes on</span>
+      <span data-intake-date class="text-lg sm:text-xl font-extrabold text-white">Sunday</span>
     </a>
   </div>
 
@@ -133,7 +131,7 @@
       <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Like I said, it's a small group and I'm looking for the right people</span></h2>
       <div class="reveal space-y-4">
         <p>We're only offering <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 spots during this intake period</mark> to keep the support quality high.</p>
-        <!-- #intake-close is filled in by the script: the same Sunday the countdown bar counts down to -->
+        <!-- #intake-close is filled in by the script: the same Sunday as the top bar -->
         <p>This intake will close on <b id="intake-close">Sunday</b>, or when the spots run out. We've sold out in prior months, so if this is the right time for you, let me know so you don't miss out.</p>
       </div>
 
@@ -190,9 +188,9 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
 
-    // ── Countdown: to the end of the coming Sunday in US Eastern time (intake close), then rolls to the next week ──
+    // ── Intake close: the end of the coming Sunday in US Eastern time, then rolls to the next week ──
     // The deadline is midnight at the end of Sunday, New York time (most clients are in the US and Canada), so it's the same moment for every
-    // visitor wherever they are. intakeClose() is also used for the "This intake will close on ..." date.
+    // visitor wherever they are. The date fills the top bar and the "This intake will close on ..." line.
     const TZ = 'America/New_York';   // follows EST/EDT automatically
     const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: TZ, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
     const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
@@ -215,23 +213,14 @@
       return { at, sunday: new Date(Date.UTC(t.y, t.m - 1, t.d + daysToSunday, 12)) };
     }
     (function () {
-      const box = document.getElementById('countdown');
-      const el = k => box.querySelector('[data-cd="' + k + '"]');
-      const pad = n => String(n).padStart(2, '0');
       const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
-      const closeEl = document.getElementById('intake-close');
-      function tick() {
-        const now = Date.now();
-        const close = intakeClose(now);
-        let s = Math.max(0, Math.ceil((close.at - now) / 1000));
-        closeEl.textContent = closeFmt.format(close.sunday);
-        el('days').textContent = pad(Math.floor(s / 86400)); s %= 86400;
-        el('hrs').textContent = pad(Math.floor(s / 3600)); s %= 3600;
-        el('mins').textContent = pad(Math.floor(s / 60));
-        el('secs').textContent = pad(s % 60);
+      const dateEls = document.querySelectorAll('#intake-close, [data-intake-date]');
+      function update() {
+        const label = closeFmt.format(intakeClose(Date.now()).sunday);
+        dateEls.forEach(e => { e.textContent = label; });
       }
-      tick();
-      setInterval(tick, 1000);
+      update();
+      setInterval(update, 60000);   // rolls to the next Sunday if the page is left open past the close
     })();
 
     // ── DM CTA: link comes from LINKS; log the click before Instagram opens ──
