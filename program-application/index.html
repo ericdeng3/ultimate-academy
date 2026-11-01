@@ -177,7 +177,20 @@
       <h2 class="text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mb-3"><span class="doc-h">Program application</span></h2>
       <p id="app-intro" class="text-gray-700 leading-relaxed mb-8">Answer a few quick questions, and if it looks like a fit, I'll reach out with everything you need to join.</p>
 
-      <form id="app-form" novalidate class="space-y-8 text-base">
+      <!-- Progress: filled in by showStep() -->
+      <div id="app-progress" class="mb-8 text-base">
+        <div class="flex items-baseline justify-between mb-2 text-sm font-semibold">
+          <span id="app-step-count" class="text-gray-900">Step 1 of 3</span>
+          <span id="app-step-name" class="text-gray-500">About you</span>
+        </div>
+        <div class="h-2 rounded-full bg-gray-200 overflow-hidden">
+          <div id="app-bar" class="h-full rounded-full bg-[#004fb8] transition-all duration-500" style="width:33.33%"></div>
+        </div>
+      </div>
+
+      <!-- Three steps on one page: only one [data-step] shows at a time; Continue checks just that step -->
+      <form id="app-form" novalidate class="text-base">
+        <div data-step="1" data-name="About you" class="space-y-8">
         <!-- Contact details -->
         <div class="space-y-6">
           <div class="grid sm:grid-cols-2 gap-6">
@@ -215,6 +228,11 @@
           </div>
         </fieldset>
 
+        <div class="flex gap-3 !mt-12"><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
+        </div>
+
+        <div data-step="2" data-name="Your goals" hidden class="space-y-8">
+
         <label class="block"><span class="q-label">What is your main goal for ultimate in the next 12 months? *</span>
           <textarea data-q="12-Month Goal" required rows="2" class="app-input"></textarea></label>
 
@@ -229,6 +247,11 @@
 
         <label class="block"><span class="q-label">Very quickly, what areas of your game would you like to focus on or solve in your first 30 days? *</span>
           <textarea data-q="First 30 Days Focus" required rows="2" class="app-input"></textarea></label>
+
+        <div class="flex gap-3 !mt-12"><button type="button" data-back class="px-6 py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-bold text-lg hover:border-gray-400 hover:text-gray-900 transition-colors">Back</button><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
+        </div>
+
+        <div data-step="3" data-name="Final questions" hidden class="space-y-8">
 
         <label class="block"><span class="q-label">Why work with us? Why now? What makes this the right move for you right now? *</span>
           <textarea data-q="Why Us / Why Now" required rows="2" class="app-input"></textarea></label>
@@ -254,7 +277,8 @@
         </fieldset>
 
         <p id="app-error" hidden class="text-red-700 font-semibold">Something went wrong sending your application. Please try again, or DM me on Instagram @itsericdee.</p>
-        <button type="submit" class="!mt-12 w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SUBMIT APPLICATION</button>
+        <div class="flex gap-3 !mt-12"><button type="button" data-back class="px-6 py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-bold text-lg hover:border-gray-400 hover:text-gray-900 transition-colors">Back</button><button type="submit" class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SUBMIT APPLICATION</button></div>
+        </div>
       </form>
 
       <div id="app-done" hidden class="text-lg text-gray-900 leading-relaxed space-y-4">
@@ -375,6 +399,36 @@
       });
     }
 
+    // ── Steps: one [data-step] at a time, with the progress bar to match ──
+    const steps = [...appForm.querySelectorAll('[data-step]')];
+    let current = 0;
+    function showStep(i) {
+      current = i;
+      steps.forEach((s, j) => { s.hidden = j !== i; });
+      document.getElementById('app-step-count').textContent = 'Step ' + (i + 1) + ' of ' + steps.length;
+      document.getElementById('app-step-name').textContent = steps[i].dataset.name;
+      document.getElementById('app-bar').style.width = ((i + 1) / steps.length * 100) + '%';
+      appSection.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => steps[i].querySelector('input, textarea').focus({ preventScroll: true }), 500);
+    }
+    // Shows the browser's message on the first unanswered question in a step; false if there is one
+    function stepIsValid(i) {
+      syncDetails();
+      checkGroups();
+      const bad = [...steps[i].querySelectorAll('input, textarea, select')].find(f => !f.checkValidity());
+      if (bad) bad.reportValidity();
+      return !bad;
+    }
+    appForm.addEventListener('click', e => {
+      if (e.target.closest('[data-next]')) {
+        if (!stepIsValid(current)) return;
+        gtag('event', 'program_application_step', { event_category: 'program_application', step: current + 2 });
+        showStep(current + 1);
+      } else if (e.target.closest('[data-back]')) {
+        showStep(current - 1);
+      }
+    });
+
     // One "label: answer" pair per [data-q] question, in page order. A choice question's answer is its
     // ticked options joined with "; ", each followed by its detail text if it has one.
     function collectAnswers() {
@@ -393,9 +447,15 @@
     // the reply, so a failed network request is the only error we can show.
     appForm.addEventListener('submit', async function (e) {
       e.preventDefault();
+      // Every step was checked on the way through; re-check in case, and go back to any gap
       syncDetails();
       checkGroups();
-      if (!this.reportValidity()) return;
+      const gap = steps.findIndex(s => [...s.querySelectorAll('input, textarea, select')].some(f => !f.checkValidity()));
+      if (gap !== -1) {
+        if (gap !== current) showStep(gap);
+        setTimeout(() => stepIsValid(gap), gap !== current ? 600 : 0);
+        return;
+      }
       const answers = collectAnswers();
       const btn = this.querySelector('button[type="submit"]');
       const err = document.getElementById('app-error');
@@ -414,6 +474,7 @@
         gtag('event', 'program_application_submit', { event_category: 'program_application' });
         this.hidden = true;
         document.getElementById('app-intro').hidden = true;
+        document.getElementById('app-progress').hidden = true;
         document.getElementById('app-done').hidden = false;
         appSection.scrollIntoView({ behavior: 'smooth' });
       } catch (_) {
