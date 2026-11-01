@@ -58,12 +58,12 @@
     #next-steps, #application { scroll-margin-top: 88px; }
 
     /* Application form */
-    .app-input { display: block; width: 100%; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.125rem; color: #1f2937; background: #fff; }
+    .app-input { display: block; width: 100%; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.0625rem; color: #1f2937; background: #fff; }
     .app-input::placeholder { color: #9ca3af; }
     .app-input:focus { outline: none; border-color: #004fb8; }
-    .q-label { display: block; font-weight: 600; color: #111827; margin-bottom: 0.6rem; line-height: 1.4; }
+    .q-label { display: block; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.75rem; line-height: 1.4; }
     .q-options { display: flex; flex-direction: column; gap: 0.6rem; }
-    .q-option { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.125rem; color: #1f2937; line-height: 1.4; cursor: pointer; }
+    .q-option { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.0625rem; color: #1f2937; line-height: 1.4; cursor: pointer; }
     .q-option input { width: 1.25rem; height: 1.25rem; margin-top: 0.1rem; flex-shrink: 0; accent-color: #004fb8; }
 
     /* Section headings: highlighted like a doc heading, wrapping cleanly over two lines */
@@ -175,7 +175,7 @@
     <!-- same font size as the letter so 58ch gives the same column width; the form drops back to base size -->
     <div class="max-w-[58ch] mx-auto text-lg md:text-xl">
       <h2 class="text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mb-3"><span class="doc-h">Program application</span></h2>
-      <p class="text-gray-700 leading-relaxed mb-8">Answer a few quick questions, and if it looks like a fit, I'll reach out with everything you need to join.</p>
+      <p id="app-intro" class="text-gray-700 leading-relaxed mb-8">Answer a few quick questions, and if it looks like a fit, I'll reach out with everything you need to join.</p>
 
       <form id="app-form" novalidate class="space-y-8 text-base">
         <!-- Contact details -->
@@ -413,6 +413,7 @@
         });
         gtag('event', 'program_application_submit', { event_category: 'program_application' });
         this.hidden = true;
+        document.getElementById('app-intro').hidden = true;
         document.getElementById('app-done').hidden = false;
         appSection.scrollIntoView({ behavior: 'smooth' });
       } catch (_) {
