@@ -268,7 +268,8 @@
           <legend class="q-label">It's $200 USD to get started. Does that work for you? *</legend>
           <div class="q-options">
             <label class="q-option"><input type="radio" name="price" value="Yes, that works" /> Yes, that works</label>
-            <label class="q-option"><input type="radio" name="price" value="No, it doesn't" /> No, it doesn't</label>
+            <label class="q-option"><input type="radio" name="price" value="No, it doesn't" data-detail="price-reason" /> No, it doesn't</label>
+            <input type="text" id="price-reason" hidden placeholder="What's holding you back on the investment?" class="app-input" />
           </div>
         </fieldset>
 
