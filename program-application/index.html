@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // ── The one CTA on this page: opens the application form at the bottom ──
+    // Answers go to the same Google Apps Script web app as the other forms (google-apps-script.gs,
+    // type 'program_application'), which adds a row to the "Program Applications" tab and emails Eric.
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Application | Eric Deng Ultimate</title>
+  <meta name="description" content="Get the structure, feedback, and support you need to feel fully confident stepping on-field." />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Same motion and helpers as the workshop page (lock-in-for-2027-workshop/index.html). */
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    /* Land on the next steps with room for the sticky intake bar above it */
+    #next-steps, #application { scroll-margin-top: 88px; }
+
+    .app-input:focus { outline: none; border-color: #004fb8; background: #fff; }
+
+    /* Section headings: highlighted like a doc heading, wrapping cleanly over two lines */
+    .doc-h { background: #e6eefa; padding: 0 0.3rem; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+  <!-- ─── TOP BAR: the next weekly intake close date (same look as the workshop page's bar).
+       Intake closes every Sunday at midnight US Eastern time (New York, EST/EDT) - not shown on the page; the script rolls on to the next Sunday. -->
+  <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
+    <a href="#next-steps" id="intake-bar"
+       class="flex items-center justify-center py-4 px-4 text-center text-xs sm:text-sm font-bold uppercase tracking-widest leading-none text-white">
+      <span>Intake closes on <span data-intake-date>Sunday</span></span>
+    </a>
+  </div>
+
+
+  <!-- ─── HERO ─── Same blue/white split as the workshop page: the photo straddles the boundary.
+       The photo box is a short letterbox (48%) so the opening text below stays in view;
+       syncHeroSplit (bottom of page) sets the offsets from its real height. -->
+  <section class="relative text-center">
+    <div id="hero-dark-panel" class="px-6 pt-12" style="background-color:#004fb8; padding-bottom:180px;">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight text-balance mb-5" style="transition-delay:0.12s">Ready to start an ultimate&#8209;specific program?</h1>
+      <p class="reveal text-xl md:text-2xl text-white leading-relaxed text-balance mb-8" style="transition-delay:0.16s">Get the structure, feedback, and support you need to feel fully confident stepping on-field.</p>
+    </div>
+    </div>
+
+    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -180px;">
+      <div class="rounded-lg overflow-hidden shadow-xl">
+        <!-- 1084x666 photo cropped to a 48% box, kept centred on Eric -->
+        <div id="hero-image" class="relative w-full" style="padding-top: 48%;">
+          <img src="hero.jpg" alt="Eric talking to his team in a huddle" class="absolute inset-0 w-full h-full object-cover" style="object-position: 50% 45%;" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OFFER DOCUMENT ─── (written like a letter: highlighted headings, short spoken paragraphs) -->
+  <div class="px-6 pt-10">
+    <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
+      <p class="reveal">I'm working with <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 ultimate players this month</mark> who are ready to start an ultimate-specific program - so that they can start seeing an on-field difference in their game within the next 60 days.</p>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The goal</span></h2>
+      <div class="reveal space-y-4">
+        <p>To help you make a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">bigger impact on the ultimate frisbee field</mark> with just a bit of focused effort per week - without having to sacrifice the other priorities you have in your life.</p>
+        <p>We've helped hundreds of players get started with a program that fits their unique goals and needs. We've got a great reputation because we only take on players we know we can help.</p>
+        <p>This month, it could be your turn.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">It's a small group, so I'm looking for the best fit here</span></h2>
+      <div class="reveal space-y-4">
+        <p>This is for you if you're a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">busy adult balancing ultimate with full-time work</mark>, and you're ready for a plan you can actually stick to.</p>
+        <p>If you're looking for a quick fix or you're not ready to put in a bit of consistency each week, this <b>isn't</b> the right fit for you.</p>
+        <p>But if you're ready for a change and you want to get the right support with an ultimate-specific structure so that you can make a bigger impact in a way that actually <mark class="bg-orange-100 text-gray-900 rounded px-0.5">fits with your life</mark>, then chances are we can help.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The plan is simple</span></h2>
+      <div class="reveal space-y-4">
+        <p>We'll start with a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">1:1 strategy call</mark> to talk through your goals, figure out where you're at right now, and pinpoint the gaps that are holding you back the most.</p>
+        <p>From there, you'll get a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">custom training plan</mark> built around your unique schedule, covering both your athletic and skill development, fit to the demands of ultimate.</p>
+        <p>Over your first few weeks, we'll run <mark class="bg-orange-100 text-gray-900 rounded px-0.5">structured check-ins</mark> to make sure the plan is working for you, make adjustments if needed, and help you build momentum.</p>
+        <p>And as you settle in, you'll get <mark class="bg-orange-100 text-gray-900 rounded px-0.5">progressions to your workouts</mark> each month, as well as <mark class="bg-orange-100 text-gray-900 rounded px-0.5">ongoing feedback and support</mark> so that your strength and speed gains actually <b>carry into games</b>.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">We make it easy to get started and see results quickly</span></h2>
+      <div class="reveal space-y-4">
+        <p>As soon as you start, you'll get set up with a custom 4-week game plan designed to solve the biggest roadblocks you're facing in your training right now.</p>
+        <p>It's $200 USD to get started.</p>
+        <p>After that, we'll go month by month, so long as you're seeing results.</p>
+        <p>Join us during this week's intake, and you'll also get a <b>custom throwing form assessment</b> and a ticket to our <b>Lock In For 2027 Workshop</b>, so that you can go into the new year feeling a step ahead.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Designed to get you a quick win, then lasting results</span></h2>
+      <div class="reveal space-y-4">
+        <p>By the end of your first month, we'll both know if we want to keep working together or not, so there's a 30-day "love it or leave it" period.</p>
+        <p>If something's not right, or either of us isn't feeling it by the end of month 1, then we'll refund your first month's fee, point you in the right direction and walk away as friends.</p>
+        <p>As long as we're both good, we'll continue progressing you through the program so that you're able to see lasting results translating on-field.</p>
+        <p>That way, there's no real risk in getting started.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Like I said, it's a small group and I'm looking for the right people</span></h2>
+      <div class="reveal space-y-4">
+        <p>We're only offering <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 spots during this intake period</mark> to keep the support quality high.</p>
+        <!-- #intake-close is filled in by the script: the same Sunday as the top bar -->
+        <p>This intake will close on <b id="intake-close">Sunday</b>, or when the spots run out. We've sold out in prior months, so if this is the right time for you, let me know so you don't miss out.</p>
+      </div>
+
+      <div id="next-steps">
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Next steps</span></h2>
+      </div>
+      <div class="reveal space-y-4">
+        <p>If you're ready to get started:</p>
+        <p><b>Step 1:</b> Let me know you're in by <a id="apply-cta" href="#application" class="font-bold text-blue-600 underline underline-offset-4 decoration-2 hover:text-blue-800">filling out a short application</a>.</p>
+        <p><b>Step 2:</b> If it's a fit, I'll reach out with an invitation link to join and get onboarded.</p>
+        <p class="pt-4">That's all. Excited to talk soon.</p>
+        <p class="font-semibold"><i>-Eric</i></p>
+        <p class="pt-6"><b>PS.</b> As soon as you join, you'll get access to our <b>Essential Patterns Activity Plan</b> - a list of key movement patterns designed to help you gain more separation and earn more blocks in the next 30 days.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-16"></div>
+
+  <!-- ─── APPLICATION ─── (hidden until the Step 1 link is clicked, then opens here at the bottom of the page)
+       Questions are placeholders. Each field's data-q is the column heading in the sheet and the label in
+       the email, so questions can be added, removed or reworded here without touching the Apps Script. -->
+  <section id="application" hidden class="px-6 pt-12 pb-16 bg-gray-50 border-t border-gray-100">
+    <!-- same font size as the letter so 58ch gives the same column width; the form drops back to base size -->
+    <div class="max-w-[58ch] mx-auto text-lg md:text-xl">
+      <h2 class="text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mb-3"><span class="doc-h">Program application</span></h2>
+      <p class="text-gray-700 leading-relaxed mb-8">Answer a few quick questions, and if it looks like a fit, I'll reach out with everything you need to join.</p>
+
+      <form id="app-form" novalidate class="space-y-6 text-base">
+        <div class="grid sm:grid-cols-2 gap-6">
+          <label class="block"><span class="block font-semibold text-gray-900 mb-2">First name *</span>
+            <input type="text" data-q="First Name" required autocomplete="given-name" class="app-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-gray-800 bg-white" /></label>
+          <label class="block"><span class="block font-semibold text-gray-900 mb-2">Last name *</span>
+            <input type="text" data-q="Last Name" required autocomplete="family-name" class="app-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-gray-800 bg-white" /></label>
+        </div>
+        <label class="block"><span class="block font-semibold text-gray-900 mb-2">Email *</span>
+          <input type="email" data-q="Email" required autocomplete="email" class="app-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-gray-800 bg-white" /></label>
+        <label class="block"><span class="block font-semibold text-gray-900 mb-2">Instagram handle</span>
+          <input type="text" data-q="Instagram" placeholder="@" class="app-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-gray-800 placeholder-gray-400 bg-white" /></label>
+        <label class="block"><span class="block font-semibold text-gray-900 mb-2">Where do you play, and at what level? *</span>
+          <input type="text" data-q="Where / Level" required class="app-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-gray-800 bg-white" /></label>
+        <label class="block"><span class="block font-semibold text-gray-900 mb-2">What's the biggest thing holding your game back right now? *</span>
+          <textarea data-q="Biggest Challenge" required rows="4" class="app-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-gray-800 bg-white"></textarea></label>
+        <label class="block"><span class="block font-semibold text-gray-900 mb-2">How many hours a week can you commit to training? *</span>
+          <select data-q="Hours Per Week" required class="app-input w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg text-gray-800 bg-white">
+            <option value="">Choose one</option>
+            <option>1-2 hours</option>
+            <option>3-4 hours</option>
+            <option>5+ hours</option>
+          </select></label>
+        <fieldset>
+          <legend class="block font-semibold text-gray-900 mb-2">Are you ready to start during this intake? *</legend>
+          <div class="space-y-2 text-lg text-gray-800">
+            <label class="flex items-center gap-3"><input type="radio" name="ready" data-q="Ready This Intake" value="Yes" required class="w-5 h-5 accent-[#004fb8]" /> Yes</label>
+            <label class="flex items-center gap-3"><input type="radio" name="ready" data-q="Ready This Intake" value="Not sure yet" class="w-5 h-5 accent-[#004fb8]" /> Not sure yet</label>
+            <label class="flex items-center gap-3"><input type="radio" name="ready" data-q="Ready This Intake" value="No" class="w-5 h-5 accent-[#004fb8]" /> No</label>
+          </div>
+        </fieldset>
+
+        <p id="app-error" hidden class="text-red-700 font-semibold">Something went wrong sending your application. Please try again, or DM me on Instagram @itsericdee.</p>
+        <button type="submit" class="w-full bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SUBMIT APPLICATION</button>
+      </form>
+
+      <div id="app-done" hidden class="text-lg text-gray-900 leading-relaxed space-y-4">
+        <p class="text-2xl font-bold">Thanks - your application is in! ✅</p>
+        <p>I'll review it and reach out with joining information if it looks like a fit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="py-8 px-6 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── Hero blue/white split (as on the workshop page): the blue ends 90% of the way down the photo ──
+    function syncHeroSplit() {
+      const img = document.getElementById('hero-image');
+      const darkPanel = document.getElementById('hero-dark-panel');
+      const imageWrap = document.getElementById('hero-image-wrap');
+      if (!img || !darkPanel || !imageWrap) return;
+      const h = img.getBoundingClientRect().height;
+      if (!h) return;
+      darkPanel.style.paddingBottom = (h * 0.9) + 'px';
+      imageWrap.style.marginTop = '-' + (h * 0.9) + 'px';
+    }
+    syncHeroSplit();
+    let resizeFrame = null;
+    window.addEventListener('resize', () => {
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(syncHeroSplit);
+    });
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+    // ── Intake close: the end of the coming Sunday in US Eastern time, then rolls to the next week ──
+    // The deadline is midnight at the end of Sunday, New York time (most clients are in the US and Canada), so it's the same moment for every
+    // visitor wherever they are. The date fills the top bar and the "This intake will close on ..." line.
+    const TZ = 'America/New_York';   // follows EST/EDT automatically
+    const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: TZ, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
+    const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    function local(ms) {
+      const p = Object.fromEntries(tzParts.formatToParts(new Date(ms)).map(x => [x.type, x.value]));
+      return { y: +p.year, m: +p.month, d: +p.day, wd: DAYS[p.weekday], h: +p.hour, min: +p.minute, s: +p.second };
+    }
+    // New York's offset from UTC (in ms) at a given moment - changes with daylight saving
+    function tzOffset(ms) {
+      const t = local(ms);
+      return Date.UTC(t.y, t.m - 1, t.d, t.h, t.min, t.s) - Math.floor(ms / 1000) * 1000;
+    }
+    // { at: the exact close moment (ms), sunday: that Sunday's calendar date as a UTC-noon Date for labelling }
+    function intakeClose(now) {
+      const t = local(now);
+      const daysToSunday = (7 - t.wd) % 7;
+      const midnight = Date.UTC(t.y, t.m - 1, t.d + daysToSunday + 1);   // Monday 00:00 as New York wall-clock
+      let at = midnight - tzOffset(midnight);
+      at = midnight - tzOffset(at);                                      // second pass in case DST changed in between
+      return { at, sunday: new Date(Date.UTC(t.y, t.m - 1, t.d + daysToSunday, 12)) };
+    }
+    (function () {
+      const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
+      const dateEls = document.querySelectorAll('#intake-close, [data-intake-date]');
+      function update() {
+        const label = closeFmt.format(intakeClose(Date.now()).sunday);
+        dateEls.forEach(e => { e.textContent = label; });
+      }
+      update();
+      setInterval(update, 60000);   // rolls to the next Sunday if the page is left open past the close
+    })();
+
+    // ── Apply CTA: reveal the application section at the bottom and scroll to it ──
+    const appSection = document.getElementById('application');
+    function openApplication(e) {
+      if (e) e.preventDefault();
+      const firstOpen = appSection.hidden;
+      appSection.hidden = false;
+      appSection.scrollIntoView({ behavior: 'smooth' });
+      if (firstOpen) {
+        gtag('event', 'program_application_open', { event_category: 'program_application' });
+        setTimeout(() => appSection.querySelector('input').focus({ preventScroll: true }), 600);
+      }
+    }
+    document.getElementById('apply-cta').addEventListener('click', openApplication);
+    if (location.hash === '#application') openApplication();
+
+    // ── Application submit: every [data-q] field becomes one "label: answer" pair, in page order ──
+    // Sent as a form POST so long answers fit (a GET URL can be cut off). no-cors means we can't read
+    // the reply, so a failed network request is the only error we can show.
+    document.getElementById('app-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (!this.reportValidity()) return;
+      const answers = [];
+      this.querySelectorAll('[data-q]').forEach(f => {
+        if (f.type === 'radio' && !f.checked) return;
+        answers.push([f.dataset.q, f.value.trim()]);
+      });
+      const btn = this.querySelector('button[type="submit"]');
+      const err = document.getElementById('app-error');
+      btn.disabled = true; btn.textContent = 'Sending…'; err.hidden = true;
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new URLSearchParams({
+            type: 'program_application',
+            timestamp: new Date().toISOString(),
+            source: 'eric-deng-ultimate.com/program-application',
+            answers: JSON.stringify(answers),
+          }),
+        });
+        gtag('event', 'program_application_submit', { event_category: 'program_application' });
+        this.hidden = true;
+        document.getElementById('app-done').hidden = false;
+        appSection.scrollIntoView({ behavior: 'smooth' });
+      } catch (_) {
+        err.hidden = false;
+        btn.disabled = false; btn.textContent = 'SUBMIT APPLICATION';
+      }
+    });
+  </script>
+</body>
+</html>
