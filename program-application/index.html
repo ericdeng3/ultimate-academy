@@ -179,6 +179,8 @@
 
       <!-- Progress: filled in by showStep() -->
       <div id="app-progress" class="mb-8 text-base">
+        <!-- Back sits up here (hidden on step 1) so the bottom of each step is just Continue / Submit -->
+        <button type="button" id="app-back" hidden class="mb-3 -ml-1 inline-flex items-center gap-1 px-1 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"><span aria-hidden="true">&larr;</span> Back</button>
         <div class="flex items-baseline justify-between mb-2 text-sm font-semibold">
           <span id="app-step-count" class="text-gray-900">Step 1 of 3</span>
           <span id="app-step-name" class="text-gray-500">About you</span>
@@ -248,7 +250,7 @@
         <label class="block"><span class="q-label">Very quickly, what areas of your game would you like to focus on or solve in your first 30 days? *</span>
           <textarea data-q="First 30 Days Focus" required rows="2" class="app-input"></textarea></label>
 
-        <div class="flex gap-3 !mt-12"><button type="button" data-back class="px-6 py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-bold text-lg hover:border-gray-400 hover:text-gray-900 transition-colors">Back</button><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
+        <div class="flex gap-3 !mt-12"><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
         </div>
 
         <div data-step="3" data-name="Final questions" hidden class="space-y-8">
@@ -277,7 +279,7 @@
         </fieldset>
 
         <p id="app-error" hidden class="text-red-700 font-semibold">Something went wrong sending your application. Please try again, or DM me on Instagram @itsericdee.</p>
-        <div class="flex gap-3 !mt-12"><button type="button" data-back class="px-6 py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-bold text-lg hover:border-gray-400 hover:text-gray-900 transition-colors">Back</button><button type="submit" class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SUBMIT APPLICATION</button></div>
+        <div class="flex gap-3 !mt-12"><button type="submit" class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SUBMIT APPLICATION</button></div>
         </div>
       </form>
 
@@ -405,6 +407,7 @@
     function showStep(i) {
       current = i;
       steps.forEach((s, j) => { s.hidden = j !== i; });
+      document.getElementById('app-back').hidden = i === 0;
       document.getElementById('app-step-count').textContent = 'Step ' + (i + 1) + ' of ' + steps.length;
       document.getElementById('app-step-name').textContent = steps[i].dataset.name;
       document.getElementById('app-bar').style.width = ((i + 1) / steps.length * 100) + '%';
@@ -424,10 +427,9 @@
         if (!stepIsValid(current)) return;
         gtag('event', 'program_application_step', { event_category: 'program_application', step: current + 2 });
         showStep(current + 1);
-      } else if (e.target.closest('[data-back]')) {
-        showStep(current - 1);
       }
     });
+    document.getElementById('app-back').addEventListener('click', () => showStep(current - 1));
 
     // One "label: answer" pair per [data-q] question, in page order. A choice question's answer is its
     // ticked options joined with "; ", each followed by its detail text if it has one.
