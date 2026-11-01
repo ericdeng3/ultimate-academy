@@ -57,6 +57,9 @@
     /* Land on the next steps with room for the sticky intake bar above it */
     #next-steps, #application { scroll-margin-top: 88px; }
 
+    /* "hidden" must always win, even over display classes like inline-flex or .app-input's block */
+    [hidden] { display: none !important; }
+
     /* Application form */
     .app-input { display: block; width: 100%; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.0625rem; color: #1f2937; background: #fff; }
     .app-input::placeholder { color: #9ca3af; }
@@ -405,6 +408,7 @@
     const steps = [...appForm.querySelectorAll('[data-step]')];
     let current = 0;
     function showStep(i) {
+      i = Math.max(0, Math.min(steps.length - 1, i));   // never before step 1 or past the last step
       current = i;
       steps.forEach((s, j) => { s.hidden = j !== i; });
       document.getElementById('app-back').hidden = i === 0;
@@ -429,7 +433,7 @@
         showStep(current + 1);
       }
     });
-    document.getElementById('app-back').addEventListener('click', () => showStep(current - 1));
+    document.getElementById('app-back').addEventListener('click', () => { if (current > 0) showStep(current - 1); });
 
     // One "label: answer" pair per [data-q] question, in page order. A choice question's answer is its
     // ticked options joined with "; ", each followed by its detail text if it has one.
