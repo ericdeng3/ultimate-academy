@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // ── The one CTA on this page: opens the application form at the bottom ──
+    // Answers go to the same Google Apps Script web app as the other forms (google-apps-script.gs,
+    // type 'program_application'), which adds a row to the "Program Applications" tab and emails Eric.
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGiqtpyzwuGiSK6-sMj90KntvIhB-bPlCvk90JY0OSURcykjVaqBptHOul_pYzkz_T/exec';
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Application | Eric Deng Ultimate</title>
+  <meta name="description" content="Get the structure, feedback, and support you need to feel fully confident stepping on-field." />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#E05C2A',
+            'brand-dark': '#C44E20',
+            'brand-light': '#FFF0EA',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Same motion and helpers as the workshop page (lock-in-for-2027-workshop/index.html). */
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+    /* Land on the next steps with room for the sticky intake bar above it */
+    #next-steps, #application { scroll-margin-top: 88px; }
+
+    /* "hidden" must always win, even over display classes like inline-flex or .app-input's block */
+    [hidden] { display: none !important; }
+
+    /* Application form */
+    .app-input { display: block; width: 100%; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.0625rem; color: #1f2937; background: #fff; }
+    .app-input::placeholder { color: #9ca3af; }
+    .app-input:focus { outline: none; border-color: #004fb8; }
+    .q-label { display: block; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.75rem; line-height: 1.4; }
+    .q-options { display: flex; flex-direction: column; gap: 0.6rem; }
+    .q-option { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.0625rem; color: #1f2937; line-height: 1.4; cursor: pointer; }
+    .q-option input { width: 1.25rem; height: 1.25rem; margin-top: 0.2rem; flex-shrink: 0; accent-color: #004fb8; }
+
+    /* Section headings: highlighted like a doc heading, wrapping cleanly over two lines */
+    .doc-h { background: #e6eefa; padding: 0 0.3rem; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+  <!-- ─── TOP BAR: the next weekly intake close date (same look as the workshop page's bar).
+       Intake closes every Sunday at midnight US Eastern time (New York, EST/EDT) - not shown on the page; the script rolls on to the next Sunday. -->
+  <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
+    <a href="#next-steps" id="intake-bar"
+       class="flex items-center justify-center py-4 px-4 text-center text-xs sm:text-sm font-bold uppercase tracking-widest leading-none text-white">
+      <span>Intake closes on <span data-intake-date>Sunday</span></span>
+    </a>
+  </div>
+
+
+  <!-- ─── HERO ─── (title only on blue) -->
+  <section class="text-center px-6 pt-7 pb-8" style="background-color:#004fb8;">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight text-balance" style="transition-delay:0.12s">Early Access to the 2027 Growth Squad</h1>
+    </div>
+  </section>
+
+  <!-- ─── PERSONAL UPDATE ─── PLACEHOLDER copy: Eric's dated note before the offer (byline, photo, intro,
+       then the indented update). Update the byline date and the update heading whenever it's rewritten.
+       Keep every claim true (spots, sold out) - the same claims as the letter below. -->
+  <div class="px-6 pt-10">
+    <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
+      <div class="reveal flex items-center gap-4">
+        <img src="avatar.jpg" alt="Eric Deng" width="56" height="56" class="w-14 h-14 rounded-full object-cover shadow-sm" />
+        <p class="text-base text-gray-600">Eric Deng &middot; Last updated Nov 2</p>
+      </div>
+      <div class="reveal mt-6 space-y-4 italic">
+        <p>Head start applications for the 2027 Growth Squad are now open.</p>
+        <p><span class="doc-h">Only 5 spots available this intake. Apply now and don't miss out.</span></p>
+      </div>
+
+      <div class="reveal mt-10 border-l-4 border-gray-600 pl-5 md:pl-7 space-y-4">
+        <p class="underline underline-offset-4">Monday Nov 2 Update:</p>
+        <p>I'm writing this in between coaching calls, so I'll keep this brief.</p>
+        <p class="font-bold">3 Things You Should Know</p>
+        <p>1. Early access is now open for the <i>2027 Growth Squad</i> - our <mark class="bg-orange-100 text-gray-900 rounded px-0.5">ultimate-specific program</mark> for busy adults who want to make a bigger impact on-field.</p>
+        <p>2. We've sold out in prior months, and players are already applying for this intake.</p>
+        <p>3. I'm working with <b>5 players</b> who want to get a head start and make use of the holiday period, so that they enter 2027 a step ahead - rather than a step behind.</p>
+        <p>Join us this intake and you'll get a bonus <b>custom throwing form assessment</b> and a ticket to our <b>Lock In For 2027 Workshop</b>.</p>
+        <p>This intake closes on <b data-intake-date>Sunday</b> or (more likely) when the spots run out.</p>
+        <p>It'd be cool to work with you, so please read the details below carefully and apply at the <a href="#application" data-apply class="underline underline-offset-4 hover:text-blue-700">bottom of the page</a> if it looks like the right next move for you and your ultimate goals.</p>
+        <p>-Eric</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── OFFER DOCUMENT ─── (written like a letter: highlighted headings, short spoken paragraphs) -->
+  <div class="px-6 pt-12">
+    <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
+      <p class="reveal">I'm working with <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 ultimate players this month</mark> who are ready to start an ultimate-specific program - so that they can start seeing an on-field difference in their game within the next 30 days.</p>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The goal</span></h2>
+      <div class="reveal space-y-4">
+        <p>To help you make a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">bigger impact on the ultimate frisbee field</mark> with just a bit of focused effort per week - without having to sacrifice the other priorities you have in your life.</p>
+        <p>We've helped hundreds of players get started with a program that fits their unique goals and needs. We've got a great reputation because we only take on players we know we can help.</p>
+        <p>This month, it could be your turn.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">It's a small group, so I'm looking for the best fit here</span></h2>
+      <div class="reveal space-y-4">
+        <p>This is for you if you're a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">busy adult balancing ultimate with full-time work</mark>, and you're ready for a plan you can actually stick to.</p>
+        <p>If you're looking for a quick fix or you're not ready to put in a bit of consistency each week, this <b>isn't</b> the right fit for you.</p>
+        <p>But if you're ready for a change and you want to get the right support with an ultimate-specific structure so that you can make a bigger impact in a way that actually <mark class="bg-orange-100 text-gray-900 rounded px-0.5">fits with your life</mark>, then chances are we can help.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The plan is simple</span></h2>
+      <div class="reveal space-y-4">
+        <p>We'll start with a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">1:1 strategy call</mark> to talk through your goals, figure out where you're at right now, and pinpoint the gaps that are holding you back the most.</p>
+        <p>From there, you'll get a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">custom training plan</mark> built around your unique schedule, covering both your athletic and skill development, fit to the demands of ultimate.</p>
+        <p>Over your first few weeks, we'll run <mark class="bg-orange-100 text-gray-900 rounded px-0.5">structured check-ins</mark> to make sure the plan is working for you, make adjustments if needed, and help you build momentum.</p>
+        <p>And as you settle in, you'll get <mark class="bg-orange-100 text-gray-900 rounded px-0.5">progressions to your workouts</mark> each month, as well as ongoing feedback and support so that your strength and speed gains actually <b>carry into games</b>.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">We make it easy to get started and see results quickly</span></h2>
+      <div class="reveal space-y-4">
+        <p>As soon as you start, you'll get set up with a custom 4-week game plan designed to solve the biggest roadblocks you're facing in your training right now.</p>
+        <p>It's $200 USD to get started.</p>
+        <p>After that, we'll go month by month, so long as you're seeing results.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Designed to get you a quick win, then lasting results</span></h2>
+      <div class="reveal space-y-4">
+        <p>By the end of your first month, we'll both know if we want to keep working together or not, so there's a 30-day "love it or leave it" period.</p>
+        <p>If something's not right, or either of us isn't feeling it by the end of month 1, then we'll refund your first month's fee, point you in the right direction and walk away as friends.</p>
+        <p>As long as we're both good, we'll continue progressing you through the program so that you're able to see lasting results translating on-field.</p>
+        <p>That way, there's no real risk in getting started.</p>
+      </div>
+
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Like I said, it's a small group and I'm looking for the right people</span></h2>
+      <div class="reveal space-y-4">
+        <p>We're only offering <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 spots during this intake period</mark> to keep the support quality high.</p>
+        <!-- #intake-close is filled in by the script: the same Sunday as the top bar -->
+        <p>This intake will close on <b id="intake-close">Sunday</b>, or when the spots run out. We've sold out in prior months, so if this is the right time for you, let me know so you don't miss out.</p>
+      </div>
+
+      <div id="next-steps">
+      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Next steps</span></h2>
+      </div>
+      <div class="reveal space-y-4">
+        <p>If you're ready to get started:</p>
+        <p><b>Step 1:</b> Let me know you're in by <a id="apply-cta" href="#application" class="font-bold text-blue-600 underline underline-offset-4 decoration-2 hover:text-blue-800">filling out a short application</a>.</p>
+        <p><b>Step 2:</b> If it's a fit, I'll reach out with an invitation link to join and get onboarded.</p>
+        <p class="pt-4">That's all. Excited to talk soon.</p>
+        <p class="font-semibold"><i>-Eric</i></p>
+        <p class="pt-6"><b>PS.</b> As soon as you join, you'll get access to our <b>Essential Patterns Activity Plan</b> - a list of key movement patterns designed to help you gain more separation and earn more blocks in the next 30 days.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-16"></div>
+
+  <!-- ─── APPLICATION ─── (hidden until the Step 1 link is clicked, then opens here at the bottom of the page)
+       Each question's data-q is its column heading in the sheet and its label in the email, so questions
+       can be added, removed or reworded here without touching the Apps Script. -->
+  <section id="application" hidden class="px-6 pt-12 pb-16 bg-gray-50 border-t border-gray-100">
+    <!-- same font size as the letter so 58ch gives the same column width; the form drops back to base size -->
+    <div class="max-w-[58ch] mx-auto text-lg md:text-xl">
+      <h2 class="text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mb-3"><span class="doc-h">Program application</span></h2>
+      <div id="app-intro" class="mb-8">
+        <p class="text-gray-700 leading-relaxed">Answer a few quick questions, and if it looks like a fit, I'll reach out with everything you need to join.</p>
+        <p class="mt-3 text-base text-gray-600 leading-relaxed"><b class="text-gray-800">Note:</b> try to complete the application in one go. Your browser won't save your answers if you leave or refresh the page.</p>
+      </div>
+
+      <!-- Progress: filled in by showStep() -->
+      <div id="app-progress" class="mb-8 text-base">
+        <!-- Back sits up here (hidden on step 1) so the bottom of each step is just Continue / Submit -->
+        <button type="button" id="app-back" hidden class="mb-3 -ml-1 inline-flex items-center gap-1 px-1 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"><span aria-hidden="true">&larr;</span> Back</button>
+        <div class="flex items-baseline justify-between mb-2 text-sm font-semibold">
+          <span id="app-step-count" class="text-gray-900">Step 1 of 3</span>
+          <span id="app-step-name" class="text-gray-500">About you</span>
+        </div>
+        <div class="h-2 rounded-full bg-gray-200 overflow-hidden">
+          <div id="app-bar" class="h-full rounded-full bg-[#004fb8] transition-all duration-500" style="width:33.33%"></div>
+        </div>
+      </div>
+
+      <!-- Three steps on one page: only one [data-step] shows at a time; Continue checks just that step -->
+      <form id="app-form" novalidate class="text-base">
+        <div data-step="1" data-name="About you" class="space-y-8">
+        <!-- Contact details -->
+        <div class="space-y-6">
+          <div class="grid sm:grid-cols-2 gap-6">
+            <label class="block"><span class="q-label">First name *</span>
+              <input type="text" data-q="First Name" required autocomplete="given-name" class="app-input" /></label>
+            <label class="block"><span class="q-label">Last name *</span>
+              <input type="text" data-q="Last Name" required autocomplete="family-name" class="app-input" /></label>
+          </div>
+          <label class="block"><span class="q-label">Email *</span>
+            <input type="email" data-q="Email" required autocomplete="email" class="app-input" /></label>
+          <label class="block"><span class="q-label">Instagram handle *</span>
+            <input type="text" data-q="Instagram" required placeholder="@" class="app-input" /></label>
+        </div>
+
+        <!-- Choice questions: a fieldset with data-q collects its ticked options. An option with
+             data-detail="<id>" shows that text box when ticked, and its text is added to the answer. -->
+        <fieldset data-q="Scenario Outside Ultimate" data-required>
+          <legend class="q-label">Which option below best describes your current scenario outside of ultimate? *</legend>
+          <div class="q-options">
+            <label class="q-option"><input type="radio" name="scenario" value="Primarily studying" /> Primarily studying</label>
+            <label class="q-option"><input type="radio" name="scenario" value="Primarily working" /> Primarily working</label>
+            <label class="q-option"><input type="radio" name="scenario" value="Other" data-detail="scenario-other" /> Other</label>
+            <input type="text" id="scenario-other" hidden placeholder="Please tell me a bit more" class="app-input" />
+          </div>
+        </fieldset>
+
+        <fieldset data-q="Where They Play" data-required>
+          <legend class="q-label">Which option best describes where you currently play ultimate? Select all that apply. *</legend>
+          <div class="q-options">
+            <label class="q-option"><input type="checkbox" value="Pick ups" /> Pick ups</label>
+            <label class="q-option"><input type="checkbox" value="Leagues" /> Leagues</label>
+            <label class="q-option"><input type="checkbox" value="Club practices/tournaments" /> Club practices/tournaments</label>
+            <label class="q-option"><input type="checkbox" value="Other" data-detail="play-other" /> Other</label>
+            <input type="text" id="play-other" hidden placeholder="Where else do you play?" class="app-input" />
+          </div>
+        </fieldset>
+
+        <div class="flex gap-3 !mt-12"><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
+        </div>
+
+        <div data-step="2" data-name="Your goals" hidden class="space-y-8">
+
+        <label class="block"><span class="q-label">What is your main goal for ultimate in the next 12 months? *</span>
+          <textarea data-q="12-Month Goal" required rows="2" class="app-input"></textarea></label>
+
+        <fieldset data-q="Holding Them Back" data-required>
+          <legend class="q-label">In your training, what's holding you back from reaching your desired goal? Select all that apply. *</legend>
+          <div class="q-options">
+            <label class="q-option"><input type="checkbox" value="Having a structured, ultimate-specific plan" /> Having a structured, ultimate-specific plan</label>
+            <label class="q-option"><input type="checkbox" value="Getting regular, quality feedback" /> Getting regular, quality feedback</label>
+            <label class="q-option"><input type="checkbox" value="Staying accountable for lasting results" /> Staying accountable for lasting results</label>
+          </div>
+        </fieldset>
+
+        <label class="block"><span class="q-label">Very quickly, what areas of your game would you like to focus on or solve in your first 30 days? *</span>
+          <textarea data-q="First 30 Days Focus" required rows="2" class="app-input"></textarea></label>
+
+        <div class="flex gap-3 !mt-12"><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
+        </div>
+
+        <div data-step="3" data-name="Final questions" hidden class="space-y-8">
+
+        <label class="block"><span class="q-label">Why work with us? Why now? What makes this the right move for you right now? *</span>
+          <textarea data-q="Why Us / Why Now" required rows="2" class="app-input"></textarea></label>
+
+        <label class="block"><span class="q-label">What qualities of a "good teammate" do you possess? What makes working with you enjoyable? *</span>
+          <textarea data-q="Good Teammate Qualities" required rows="2" class="app-input"></textarea></label>
+
+        <fieldset data-q="$200 Works?" data-required>
+          <legend class="q-label">It's $200 USD to get started. Does that work for you? *</legend>
+          <div class="q-options">
+            <label class="q-option"><input type="radio" name="price" value="Yes, that works" /> Yes, that works</label>
+            <label class="q-option"><input type="radio" name="price" value="No, it doesn't" data-detail="price-reason" /> No, it doesn't</label>
+            <input type="text" id="price-reason" hidden placeholder="What's holding you back on the investment?" class="app-input" />
+          </div>
+        </fieldset>
+
+        <fieldset data-q="Ready This Intake" data-required>
+          <legend class="q-label">If accepted, would you be ready to start during this intake? *</legend>
+          <div class="q-options">
+            <label class="q-option"><input type="radio" name="ready" value="Yes, I'd be ready to start" /> Yes, I'd be ready to start</label>
+            <label class="q-option"><input type="radio" name="ready" value="No, I'd need to delay starting" data-detail="delay-reason" /> No, I'd need to delay starting</label>
+            <input type="text" id="delay-reason" hidden placeholder="What's the reason for the delay?" class="app-input" />
+          </div>
+        </fieldset>
+
+        <p id="app-error" hidden class="text-red-700 font-semibold">Something went wrong sending your application. Please try again, or DM me on Instagram @itsericdee.</p>
+        <div class="flex gap-3 !mt-12"><button type="submit" class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">SUBMIT APPLICATION</button></div>
+        </div>
+      </form>
+
+      <div id="app-done" hidden class="text-lg text-gray-900 leading-relaxed space-y-4">
+        <p class="text-2xl font-bold">Thanks - your application is in! ✅</p>
+        <p>I'll review it and reach out with joining information if it looks like a fit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="py-8 px-6 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex items-center justify-center">
+      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+    // ── Intake close: the end of the coming Sunday in US Eastern time, then rolls to the next week ──
+    // The deadline is midnight at the end of Sunday, New York time (most clients are in the US and Canada), so it's the same moment for every
+    // visitor wherever they are. The date fills the top bar and the "This intake will close on ..." line.
+    const TZ = 'America/New_York';   // follows EST/EDT automatically
+    const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: TZ, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
+    const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    function local(ms) {
+      const p = Object.fromEntries(tzParts.formatToParts(new Date(ms)).map(x => [x.type, x.value]));
+      return { y: +p.year, m: +p.month, d: +p.day, wd: DAYS[p.weekday], h: +p.hour, min: +p.minute, s: +p.second };
+    }
+    // New York's offset from UTC (in ms) at a given moment - changes with daylight saving
+    function tzOffset(ms) {
+      const t = local(ms);
+      return Date.UTC(t.y, t.m - 1, t.d, t.h, t.min, t.s) - Math.floor(ms / 1000) * 1000;
+    }
+    // { at: the exact close moment (ms), sunday: that Sunday's calendar date as a UTC-noon Date for labelling }
+    function intakeClose(now) {
+      const t = local(now);
+      const daysToSunday = (7 - t.wd) % 7;
+      const midnight = Date.UTC(t.y, t.m - 1, t.d + daysToSunday + 1);   // Monday 00:00 as New York wall-clock
+      let at = midnight - tzOffset(midnight);
+      at = midnight - tzOffset(at);                                      // second pass in case DST changed in between
+      return { at, sunday: new Date(Date.UTC(t.y, t.m - 1, t.d + daysToSunday, 12)) };
+    }
+    (function () {
+      const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
+      const dateEls = document.querySelectorAll('#intake-close, [data-intake-date]');
+      function update() {
+        const label = closeFmt.format(intakeClose(Date.now()).sunday);
+        dateEls.forEach(e => { e.textContent = label; });
+      }
+      update();
+      setInterval(update, 60000);   // rolls to the next Sunday if the page is left open past the close
+    })();
+
+    // ── Apply CTA: reveal the application section at the bottom and scroll to it ──
+    const appSection = document.getElementById('application');
+    function openApplication(e) {
+      if (e) e.preventDefault();
+      const firstOpen = appSection.hidden;
+      appSection.hidden = false;
+      appSection.scrollIntoView({ behavior: 'smooth' });
+      if (firstOpen) {
+        gtag('event', 'program_application_open', { event_category: 'program_application' });
+        setTimeout(() => appSection.querySelector('input').focus({ preventScroll: true }), 600);
+      }
+    }
+    document.querySelectorAll('#apply-cta, [data-apply]').forEach(a => a.addEventListener('click', openApplication));
+    if (location.hash === '#application') openApplication();
+
+    // ── Application: "Other" / delay-reason boxes appear (and become required) only while their option is ticked ──
+    const appForm = document.getElementById('app-form');
+    function syncDetails() {
+      appForm.querySelectorAll('[data-detail]').forEach(opt => {
+        const box = document.getElementById(opt.dataset.detail);
+        box.hidden = !opt.checked;
+        box.required = opt.checked;
+      });
+    }
+    appForm.addEventListener('change', e => {
+      syncDetails();
+      const group = e.target.closest('fieldset[data-required]');
+      if (group) group.querySelector('input').setCustomValidity('');
+      if (e.target.dataset.detail && e.target.checked) document.getElementById(e.target.dataset.detail).focus();
+    });
+
+    // A choice question needs at least one option ticked (HTML can't require a checkbox group by itself)
+    function checkGroups() {
+      appForm.querySelectorAll('fieldset[data-required]').forEach(g => {
+        const none = !g.querySelector('input:checked');
+        g.querySelector('input').setCustomValidity(none ? 'Please choose an option.' : '');
+      });
+    }
+
+    // ── Steps: one [data-step] at a time, with the progress bar to match ──
+    const steps = [...appForm.querySelectorAll('[data-step]')];
+    let current = 0;
+    function showStep(i) {
+      i = Math.max(0, Math.min(steps.length - 1, i));   // never before step 1 or past the last step
+      current = i;
+      steps.forEach((s, j) => { s.hidden = j !== i; });
+      document.getElementById('app-back').hidden = i === 0;
+      document.getElementById('app-step-count').textContent = 'Step ' + (i + 1) + ' of ' + steps.length;
+      document.getElementById('app-step-name').textContent = steps[i].dataset.name;
+      document.getElementById('app-bar').style.width = ((i + 1) / steps.length * 100) + '%';
+      appSection.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => steps[i].querySelector('input, textarea').focus({ preventScroll: true }), 500);
+    }
+    // Shows the browser's message on the first unanswered question in a step; false if there is one
+    function stepIsValid(i) {
+      syncDetails();
+      checkGroups();
+      const bad = [...steps[i].querySelectorAll('input, textarea, select')].find(f => !f.checkValidity());
+      if (bad) bad.reportValidity();
+      return !bad;
+    }
+    // Each Continue adds a history entry, so the phone's Back button (and the on-page Back) steps back
+    // through the form instead of leaving the page. popstate shows whichever step that entry belongs to.
+    let goingBack = false, submitted = false;
+    appForm.addEventListener('click', e => {
+      if (e.target.closest('[data-next]')) {
+        if (!stepIsValid(current)) return;
+        gtag('event', 'program_application_step', { event_category: 'program_application', step: current + 2 });
+        history.pushState({ appStep: current + 1 }, '');
+        showStep(current + 1);
+      }
+    });
+    document.getElementById('app-back').addEventListener('click', () => {
+      if (current > 0 && !goingBack) { goingBack = true; history.back(); }   // guard: repeat taps can't go past step 1 and off the page
+    });
+    window.addEventListener('popstate', e => {
+      goingBack = false;
+      if (submitted || appSection.hidden) return;
+      const s = e.state && e.state.appStep;
+      showStep(typeof s === 'number' ? s : 0);
+    });
+
+    // One "label: answer" pair per [data-q] question, in page order. A choice question's answer is its
+    // ticked options joined with "; ", each followed by its detail text if it has one.
+    function collectAnswers() {
+      return [...appForm.querySelectorAll('[data-q]')].map(q => {
+        if (q.tagName !== 'FIELDSET') return [q.dataset.q, q.value.trim()];
+        const picked = [...q.querySelectorAll('input:checked')].map(opt => {
+          const detail = opt.dataset.detail && document.getElementById(opt.dataset.detail).value.trim();
+          return detail ? opt.value + ': ' + detail : opt.value;
+        });
+        return [q.dataset.q, picked.join('; ')];
+      });
+    }
+
+    // ── Application submit ──
+    // Sent as a form POST so long answers fit (a GET URL can be cut off). no-cors means we can't read
+    // the reply, so a failed network request is the only error we can show.
+    appForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      // Every step was checked on the way through; re-check in case, and go back to any gap
+      syncDetails();
+      checkGroups();
+      const gap = steps.findIndex(s => [...s.querySelectorAll('input, textarea, select')].some(f => !f.checkValidity()));
+      if (gap !== -1) {
+        if (gap !== current) history.go(gap - current);   // steps back through history, so Back stays in sync
+        setTimeout(() => stepIsValid(gap), gap !== current ? 600 : 0);
+        return;
+      }
+      const answers = collectAnswers();
+      const btn = this.querySelector('button[type="submit"]');
+      const err = document.getElementById('app-error');
+      btn.disabled = true; btn.textContent = 'Sending…'; err.hidden = true;
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new URLSearchParams({
+            type: 'program_application',
+            timestamp: new Date().toISOString(),
+            source: 'eric-deng-ultimate.com/program-application',
+            answers: JSON.stringify(answers),
+          }),
+        });
+        gtag('event', 'program_application_submit', { event_category: 'program_application' });
+        submitted = true;
+        this.hidden = true;
+        document.getElementById('app-intro').hidden = true;
+        document.getElementById('app-progress').hidden = true;
+        document.getElementById('app-done').hidden = false;
+        appSection.scrollIntoView({ behavior: 'smooth' });
+      } catch (_) {
+        err.hidden = false;
+        btn.disabled = false; btn.textContent = 'SUBMIT APPLICATION';
+      }
+    });
+  </script>
+</body>
+</html>

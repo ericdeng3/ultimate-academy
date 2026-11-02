@@ -8,6 +8,7 @@
  *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
  *   - lock-in-for-2027-workshop/index.html ("Join $9" — type: 'lockin_lite_lead';
  *                                            VIP "$9 Deposit" — type: 'lockin_vip_lead')
+ *   - program-application/index.html (application form — type: 'program_application', sent as a POST)
  *
  * This is a fresh, standalone script — not tied to whatever project used to
  * back the old APPS_SCRIPT_URL. It doesn't read anything from that old
@@ -49,6 +50,7 @@
  *   "Coaching Fit Applications"   — qualification page, full submission
  *   "Lock In Lite Leads"          — Lock In page, "Join $9" (before Stripe checkout)
  *   "Lock In VIP Leads"           — Lock In page, VIP "$9 Deposit" (before Stripe checkout)
+ *   "Program Applications"        — program application page (one column per question)
  *
  * ── Updating an existing deployment (keeps the same /exec URL) ─────────────
  * Paste the new code over the old, save, then Deploy > Manage deployments >
@@ -78,12 +80,20 @@ function doGet(e) {
         return handleLockInLiteLead_(p);
       case 'lockin_vip_lead':
         return handleLockInVipLead_(p);
+      case 'program_application':
+        return handleProgramApplication_(p);
       default:
         return jsonResponse_({ ok: false, error: 'Unknown or missing type: ' + p.type });
     }
   } catch (err) {
     return jsonResponse_({ ok: false, error: String(err) });
   }
+}
+
+// Form POSTs (program-application sends one so long answers fit) arrive with
+// the same e.parameter shape as GETs, so they share the router above.
+function doPost(e) {
+  return doGet(e);
 }
 
 function jsonResponse_(obj) {
@@ -298,6 +308,48 @@ function handleLockInVipLead_(p) {
   // A MAILERLITE_GROUP_LOCKIN_VIP_ID script property, if set, overrides it.
   const LOCKIN_VIP_GROUP_ID = '201810746446710725';
   syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_VIP_ID') || LOCKIN_VIP_GROUP_ID);
+
+  return jsonResponse_({ ok: true });
+}
+
+// ── Program application (program-application/index.html) ───────────────
+
+// p.answers is a JSON list of [question label, answer] pairs in page order.
+// The labels ARE the column headings: a new or reworded question on the page
+// gets its own new column automatically, so editing the questions never
+// needs a change (or redeploy) here.
+function handleProgramApplication_(p) {
+  const answers = JSON.parse(p.answers || '[]');
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName('Program Applications');
+  if (!sheet) {
+    sheet = ss.insertSheet('Program Applications');
+    sheet.appendRow(['Timestamp', 'Source']);
+    sheet.setFrozenRows(1);
+  }
+  const header = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  answers.forEach(([label]) => {
+    if (header.indexOf(label) === -1) {
+      header.push(label);
+      sheet.getRange(1, header.length).setValue(label);
+    }
+  });
+  const row = header.map(() => '');
+  row[header.indexOf('Timestamp')] = p.timestamp || new Date().toISOString();
+  row[header.indexOf('Source')] = p.source || '';
+  answers.forEach(([label, value]) => { row[header.indexOf(label)] = value; });
+  sheet.appendRow(row);
+
+  const get = label => (answers.find(a => a[0] === label) || [])[1] || '';
+  const name = `${get('First Name')} ${get('Last Name')}`.trim();
+  const notifyEmail = PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL');
+  if (notifyEmail) {
+    const options = get('Email') ? { replyTo: get('Email') } : {};   // hit Reply to answer the applicant
+    MailApp.sendEmail(notifyEmail, `New program application: ${name}`,
+      answers.map(([label, value]) => `${label}: ${value}`).join('\n\n') +
+      `\n\nSubmitted: ${p.timestamp || ''}\nSheet: ${ss.getUrl()}`,
+      options);
+  }
 
   return jsonResponse_({ ok: true });
 }
