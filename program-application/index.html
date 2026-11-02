@@ -84,29 +84,46 @@
   </div>
 
 
-  <!-- ─── HERO ─── Same blue/white split as the workshop page: the photo straddles the boundary.
-       The photo box is a short letterbox (48%) so the opening text below stays in view;
-       syncHeroSplit (bottom of page) sets the offsets from its real height. -->
-  <section class="relative text-center">
-    <div id="hero-dark-panel" class="px-6 pt-12" style="background-color:#004fb8; padding-bottom:180px;">
+  <!-- ─── HERO ─── (title + subtext on blue; no photo) -->
+  <section class="text-center px-6 pt-12 pb-14" style="background-color:#004fb8;">
     <div class="max-w-3xl mx-auto">
-      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight text-balance mb-5" style="transition-delay:0.12s">Ready to start an ultimate&#8209;specific program?</h1>
-      <p class="reveal text-xl md:text-2xl text-white leading-relaxed text-balance mb-8" style="transition-delay:0.16s">Get the structure, feedback, and support you need to feel fully confident stepping on-field.</p>
-    </div>
-    </div>
-
-    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -180px;">
-      <div class="rounded-lg overflow-hidden shadow-xl">
-        <!-- 1084x666 photo cropped to a 48% box, kept centred on Eric -->
-        <div id="hero-image" class="relative w-full" style="padding-top: 48%;">
-          <img src="hero.jpg" alt="Eric talking to his team in a huddle" class="absolute inset-0 w-full h-full object-cover" style="object-position: 50% 45%;" />
-        </div>
-      </div>
+      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight text-balance mb-5" style="transition-delay:0.12s">Early Access to the 2027 Growth Squad</h1>
+      <p class="reveal text-xl md:text-2xl text-white leading-relaxed text-balance" style="transition-delay:0.16s">Get the structure, feedback, and support you need to feel fully confident stepping on-field.</p>
     </div>
   </section>
 
-  <!-- ─── OFFER DOCUMENT ─── (written like a letter: highlighted headings, short spoken paragraphs) -->
+  <!-- ─── PERSONAL UPDATE ─── PLACEHOLDER copy: Eric's dated note before the offer (byline, photo, intro,
+       then the indented update). Update the byline date and the update heading whenever it's rewritten.
+       Keep every claim true (spots, sold out, refund) - the same claims as the letter below. -->
   <div class="px-6 pt-10">
+    <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
+      <div class="reveal text-center">
+        <p class="text-base text-gray-600">Eric Deng &middot; Last updated Nov 2</p>
+        <img src="avatar.jpg" alt="Eric Deng" width="64" height="64" class="w-16 h-16 rounded-full object-cover mx-auto mt-4 shadow-sm" />
+      </div>
+      <div class="reveal mt-6 space-y-4 italic">
+        <p>Applications for the 2027 Growth Squad are now open.</p>
+        <p><span class="doc-h">Only 5 spots available this intake. Apply now and don't miss out.</span></p>
+      </div>
+
+      <div class="reveal mt-10 border-l-4 border-gray-600 pl-5 md:pl-7 space-y-4">
+        <p class="underline underline-offset-4">Monday Nov 2 Update:</p>
+        <p>I'm writing this in between coaching calls, so I'll keep this brief.</p>
+        <p class="font-bold">3 Things You Should Know</p>
+        <p>1. Early access is now open for the <i>2027 Growth Squad</i> - our ultimate-specific program for busy adults who want to make a bigger impact on-field.</p>
+        <p>2. We've sold out in prior months, and players are already applying for this intake.</p>
+        <p>3. I'm only taking on <b>5 players</b> this intake to keep the support quality high.</p>
+        <p>Join us this intake and you'll get a bonus <b>custom throwing form assessment</b> and a ticket to our <b>Lock In For 2027 Workshop</b>, so you can go into the new year feeling a step ahead.</p>
+        <p><b>Plus:</b> there's a 30-day "love it or leave it" period. If it's not the right fit by the end of month 1, I'll refund your first month's fee.</p>
+        <p>This intake closes on <b data-intake-date>Sunday</b> or when the spots run out.</p>
+        <p>It'd be cool to work with you, so please read the details below carefully and apply at the <a href="#application" data-apply class="underline underline-offset-4 hover:text-blue-700">bottom of the page</a> if it looks like the right next move for you and your ultimate goals.</p>
+        <p>-Eric</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── OFFER DOCUMENT ─── (written like a letter: highlighted headings, short spoken paragraphs) -->
+  <div class="px-6 pt-12">
     <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
       <p class="reveal">I'm working with <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 ultimate players this month</mark> who are ready to start an ultimate-specific program - so that they can start seeing an on-field difference in their game within the next 60 days.</p>
 
@@ -302,24 +319,6 @@
   </footer>
 
   <script>
-    // ── Hero blue/white split (as on the workshop page): the blue ends 90% of the way down the photo ──
-    function syncHeroSplit() {
-      const img = document.getElementById('hero-image');
-      const darkPanel = document.getElementById('hero-dark-panel');
-      const imageWrap = document.getElementById('hero-image-wrap');
-      if (!img || !darkPanel || !imageWrap) return;
-      const h = img.getBoundingClientRect().height;
-      if (!h) return;
-      darkPanel.style.paddingBottom = (h * 0.9) + 'px';
-      imageWrap.style.marginTop = '-' + (h * 0.9) + 'px';
-    }
-    syncHeroSplit();
-    let resizeFrame = null;
-    window.addEventListener('resize', () => {
-      if (resizeFrame) cancelAnimationFrame(resizeFrame);
-      resizeFrame = requestAnimationFrame(syncHeroSplit);
-    });
-
     // ── Scroll reveal ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -378,7 +377,7 @@
         setTimeout(() => appSection.querySelector('input').focus({ preventScroll: true }), 600);
       }
     }
-    document.getElementById('apply-cta').addEventListener('click', openApplication);
+    document.querySelectorAll('#apply-cta, [data-apply]').forEach(a => a.addEventListener('click', openApplication));
     if (location.hash === '#application') openApplication();
 
     // ── Application: "Other" / delay-reason boxes appear (and become required) only while their option is ticked ──
