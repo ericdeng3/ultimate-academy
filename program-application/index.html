@@ -423,14 +423,26 @@
       if (bad) bad.reportValidity();
       return !bad;
     }
+    // Each Continue adds a history entry, so the phone's Back button (and the on-page Back) steps back
+    // through the form instead of leaving the page. popstate shows whichever step that entry belongs to.
+    let goingBack = false, submitted = false;
     appForm.addEventListener('click', e => {
       if (e.target.closest('[data-next]')) {
         if (!stepIsValid(current)) return;
         gtag('event', 'program_application_step', { event_category: 'program_application', step: current + 2 });
+        history.pushState({ appStep: current + 1 }, '');
         showStep(current + 1);
       }
     });
-    document.getElementById('app-back').addEventListener('click', () => { if (current > 0) showStep(current - 1); });
+    document.getElementById('app-back').addEventListener('click', () => {
+      if (current > 0 && !goingBack) { goingBack = true; history.back(); }   // guard: repeat taps can't go past step 1 and off the page
+    });
+    window.addEventListener('popstate', e => {
+      goingBack = false;
+      if (submitted || appSection.hidden) return;
+      const s = e.state && e.state.appStep;
+      showStep(typeof s === 'number' ? s : 0);
+    });
 
     // One "label: answer" pair per [data-q] question, in page order. A choice question's answer is its
     // ticked options joined with "; ", each followed by its detail text if it has one.
@@ -455,7 +467,7 @@
       checkGroups();
       const gap = steps.findIndex(s => [...s.querySelectorAll('input, textarea, select')].some(f => !f.checkValidity()));
       if (gap !== -1) {
-        if (gap !== current) showStep(gap);
+        if (gap !== current) history.go(gap - current);   // steps back through history, so Back stays in sync
         setTimeout(() => stepIsValid(gap), gap !== current ? 600 : 0);
         return;
       }
@@ -475,6 +487,7 @@
           }),
         });
         gtag('event', 'program_application_submit', { event_category: 'program_application' });
+        submitted = true;
         this.hidden = true;
         document.getElementById('app-intro').hidden = true;
         document.getElementById('app-progress').hidden = true;
