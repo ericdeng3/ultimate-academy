@@ -187,12 +187,6 @@
       <!-- same font size as the letter; the form drops back to base size -->
       <div class="text-lg md:text-[19px] leading-[1.6]">
       <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug text-gray-900 mb-4"><span class="doc-h !bg-orange-100">Program application</span></h2>
-      <div id="app-intro" class="mb-8">
-        <p class="text-gray-700">We only accept players that we know we can help. This is our way of figuring out if you're the right kind of person that we'd like to work with.</p>
-        <p class="mt-6 text-gray-700">Answer a few questions about your situation (takes ~10 mins). We'll review within 72 hours and let you know if you're a fit.</p>
-        <p class="mt-6 text-gray-700">Complete the application in one go. Your browser won't save your answers if you leave or refresh the page.</p>
-      </div>
-
       <!-- Progress: filled in by showStep() -->
       <div id="app-progress" class="mb-8 text-base">
         <!-- Back sits up here (hidden on step 1) so the bottom of each step is just Continue / Submit -->
@@ -209,6 +203,12 @@
       <!-- Three steps on one page: only one [data-step] shows at a time; Continue checks just that step -->
       <form id="app-form" novalidate class="text-base">
         <div data-step="1" data-name="About you" class="space-y-8">
+        <!-- Each step opens with its own context text, so it changes as the applicant moves through the form -->
+        <div class="text-lg md:text-[19px] leading-[1.6] text-gray-700 space-y-6">
+          <p>We only accept players that we know we can help. This is our way of figuring out if you're the right kind of person that we'd like to work with.</p>
+          <p>Answer a few questions about your situation (takes ~10 mins). We'll review within 72 hours and let you know if you're accepted.</p>
+          <p>Complete the application in one go. Your browser won't save your answers if you leave or refresh the page (and it sucks to have to start again!)</p>
+        </div>
         <!-- Contact details -->
         <div class="space-y-6">
           <div class="grid sm:grid-cols-2 gap-6">
@@ -250,6 +250,10 @@
         </div>
 
         <div data-step="2" data-name="Your goals" hidden class="space-y-8">
+        <div class="text-lg md:text-[19px] leading-[1.6] text-gray-700 space-y-6">
+          <p>Now I'd like to understand where you want your game to go, and what's getting in the way right now.</p>
+          <p>There are no wrong answers here. The more specific you can be, the better I can tell if we can help, and what we'd focus on first.</p>
+        </div>
 
         <label class="block"><span class="q-label">What is your main goal for ultimate in the next 12 months? *</span>
           <textarea data-q="12-Month Goal" required rows="2" class="app-input"></textarea></label>
@@ -270,6 +274,10 @@
         </div>
 
         <div data-step="3" data-name="Final questions" hidden class="space-y-8">
+        <div class="text-lg md:text-[19px] leading-[1.6] text-gray-700 space-y-6">
+          <p>Last few questions - you're nearly there.</p>
+          <p>These help me figure out if this is the right time for you, and if you'd be a good fit for the group. Please be honest here, because it's how we make sure this works for both of us.</p>
+        </div>
 
         <label class="block"><span class="q-label">Why work with us? Why now? What makes this the right move for you right now? *</span>
           <textarea data-q="Why Us / Why Now" required rows="2" class="app-input"></textarea></label>
@@ -454,7 +462,6 @@
         gtag('event', 'program_application_submit', { event_category: 'program_application' });
         submitted = true;
         this.hidden = true;
-        document.getElementById('app-intro').hidden = true;
         document.getElementById('app-progress').hidden = true;
         document.getElementById('app-done').hidden = false;
         appSection.scrollIntoView({ behavior: 'smooth' });
