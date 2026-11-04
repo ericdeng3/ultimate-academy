@@ -186,7 +186,7 @@
     <section id="application" hidden class="-mx-5 md:-mx-10 px-5 md:px-10 lg:px-[112px] pt-12 pb-16 bg-gray-50 border-t border-gray-200">
       <!-- same font size as the letter; the form drops back to base size -->
       <div class="text-lg md:text-[19px] leading-[1.6]">
-      <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug text-gray-900 mb-4"><span class="doc-h !bg-orange-100">Program application</span></h2>
+      <h2 id="app-title" class="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug text-gray-900 mb-4"><span class="doc-h !bg-orange-100">Program application</span></h2>
       <!-- Progress: filled in by showStep() -->
       <div id="app-progress" class="mb-8 text-base">
         <!-- Back sits up here (hidden on step 1) so the bottom of each step is just Continue / Submit -->
@@ -314,7 +314,7 @@
         <p>If we have any questions about your application, we'll contact you via Instagram.</p>
         <div>
           <p>Hope to talk soon,</p>
-          <p>Eric</p>
+          <p class="font-bold italic">Eric</p>
         </div>
       </div>
       </div>
@@ -467,6 +467,7 @@
         gtag('event', 'program_application_submit', { event_category: 'program_application' });
         submitted = true;
         this.hidden = true;
+        document.getElementById('app-title').hidden = true;
         document.getElementById('app-progress').hidden = true;
         document.getElementById('app-done').hidden = false;
         appSection.scrollIntoView({ behavior: 'smooth' });
