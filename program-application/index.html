@@ -168,8 +168,8 @@
             <li>Are coachable and enjoyable to work with.</li>
           </ol>
         </div>
-        <!-- #intake-close is filled in by the script: the same Sunday as the top bar. The top bar links to #next-steps. -->
-        <p id="next-steps" class="pt-4">We're only offering <mark class="bg-orange-100 text-gray-900 rounded px-0.5">8 spots during this intake period</mark>, which closes on <b id="intake-close">Sunday</b> or when the spots run out. So if this sounds like you, and you'd like to work with me:</p>
+        <!-- The top bar links to #next-steps. The kickoff date is filled in by the script: the Monday after the intake closes. -->
+        <p id="next-steps" class="pt-4">We kick off on <span data-kickoff-date>Monday</span>, so if this sounds like you, and you'd like to work with me:</p>
         <div class="pt-2">
           <p class="font-bold">Step 1: <mark class="bg-orange-100 rounded px-0.5"><a id="apply-cta" href="#application" class="text-blue-600 underline underline-offset-4 decoration-2 hover:text-blue-800">Click here to apply</a></mark> for one of our places in our 2027 Growth Squad.</p>
           <p>Step 2: We'll review your application, and let you know within 72 hours.</p>
@@ -328,7 +328,7 @@
 
     // ── Intake close: the end of the coming Sunday in US Eastern time, then rolls to the next week ──
     // The deadline is midnight at the end of Sunday, New York time (most clients are in the US and Canada), so it's the same moment for every
-    // visitor wherever they are. The date fills the top bar and the "This intake will close on ..." line.
+    // visitor wherever they are. The date fills the top bar and the "This intake closes on ..." line; the Monday after it fills the kickoff line.
     const TZ = 'America/New_York';   // follows EST/EDT automatically
     const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: TZ, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
     const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
@@ -352,10 +352,14 @@
     }
     (function () {
       const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
-      const dateEls = document.querySelectorAll('#intake-close, [data-intake-date]');
+      const dateEls = document.querySelectorAll('[data-intake-date]');
+      const kickoffEls = document.querySelectorAll('[data-kickoff-date]');
       function update() {
-        const label = closeFmt.format(intakeClose(Date.now()).sunday);
+        const sunday = intakeClose(Date.now()).sunday;
+        const label = closeFmt.format(sunday);
         dateEls.forEach(e => { e.textContent = label; });
+        const kickoff = closeFmt.format(new Date(sunday.getTime() + 86400000));   // the Monday straight after the close
+        kickoffEls.forEach(e => { e.textContent = kickoff; });
       }
       update();
       setInterval(update, 60000);   // rolls to the next Sunday if the page is left open past the close
