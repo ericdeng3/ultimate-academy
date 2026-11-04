@@ -85,15 +85,15 @@
 
 
   <!-- ─── THE DOCUMENT ─── one white sheet on the blue page: title, byline, photo in the left margin,
-       then everything else (update, letter, application) in one column, indented past the photo on desktop. -->
-  <main class="mx-3 my-3 md:mx-auto md:my-8 md:w-[calc(100%-3rem)] max-w-[60rem] bg-white rounded shadow-md px-5 md:pl-10 md:pr-12 pt-8 md:pt-10 pb-12 md:pb-16">
+       then everything else (update, letter, application) in one column, with equal left and right margins on desktop. -->
+  <main class="mx-3 my-3 md:mx-auto md:my-8 md:w-[calc(100%-3rem)] max-w-[64rem] bg-white rounded shadow-md px-5 md:px-10 pt-8 md:pt-10 pb-12 md:pb-16">
     <h1 class="reveal text-3xl md:text-[2.5rem] font-extrabold text-gray-900 leading-tight tracking-tight">Early Access to the 2027 Growth Squad</h1>
     <p class="reveal mt-2 text-base text-gray-600">Eric Deng &middot; Last updated Nov 2</p>
 
     <!-- PERSONAL UPDATE - PLACEHOLDER copy: Eric's dated note before the offer. Update the byline date and the
          update heading whenever it's rewritten. Keep every claim true (spots, sold out) - the same claims as the letter below. -->
     <div class="text-lg md:text-xl text-gray-900 leading-relaxed">
-      <div class="reveal mt-6 flex items-start gap-4">
+      <div class="reveal mt-6 lg:mr-[72px] flex items-start gap-4">
         <img src="avatar.jpg" alt="Eric Deng" width="56" height="56" class="w-14 h-14 rounded-full object-cover shadow-sm flex-shrink-0" />
         <div>
           <p class="font-bold">Only 5 spots available this intake. Apply now and don't miss out.</p>
@@ -101,7 +101,7 @@
         </div>
       </div>
 
-      <div class="reveal mt-10 md:ml-[72px] border-l-4 border-gray-600 pl-5 md:pl-7 space-y-4">
+      <div class="reveal mt-10 lg:mx-[72px] border-l-4 border-gray-600 pl-5 md:pl-7 space-y-4">
         <p class="underline underline-offset-4">Monday Nov 2 Update:</p>
         <p>I'm writing this in between coaching calls, so I'll keep this brief.</p>
         <p class="font-bold">3 Things You Should Know</p>
@@ -116,7 +116,7 @@
     </div>
 
     <!-- OFFER LETTER (highlighted headings, short spoken paragraphs) -->
-    <div class="pt-12 md:pl-[72px] text-lg md:text-xl text-gray-900 leading-relaxed">
+    <div class="pt-12 lg:px-[72px] text-lg md:text-xl text-gray-900 leading-relaxed">
       <p class="reveal">I'm working with <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 ultimate players this month</mark> who are ready to start an ultimate-specific program - so that they can start seeing an on-field difference in their game within the next 30 days.</p>
 
       <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The goal</span></h2>
@@ -179,7 +179,7 @@
     <!-- APPLICATION (hidden until the Step 1 link is clicked, then opens here at the bottom of the sheet)
          Each question's data-q is its column heading in the sheet and its label in the email, so questions
          can be added, removed or reworded here without touching the Apps Script. -->
-    <section id="application" hidden class="mt-12 pt-12 border-t border-gray-200 md:ml-[72px]">
+    <section id="application" hidden class="mt-12 pt-12 border-t border-gray-200 lg:mx-[72px]">
       <!-- same font size as the letter; the form drops back to base size -->
       <div class="text-lg md:text-xl">
       <h2 class="text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mb-3"><span class="doc-h">Program application</span></h2>
