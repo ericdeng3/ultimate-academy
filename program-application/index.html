@@ -74,12 +74,12 @@
   </style>
 </head>
 <body class="bg-[#e6eefa] text-gray-900 font-sans antialiased">
-  <!-- ─── TOP BAR: the next weekly intake close date (same look as the workshop page's bar).
-       Intake closes every Sunday at midnight US Eastern time (New York, EST/EDT) - not shown on the page; the script rolls on to the next Sunday. -->
+  <!-- ─── TOP BAR: the applications close date (same look as the workshop page's bar). The dates on this page are typed by hand:
+       update this bar, the line under the spot count, the update note and the kickoff line together for each intake. -->
   <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
     <a href="#next-steps" id="intake-bar"
-       class="flex items-center justify-center py-4 px-4 text-center text-xs sm:text-sm font-bold uppercase tracking-widest leading-none text-white">
-      <span>Intake closes on <span data-intake-date>Sunday</span></span>
+       class="flex items-center justify-center py-4 px-4 text-center text-xs sm:text-sm font-bold uppercase tracking-widest leading-snug sm:leading-none text-white">
+      <span>Applications close on <span class="whitespace-nowrap">Wednesday, December 2nd</span></span>
     </a>
   </div>
 
@@ -97,7 +97,7 @@
         <img src="avatar.jpg" alt="Eric Deng" width="56" height="56" class="w-14 h-14 rounded-full object-cover shadow-sm flex-shrink-0" />
         <div>
           <p class="font-bold">[Only <mark class="bg-red-200 text-gray-900 rounded px-0.5 line-through">8</mark> <mark class="bg-green-200 text-gray-900 rounded px-0.5">7</mark> Spots Available]</p>
-          <p class="mt-1">Head start applications for the 2027 Growth Squad are now open.</p>
+          <p class="mt-1">Head start applications for the 2027 Growth Squad are now open. Applications close 5pm Wednesday, December 2nd or until sold out (again).</p>
         </div>
       </div>
 
@@ -109,7 +109,7 @@
         <p>2. We've sold out in prior months, and players are already applying for this intake.</p>
         <p>3. I'm working with <b>8 players</b> who want to get a head start and make use of the holiday period, so that they enter 2027 a step ahead - rather than a step behind.</p>
         <p>Join us this intake and you'll get a bonus <b>custom throwing form assessment</b> and a ticket to our <b>Lock In For 2027 Workshop</b>.</p>
-        <p>This intake closes on <b data-intake-date>Sunday</b> or (more likely) when the spots run out.</p>
+        <p>Applications close on <b>Wednesday, December 2nd</b> or (more likely) when the spots run out.</p>
         <p>It'd be cool to work with you, so please read the details below carefully and apply at the <a href="#application" data-apply class="underline underline-offset-4 hover:text-blue-700">bottom of the page</a> if it looks like the right next move for you and your ultimate goals.</p>
         <p>-Eric</p>
       </div>
@@ -168,8 +168,8 @@
             <li>Are coachable and enjoyable to work with.</li>
           </ol>
         </div>
-        <!-- The top bar links to #next-steps. The kickoff date is filled in by the script: the Monday after the intake closes. -->
-        <p id="next-steps" class="pt-4">We kick off on <span data-kickoff-date>Monday</span>, so if this sounds like you, and you'd like to work with me:</p>
+        <!-- The top bar links to #next-steps. -->
+        <p id="next-steps" class="pt-4">We kick off on Monday, December 7th, so if this sounds like you, and you'd like to work with me:</p>
         <div class="pt-2">
           <p class="font-bold">Step 1: <mark class="bg-orange-100 rounded px-0.5"><a id="apply-cta" href="#application" class="text-blue-600 underline underline-offset-4 decoration-2 hover:text-blue-800">Click here to apply</a></mark> for one of our places in our 2027 Growth Squad.</p>
           <p>Step 2: We'll review your application, and let you know within 72 hours.</p>
@@ -325,45 +325,6 @@
       });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
-
-    // ── Intake close: the end of the coming Sunday in US Eastern time, then rolls to the next week ──
-    // The deadline is midnight at the end of Sunday, New York time (most clients are in the US and Canada), so it's the same moment for every
-    // visitor wherever they are. The date fills the top bar and the "This intake closes on ..." line; the Monday after it fills the kickoff line.
-    const TZ = 'America/New_York';   // follows EST/EDT automatically
-    const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: TZ, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
-    const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-    function local(ms) {
-      const p = Object.fromEntries(tzParts.formatToParts(new Date(ms)).map(x => [x.type, x.value]));
-      return { y: +p.year, m: +p.month, d: +p.day, wd: DAYS[p.weekday], h: +p.hour, min: +p.minute, s: +p.second };
-    }
-    // New York's offset from UTC (in ms) at a given moment - changes with daylight saving
-    function tzOffset(ms) {
-      const t = local(ms);
-      return Date.UTC(t.y, t.m - 1, t.d, t.h, t.min, t.s) - Math.floor(ms / 1000) * 1000;
-    }
-    // { at: the exact close moment (ms), sunday: that Sunday's calendar date as a UTC-noon Date for labelling }
-    function intakeClose(now) {
-      const t = local(now);
-      const daysToSunday = (7 - t.wd) % 7;
-      const midnight = Date.UTC(t.y, t.m - 1, t.d + daysToSunday + 1);   // Monday 00:00 as New York wall-clock
-      let at = midnight - tzOffset(midnight);
-      at = midnight - tzOffset(at);                                      // second pass in case DST changed in between
-      return { at, sunday: new Date(Date.UTC(t.y, t.m - 1, t.d + daysToSunday, 12)) };
-    }
-    (function () {
-      const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
-      const dateEls = document.querySelectorAll('[data-intake-date]');
-      const kickoffEls = document.querySelectorAll('[data-kickoff-date]');
-      function update() {
-        const sunday = intakeClose(Date.now()).sunday;
-        const label = closeFmt.format(sunday);
-        dateEls.forEach(e => { e.textContent = label; });
-        const kickoff = closeFmt.format(new Date(sunday.getTime() + 86400000));   // the Monday straight after the close
-        kickoffEls.forEach(e => { e.textContent = kickoff; });
-      }
-      update();
-      setInterval(update, 60000);   // rolls to the next Sunday if the page is left open past the close
-    })();
 
     // ── Apply CTA: reveal the application section at the bottom and scroll to it ──
     const appSection = document.getElementById('application');
