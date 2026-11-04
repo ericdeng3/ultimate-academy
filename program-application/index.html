@@ -61,12 +61,12 @@
     [hidden] { display: none !important; }
 
     /* Application form */
-    .app-input { display: block; width: 100%; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: inherit; color: #1f2937; background: #fff; }
+    .app-input { display: block; width: 100%; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.0625rem; color: #1f2937; background: #fff; }
     .app-input::placeholder { color: #9ca3af; }
     .app-input:focus { outline: none; border-color: #004fb8; }
-    .q-label { display: block; font-size: inherit; font-weight: 600; color: #111827; margin-bottom: 0.75rem; line-height: 1.4; }
+    .q-label { display: block; font-size: 1.125rem; font-weight: 600; color: #111827; margin-bottom: 0.75rem; line-height: 1.4; }
     .q-options { display: flex; flex-direction: column; gap: 0.6rem; }
-    .q-option { display: flex; align-items: flex-start; gap: 0.75rem; font-size: inherit; color: #1f2937; line-height: 1.4; cursor: pointer; }
+    .q-option { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.0625rem; color: #1f2937; line-height: 1.4; cursor: pointer; }
     .q-option input { width: 1.25rem; height: 1.25rem; margin-top: 0.2rem; flex-shrink: 0; accent-color: #004fb8; }
 
     /* Section headings: highlighted like a doc heading, wrapping cleanly over two lines */
@@ -184,13 +184,13 @@
          Each question's data-q is its column heading in the sheet and its label in the email, so questions
          can be added, removed or reworded here without touching the Apps Script. -->
     <section id="application" hidden class="-mx-5 md:-mx-10 px-5 md:px-10 lg:px-[112px] pt-12 pb-16 bg-gray-50 border-t border-gray-200">
-      <!-- same font size as the letter, form included -->
-      <div class="text-lg md:text-[19px] leading-[1.6] text-gray-900">
+      <!-- same font size as the letter; the form drops back to base size -->
+      <div class="text-lg md:text-[19px] leading-[1.6]">
       <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug text-gray-900 mb-4"><span class="doc-h !bg-orange-100">Program application</span></h2>
       <div id="app-intro" class="mb-8">
-        <p>We only accept players that we know we can help. This is our way of figuring out if you're the right kind of person that we'd like to work with.</p>
-        <p class="mt-6">Answer a few questions about your situation (takes ~10 mins). We'll review within 72 hours and let you know if you're a fit.</p>
-        <p class="mt-6"><b>Note:</b> Complete the application in one go. Your browser won't save your answers if you leave or refresh the page.</p>
+        <p class="text-gray-700">We only accept players that we know we can help. This is our way of figuring out if you're the right kind of person that we'd like to work with.</p>
+        <p class="mt-6 text-gray-700">Answer a few questions about your situation (takes ~10 mins). We'll review within 72 hours and let you know if you're a fit.</p>
+        <p class="mt-6 text-gray-700">Complete the application in one go. Your browser won't save your answers if you leave or refresh the page.</p>
       </div>
 
       <!-- Progress: filled in by showStep() -->
@@ -207,7 +207,7 @@
       </div>
 
       <!-- Three steps on one page: only one [data-step] shows at a time; Continue checks just that step -->
-      <form id="app-form" novalidate>
+      <form id="app-form" novalidate class="text-base">
         <div data-step="1" data-name="About you" class="space-y-8">
         <!-- Contact details -->
         <div class="space-y-6">
@@ -300,7 +300,7 @@
         </div>
       </form>
 
-      <div id="app-done" hidden class="space-y-4">
+      <div id="app-done" hidden class="text-lg text-gray-900 leading-relaxed space-y-4">
         <p class="text-2xl font-bold">Thanks - your application is in! ✅</p>
         <p>I'll review it and reach out with joining information if it looks like a fit.</p>
       </div>
