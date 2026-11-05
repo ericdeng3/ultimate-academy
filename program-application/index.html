@@ -260,6 +260,7 @@
         </fieldset>
 
         <div class="flex gap-3 !mt-12"><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
+        <p class="!mt-3 text-xs leading-snug text-gray-500 text-center">By continuing, you agree to receive emails from Eric Deng Ultimate about the program and training tips. Unsubscribe anytime.</p>
         </div>
 
         <div data-step="2" data-name="Your goals" hidden class="space-y-8">
@@ -417,9 +418,34 @@
     // Each Continue adds a history entry, so the phone's Back button (and the on-page Back) steps back
     // through the form instead of leaving the page. popstate shows whichever step that entry belongs to.
     let goingBack = false, submitted = false;
+
+    // Step 1's Continue adds them to MailerLite (handleProgramApplicationLead_ in google-apps-script.gs), with the
+    // consent line shown above it. Never holds up the form; going back and continuing with the same email sends nothing new.
+    let leadEmailSent = '';
+    function sendLead() {
+      const val = q => appForm.querySelector(`[data-q="${q}"]`).value.trim();
+      const email = val('Email');
+      if (email === leadEmailSent) return;
+      leadEmailSent = email;
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        keepalive: true,
+        body: new URLSearchParams({
+          type: 'program_application_lead',
+          timestamp: new Date().toISOString(),
+          source: 'eric-deng-ultimate.com/program-application',
+          firstName: val('First Name'),
+          lastName: val('Last Name'),
+          email,
+        }),
+      }).catch(() => {});   // the final submit syncs them again
+    }
+
     appForm.addEventListener('click', e => {
       if (e.target.closest('[data-next]')) {
         if (!stepIsValid(current)) return;
+        if (current === 0) sendLead();
         gtag('event', 'program_application_step', { event_category: 'program_application', step: current + 2 });
         history.pushState({ appStep: current + 1 }, '');
         showStep(current + 1);
