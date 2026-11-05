@@ -70,133 +70,136 @@
     .q-option input { width: 1.25rem; height: 1.25rem; margin-top: 0.2rem; flex-shrink: 0; accent-color: #004fb8; }
 
     /* Section headings: highlighted like a doc heading, wrapping cleanly over two lines */
-    .doc-h { background: #e6eefa; padding: 0 0.3rem; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    .doc-h { background: #e6eefa; padding: 0 0.15rem; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+
+    /* Offer wrapper: Lato's italic has a gentler slant and reads more clearly than the system italic */
+    .wrapper-italic { font-family: 'Lato', sans-serif; font-style: italic; letter-spacing: 0.03em; color: #1f2937; }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-white text-gray-900 font-sans antialiased">
-  <!-- ─── TOP BAR: the next weekly intake close date (same look as the workshop page's bar).
-       Intake closes every Sunday at midnight US Eastern time (New York, EST/EDT) - not shown on the page; the script rolls on to the next Sunday. -->
+<body class="bg-[#e6eefa] text-gray-900 font-sans antialiased">
+  <!-- ─── TOP BAR: the applications close date (same look as the workshop page's bar). The dates on this page are typed by hand:
+       update this bar, the line under the spot count, the update note and the kickoff line together for each intake. -->
   <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
     <a href="#next-steps" id="intake-bar"
-       class="flex items-center justify-center py-4 px-4 text-center text-xs sm:text-sm font-bold uppercase tracking-widest leading-none text-white">
-      <span>Intake closes on <span data-intake-date>Sunday</span></span>
+       class="flex items-center justify-center py-4 px-4 text-center text-xs sm:text-sm font-bold uppercase tracking-widest leading-snug sm:leading-none text-white">
+      <span>Applications close on <span class="whitespace-nowrap">Wednesday, December 2nd</span></span>
     </a>
   </div>
 
 
-  <!-- ─── HERO ─── (title only on blue) -->
-  <section class="text-center px-6 pt-7 pb-8" style="background-color:#004fb8;">
-    <div class="max-w-3xl mx-auto">
-      <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight text-balance" style="transition-delay:0.12s">Early Access to the 2027 Growth Squad</h1>
+  <!-- ─── THE DOCUMENT ─── one white sheet on the blue page:
+       title, byline, photo, update, letter and application all start on the same line, with equal left and right margins on desktop. -->
+  <main class="mx-3 my-3 md:mx-auto md:my-8 md:w-[calc(100%-3rem)] max-w-[64rem] overflow-hidden bg-white rounded shadow-md px-5 md:px-10 pt-8 md:pt-10">
+    <h1 class="reveal lg:mx-[72px] text-3xl md:text-[2.5rem] font-extrabold text-gray-900 leading-tight tracking-tight">2027 Growth Squad</h1>
+    <p class="reveal lg:mx-[72px] mt-2 text-base text-gray-600">Eric Deng &middot; Last updated Nov 5</p>
+
+    <!-- OFFER WRAPPER: Eric's note before the offer. Update the byline date whenever it's rewritten.
+         Keep every claim true (spots, workshops) - the same claims as the letter below. -->
+    <div class="text-lg md:text-[19px] leading-[1.6] text-gray-900">
+      <div class="reveal mt-6 lg:mx-[72px] flex items-start gap-4">
+        <img src="avatar.jpg" alt="Eric Deng" width="56" height="56" class="w-14 h-14 rounded-full object-cover shadow-sm flex-shrink-0" />
+        <div>
+          <p class="font-bold">[Only <mark class="bg-red-200 text-gray-900 rounded px-0.5 line-through decoration-2">8</mark> <mark class="bg-green-200 text-gray-900 rounded px-0.5">7</mark> Spots Available]</p>
+          <p class="mt-1">Early bird applications for the 2027 Growth Squad are now open.<br />Applications close 5pm Wednesday, December 2nd or - more likely - when sold out.</p>
+        </div>
+      </div>
+
+      <div class="reveal mt-10 lg:mx-[72px] border-l-4 border-gray-600 pl-5 md:pl-7 space-y-6 wrapper-italic">
+        <p class="font-bold"><span class="doc-h">I'm helping a small group of ultimate players to implement a training strategy for the new year, so that they can play with real confidence from the very start of their 2027 season.</span></p>
+        <p>Real new year resolutions don't wait until the new year.</p>
+        <p>So, here are the 3 things we're doing to help you get ahead right now:</p>
+        <p class="font-bold">First, we'll help you set your goals for the year ahead, and build a custom strategy to solve the biggest roadblock holding you back before the new year rolls around.</p>
+        <p>We'll build out your plan with the holiday season in mind - so you won't have to sacrifice the other commitments you have during the holidays - as long as you're willing to put in a little bit of effort each week.</p>
+        <p class="font-bold">Second, we'll design your holiday season training plan, and help you get a head start on it so that you're actually already building momentum going into 2027.</p>
+        <p>We'll set you up with a custom plan designed to:</p>
+        <ol class="list-decimal pl-7 space-y-6">
+          <li><mark class="bg-orange-100 text-gray-900 rounded px-0.5">Build your athleticism</mark> - to run faster, jump higher, and feel less soreness, by the time next season rolls around</li>
+          <li><mark class="bg-orange-100 text-gray-900 rounded px-0.5">Stay fit (rather than "get fit")</mark> - so that you don't have to play catch-up later, spending weeks getting back to where you were before</li>
+          <li><mark class="bg-orange-100 text-gray-900 rounded px-0.5">Level up your skills and game IQ</mark> - so that you go into the 2027 season with teammates wondering why your on-field presence feels "different" this year</li>
+        </ol>
+        <p class="font-bold">And third, we'll progress on your plan to get you season-ready by April, to make sure that you're hitting a "peak" and playing your best ultimate when tryouts roll around.</p>
+        <p>Success isn't made by what you do at the end of the season - it's made by what you do before it starts.</p>
+        <p>Growth season is <b>now</b>. It would be cool to have you be a part of it.</p>
+        <p><b>PLUS:</b> As soon as you're accepted you'll get instant access to 2x workshops - More Blocks by Xmas, Unmarkable by Xmas- so that you're translating the physical gains you're making into real on-field impact before next year.</p>
+        <p>The doors are open, and we're choosing players now.</p>
+        <p>If you'd like to be part of the 2027 Growth Squad, read the details below and <a href="#application" data-apply class="text-blue-600 underline underline-offset-4 hover:text-blue-800">apply</a> if it looks like a match for you.</p>
+        <p class="font-bold">-Eric</p>
+      </div>
     </div>
-  </section>
 
-  <!-- ─── PERSONAL UPDATE ─── PLACEHOLDER copy: Eric's dated note before the offer (byline, photo, intro,
-       then the indented update). Update the byline date and the update heading whenever it's rewritten.
-       Keep every claim true (spots, sold out) - the same claims as the letter below. -->
-  <div class="px-6 pt-10">
-    <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
-      <div class="reveal flex items-center gap-4">
-        <img src="avatar.jpg" alt="Eric Deng" width="56" height="56" class="w-14 h-14 rounded-full object-cover shadow-sm" />
-        <p class="text-base text-gray-600">Eric Deng &middot; Last updated Nov 2</p>
-      </div>
-      <div class="reveal mt-6 space-y-4 italic">
-        <p>Head start applications for the 2027 Growth Squad are now open.</p>
-        <p><span class="doc-h">Only 5 spots available this intake. Apply now and don't miss out.</span></p>
-      </div>
+    <!-- OFFER LETTER (highlighted headings, short spoken paragraphs) -->
+    <div class="pt-12 pb-12 md:pb-16 lg:px-[72px] text-lg md:text-[19px] leading-[1.6] text-gray-900">
+      <p class="reveal text-2xl font-bold italic leading-snug"><span class="doc-h">I'm working with a handful of players to help them make a bigger on-field impact through an ultimate-specific program in 2027</span></p>
 
-      <div class="reveal mt-10 border-l-4 border-gray-600 pl-5 md:pl-7 space-y-4">
-        <p class="underline underline-offset-4">Monday Nov 2 Update:</p>
-        <p>I'm writing this in between coaching calls, so I'll keep this brief.</p>
-        <p class="font-bold">3 Things You Should Know</p>
-        <p>1. Early access is now open for the <i>2027 Growth Squad</i> - our <mark class="bg-orange-100 text-gray-900 rounded px-0.5">ultimate-specific program</mark> for busy adults who want to make a bigger impact on-field.</p>
-        <p>2. We've sold out in prior months, and players are already applying for this intake.</p>
-        <p>3. I'm working with <b>5 players</b> who want to get a head start and make use of the holiday period, so that they enter 2027 a step ahead - rather than a step behind.</p>
-        <p>Join us this intake and you'll get a bonus <b>custom throwing form assessment</b> and a ticket to our <b>Lock In For 2027 Workshop</b>.</p>
-        <p>This intake closes on <b data-intake-date>Sunday</b> or (more likely) when the spots run out.</p>
-        <p>It'd be cool to work with you, so please read the details below carefully and apply at the <a href="#application" data-apply class="underline underline-offset-4 hover:text-blue-700">bottom of the page</a> if it looks like the right next move for you and your ultimate goals.</p>
-        <p>-Eric</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── OFFER DOCUMENT ─── (written like a letter: highlighted headings, short spoken paragraphs) -->
-  <div class="px-6 pt-12">
-    <div class="max-w-[58ch] mx-auto text-lg md:text-xl text-gray-900 leading-relaxed">
-      <p class="reveal">I'm working with <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 ultimate players this month</mark> who are ready to start an ultimate-specific program - so that they can start seeing an on-field difference in their game within the next 30 days.</p>
-
-      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The goal</span></h2>
-      <div class="reveal space-y-4">
-        <p>To help you make a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">bigger impact on the ultimate frisbee field</mark> with just a bit of focused effort per week - without having to sacrifice the other priorities you have in your life.</p>
+      <div class="reveal mt-6 space-y-6">
+        <p>Here's what we're doing...</p>
+        <p>The goal is simple: To help you make a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">bigger impact on the ultimate frisbee field</mark> with just a bit of focused effort per week - without having to sacrifice the other priorities you have in your life.</p>
         <p>We've helped hundreds of players get started with a program that fits their unique goals and needs. We've got a great reputation because we only take on players we know we can help.</p>
         <p>This month, it could be your turn.</p>
       </div>
 
-      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">It's a small group, so I'm looking for the best fit here</span></h2>
-      <div class="reveal space-y-4">
+      <h2 class="reveal font-bold text-gray-900 mt-6 mb-6"><span class="doc-h">It's a small group, so I'm looking for the best fit here</span></h2>
+      <div class="reveal space-y-6">
         <p>This is for you if you're a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">busy adult balancing ultimate with full-time work</mark>, and you're ready for a plan you can actually stick to.</p>
         <p>If you're looking for a quick fix or you're not ready to put in a bit of consistency each week, this <b>isn't</b> the right fit for you.</p>
         <p>But if you're ready for a change and you want to get the right support with an ultimate-specific structure so that you can make a bigger impact in a way that actually <mark class="bg-orange-100 text-gray-900 rounded px-0.5">fits with your life</mark>, then chances are we can help.</p>
       </div>
 
-      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">The plan is simple</span></h2>
-      <div class="reveal space-y-4">
+      <h2 class="reveal font-bold text-gray-900 mt-6 mb-6"><span class="doc-h">The plan is simple</span></h2>
+      <div class="reveal space-y-6">
         <p>We'll start with a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">1:1 strategy call</mark> to talk through your goals, figure out where you're at right now, and pinpoint the gaps that are holding you back the most.</p>
         <p>From there, you'll get a <mark class="bg-orange-100 text-gray-900 rounded px-0.5">custom training plan</mark> built around your unique schedule, covering both your athletic and skill development, fit to the demands of ultimate.</p>
         <p>Over your first few weeks, we'll run <mark class="bg-orange-100 text-gray-900 rounded px-0.5">structured check-ins</mark> to make sure the plan is working for you, make adjustments if needed, and help you build momentum.</p>
         <p>And as you settle in, you'll get <mark class="bg-orange-100 text-gray-900 rounded px-0.5">progressions to your workouts</mark> each month, as well as ongoing feedback and support so that your strength and speed gains actually <b>carry into games</b>.</p>
       </div>
 
-      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">We make it easy to get started and see results quickly</span></h2>
-      <div class="reveal space-y-4">
-        <p>As soon as you start, you'll get set up with a custom 4-week game plan designed to solve the biggest roadblocks you're facing in your training right now.</p>
+      <h2 class="reveal font-bold text-gray-900 mt-6 mb-6"><span class="doc-h">We make it easy to get started and see results quickly</span></h2>
+      <div class="reveal space-y-6">
+        <p>As soon as you start, you'll get set up with a custom 4-week game plan designed to solve the biggest roadblocks you're facing in your game right now.</p>
         <p>It's $200 USD to get started.</p>
         <p>After that, we'll go month by month, so long as you're seeing results.</p>
       </div>
 
-      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Designed to get you a quick win, then lasting results</span></h2>
-      <div class="reveal space-y-4">
+      <h2 class="reveal font-bold text-gray-900 mt-6 mb-6"><span class="doc-h">Designed to get you a quick win, then lasting results</span></h2>
+      <div class="reveal space-y-6">
         <p>By the end of your first month, we'll both know if we want to keep working together or not, so there's a 30-day "love it or leave it" period.</p>
         <p>If something's not right, or either of us isn't feeling it by the end of month 1, then we'll refund your first month's fee, point you in the right direction and walk away as friends.</p>
         <p>As long as we're both good, we'll continue progressing you through the program so that you're able to see lasting results translating on-field.</p>
         <p>That way, there's no real risk in getting started.</p>
       </div>
 
-      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Like I said, it's a small group and I'm looking for the right people</span></h2>
-      <div class="reveal space-y-4">
-        <p>We're only offering <mark class="bg-orange-100 text-gray-900 rounded px-0.5">5 spots during this intake period</mark> to keep the support quality high.</p>
-        <!-- #intake-close is filled in by the script: the same Sunday as the top bar -->
-        <p>This intake will close on <b id="intake-close">Sunday</b>, or when the spots run out. We've sold out in prior months, so if this is the right time for you, let me know so you don't miss out.</p>
-      </div>
-
-      <div id="next-steps">
-      <h2 class="reveal text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mt-[2.5rem] mb-5"><span class="doc-h">Next steps</span></h2>
-      </div>
-      <div class="reveal space-y-4">
-        <p>If you're ready to get started:</p>
-        <p><b>Step 1:</b> Let me know you're in by <a id="apply-cta" href="#application" class="font-bold text-blue-600 underline underline-offset-4 decoration-2 hover:text-blue-800">filling out a short application</a>.</p>
-        <p><b>Step 2:</b> If it's a fit, I'll reach out with an invitation link to join and get onboarded.</p>
-        <p class="pt-4">That's all. Excited to talk soon.</p>
-        <p class="font-semibold"><i>-Eric</i></p>
+      <h2 class="reveal font-bold text-gray-900 mt-6 mb-6"><span class="doc-h">Like I said, it's a small group and I'm looking for the right people</span></h2>
+      <div class="reveal space-y-6">
+        <div>
+          <p>So if you...</p>
+          <ol class="list-decimal pl-7 mt-1 space-y-1">
+            <li>Are a busy adult balancing ultimate with full-time work.</li>
+            <li>Are ready for a plan you can actually stick to.</li>
+            <li>Can put in a bit of consistency each week.</li>
+            <li>Want ultimate-specific support to make a bigger impact on-field.</li>
+            <li>Are coachable and enjoyable to work with.</li>
+          </ol>
+        </div>
+        <!-- The top bar links to #next-steps. -->
+        <p id="next-steps">We kick off on Monday, December 7th, so if this sounds like you, and you'd like to work with me:</p>
+        <div>
+          <p class="font-bold">Step 1: <mark class="bg-orange-100 rounded px-0.5"><a id="apply-cta" href="#application" class="text-blue-600 underline underline-offset-4 decoration-2 hover:text-blue-800">Click here to apply</a></mark> for one of our places in our 2027 Growth Squad.</p>
+          <p>Step 2: We'll review your application, and let you know within 72 hours.</p>
+        </div>
+        <p>That's all. Excited to talk soon.</p>
+        <p class="font-bold italic">-Eric</p>
         <p class="pt-6"><b>PS.</b> As soon as you join, you'll get access to our <b>Essential Patterns Activity Plan</b> - a list of key movement patterns designed to help you gain more separation and earn more blocks in the next 30 days.</p>
       </div>
     </div>
-  </div>
 
-  <div class="pb-16"></div>
-
-  <!-- ─── APPLICATION ─── (hidden until the Step 1 link is clicked, then opens here at the bottom of the page)
-       Each question's data-q is its column heading in the sheet and its label in the email, so questions
-       can be added, removed or reworded here without touching the Apps Script. -->
-  <section id="application" hidden class="px-6 pt-12 pb-16 bg-gray-50 border-t border-gray-100">
-    <!-- same font size as the letter so 58ch gives the same column width; the form drops back to base size -->
-    <div class="max-w-[58ch] mx-auto text-lg md:text-xl">
-      <h2 class="text-2xl md:text-3xl font-bold italic text-gray-900 leading-snug mb-3"><span class="doc-h">Program application</span></h2>
-      <div id="app-intro" class="mb-8">
-        <p class="text-gray-700 leading-relaxed">Answer a few quick questions, and if it looks like a fit, I'll reach out with everything you need to join.</p>
-        <p class="mt-3 text-base text-gray-600 leading-relaxed"><b class="text-gray-800">Note:</b> try to complete the application in one go. Your browser won't save your answers if you leave or refresh the page.</p>
-      </div>
-
+    <!-- APPLICATION (hidden until the Step 1 link is clicked, then opens as a grey band across the bottom of the sheet)
+         Each question's data-q is its column heading in the sheet and its label in the email, so questions
+         can be added, removed or reworded here without touching the Apps Script. -->
+    <section id="application" hidden class="-mx-5 md:-mx-10 px-5 md:px-10 lg:px-[112px] pt-12 pb-16 bg-gray-50 border-t border-gray-200">
+      <!-- same font size as the letter; the form drops back to base size -->
+      <div class="text-lg md:text-[19px] leading-[1.6]">
+      <h2 id="app-title" class="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug text-gray-900 mb-4"><span class="doc-h !bg-orange-100">Program application</span></h2>
       <!-- Progress: filled in by showStep() -->
       <div id="app-progress" class="mb-8 text-base">
         <!-- Back sits up here (hidden on step 1) so the bottom of each step is just Continue / Submit -->
@@ -213,6 +216,12 @@
       <!-- Three steps on one page: only one [data-step] shows at a time; Continue checks just that step -->
       <form id="app-form" novalidate class="text-base">
         <div data-step="1" data-name="About you" class="space-y-8">
+        <!-- Each step opens with its own context text, so it changes as the applicant moves through the form -->
+        <div class="text-lg md:text-[19px] leading-[1.6] text-gray-700 space-y-6">
+          <p>We only accept players that we know we can help. This is our way of figuring out if you're the right kind of person that we'd like to work with.</p>
+          <p>Answer a few questions about your situation (takes ~10 mins). We'll review within 72 hours and let you know if you're accepted.</p>
+          <p>Complete the application in one go. Your browser won't save your answers if you leave or refresh the page (and it sucks to have to start again!)</p>
+        </div>
         <!-- Contact details -->
         <div class="space-y-6">
           <div class="grid sm:grid-cols-2 gap-6">
@@ -254,6 +263,10 @@
         </div>
 
         <div data-step="2" data-name="Your goals" hidden class="space-y-8">
+        <div class="text-lg md:text-[19px] leading-[1.6] text-gray-700 space-y-6">
+          <p>Now I'd like to understand where you want your game to go, and what's getting in the way right now.</p>
+          <p>There are no wrong answers here. The more specific you can be, the better I can tell if we can help, and what we'd focus on first.</p>
+        </div>
 
         <label class="block"><span class="q-label">What is your main goal for ultimate in the next 12 months? *</span>
           <textarea data-q="12-Month Goal" required rows="2" class="app-input"></textarea></label>
@@ -267,13 +280,17 @@
           </div>
         </fieldset>
 
-        <label class="block"><span class="q-label">Very quickly, what areas of your game would you like to focus on or solve in your first 30 days? *</span>
+        <label class="block"><span class="q-label">What areas of your game would you like to focus on or solve in your first 30 days? *</span>
           <textarea data-q="First 30 Days Focus" required rows="2" class="app-input"></textarea></label>
 
         <div class="flex gap-3 !mt-12"><button type="button" data-next class="flex-1 bg-brand text-white font-bold py-4 rounded-xl hover:bg-brand-dark transition-colors text-lg shadow-sm">CONTINUE</button></div>
         </div>
 
         <div data-step="3" data-name="Final questions" hidden class="space-y-8">
+        <div class="text-lg md:text-[19px] leading-[1.6] text-gray-700 space-y-6">
+          <p>Last few questions.</p>
+          <p>These help me figure out if this is the right time for you, and if we'd work well together.</p>
+        </div>
 
         <label class="block"><span class="q-label">Why work with us? Why now? What makes this the right move for you right now? *</span>
           <textarea data-q="Why Us / Why Now" required rows="2" class="app-input"></textarea></label>
@@ -282,7 +299,7 @@
           <textarea data-q="Good Teammate Qualities" required rows="2" class="app-input"></textarea></label>
 
         <fieldset data-q="$200 Works?" data-required>
-          <legend class="q-label">It's $200 USD to get started. Does that work for you? *</legend>
+          <legend class="q-label">It's $200 USD for the first month. Does that work for you? *</legend>
           <div class="q-options">
             <label class="q-option"><input type="radio" name="price" value="Yes, that works" /> Yes, that works</label>
             <label class="q-option"><input type="radio" name="price" value="No, it doesn't" data-detail="price-reason" /> No, it doesn't</label>
@@ -304,17 +321,23 @@
         </div>
       </form>
 
-      <div id="app-done" hidden class="text-lg text-gray-900 leading-relaxed space-y-4">
+      <div id="app-done" hidden class="text-lg md:text-[19px] leading-[1.6] text-gray-900 space-y-6">
         <p class="text-2xl font-bold">Thanks - your application is in! ✅</p>
-        <p>I'll review it and reach out with joining information if it looks like a fit.</p>
+        <p>We'll review your application in the next 72 hours. If you're successful, we'll notify you via email and you'll get a link to book your onboarding call.</p>
+        <p>If we have any questions about your application, we'll contact you via Instagram.</p>
+        <div>
+          <p>Hope to talk soon,</p>
+          <p class="font-bold italic">-Eric</p>
+        </div>
       </div>
-    </div>
-  </section>
+      </div>
+    </section>
+  </main>
 
   <!-- ─── FOOTER ─── -->
-  <footer class="py-8 px-6 border-t border-gray-100">
+  <footer class="pt-2 pb-8 px-6">
     <div class="max-w-5xl mx-auto flex items-center justify-center">
-      <p class="text-xs text-gray-400">© 2026 Eric Deng Ultimate. All rights reserved.</p>
+      <p class="text-xs text-gray-600">© 2026 Eric Deng Ultimate. All rights reserved.</p>
     </div>
   </footer>
 
@@ -329,41 +352,6 @@
       });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
-
-    // ── Intake close: the end of the coming Sunday in US Eastern time, then rolls to the next week ──
-    // The deadline is midnight at the end of Sunday, New York time (most clients are in the US and Canada), so it's the same moment for every
-    // visitor wherever they are. The date fills the top bar and the "This intake will close on ..." line.
-    const TZ = 'America/New_York';   // follows EST/EDT automatically
-    const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: TZ, weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hourCycle: 'h23' });
-    const DAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-    function local(ms) {
-      const p = Object.fromEntries(tzParts.formatToParts(new Date(ms)).map(x => [x.type, x.value]));
-      return { y: +p.year, m: +p.month, d: +p.day, wd: DAYS[p.weekday], h: +p.hour, min: +p.minute, s: +p.second };
-    }
-    // New York's offset from UTC (in ms) at a given moment - changes with daylight saving
-    function tzOffset(ms) {
-      const t = local(ms);
-      return Date.UTC(t.y, t.m - 1, t.d, t.h, t.min, t.s) - Math.floor(ms / 1000) * 1000;
-    }
-    // { at: the exact close moment (ms), sunday: that Sunday's calendar date as a UTC-noon Date for labelling }
-    function intakeClose(now) {
-      const t = local(now);
-      const daysToSunday = (7 - t.wd) % 7;
-      const midnight = Date.UTC(t.y, t.m - 1, t.d + daysToSunday + 1);   // Monday 00:00 as New York wall-clock
-      let at = midnight - tzOffset(midnight);
-      at = midnight - tzOffset(at);                                      // second pass in case DST changed in between
-      return { at, sunday: new Date(Date.UTC(t.y, t.m - 1, t.d + daysToSunday, 12)) };
-    }
-    (function () {
-      const closeFmt = new Intl.DateTimeFormat('en-AU', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
-      const dateEls = document.querySelectorAll('#intake-close, [data-intake-date]');
-      function update() {
-        const label = closeFmt.format(intakeClose(Date.now()).sunday);
-        dateEls.forEach(e => { e.textContent = label; });
-      }
-      update();
-      setInterval(update, 60000);   // rolls to the next Sunday if the page is left open past the close
-    })();
 
     // ── Apply CTA: reveal the application section at the bottom and scroll to it ──
     const appSection = document.getElementById('application');
@@ -492,7 +480,7 @@
         gtag('event', 'program_application_submit', { event_category: 'program_application' });
         submitted = true;
         this.hidden = true;
-        document.getElementById('app-intro').hidden = true;
+        document.getElementById('app-title').hidden = true;
         document.getElementById('app-progress').hidden = true;
         document.getElementById('app-done').hidden = false;
         appSection.scrollIntoView({ behavior: 'smooth' });
