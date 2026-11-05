@@ -8,7 +8,8 @@
  *   - qualification/index.html (quick fit-check flow — types: 'coaching_fit_lead', 'coaching_fit_application')
  *   - lock-in-for-2027-workshop/index.html ("Join $9" — type: 'lockin_lite_lead';
  *                                            VIP "$9 Deposit" — type: 'lockin_vip_lead')
- *   - program-application/index.html (application form — type: 'program_application', sent as a POST)
+ *   - program-application/index.html (step 1 Continue — type: 'program_application_lead';
+ *                                     application form — type: 'program_application'; both sent as POSTs)
  *
  * This is a fresh, standalone script — not tied to whatever project used to
  * back the old APPS_SCRIPT_URL. It doesn't read anything from that old
@@ -28,6 +29,7 @@
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
  *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — overrides the built-in "2027 Challenge LITE" group (201733058542438260)
  *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — overrides the built-in "2027 Challenge VIP" group (201810746446710725)
+ *      MAILERLITE_GROUP_MASTER_ID          optional — overrides the built-in "Master Email List" group (150925648614917820)
  *
  *    Anything left blank is simply skipped (e.g. no MAILERLITE_API_KEY means
  *    no MailerLite calls at all, but Sheets + email still work).
@@ -80,6 +82,8 @@ function doGet(e) {
         return handleLockInLiteLead_(p);
       case 'lockin_vip_lead':
         return handleLockInVipLead_(p);
+      case 'program_application_lead':
+        return handleProgramApplicationLead_(p);
       case 'program_application':
         return handleProgramApplication_(p);
       default:
@@ -314,6 +318,17 @@ function handleLockInVipLead_(p) {
 
 // ── Program application (program-application/index.html) ───────────────
 
+// MailerLite group "Master Email List" (string, same reason as the LITE ID).
+// A MAILERLITE_GROUP_MASTER_ID script property, if set, overrides it.
+const MASTER_EMAIL_LIST_GROUP_ID = '150925648614917820';
+
+// Step 1's Continue: the same early sync as handleQualificationLead_, so they're
+// on the list even if they never finish the remaining questions.
+function handleProgramApplicationLead_(p) {
+  syncToMailerLite_(p.email, p.firstName, p.lastName, mlGroupId_('MAILERLITE_GROUP_MASTER_ID') || MASTER_EMAIL_LIST_GROUP_ID);
+  return jsonResponse_({ ok: true });
+}
+
 // p.answers is a JSON list of [question label, answer] pairs in page order.
 // The labels ARE the column headings: a new or reworded question on the page
 // gets its own new column automatically, so editing the questions never
@@ -350,6 +365,9 @@ function handleProgramApplication_(p) {
       `\n\nSubmitted: ${p.timestamp || ''}\nSheet: ${ss.getUrl()}`,
       options);
   }
+
+  // Again on submit, in case the step 1 sync failed or they went back and changed their email.
+  syncToMailerLite_(get('Email'), get('First Name'), get('Last Name'), mlGroupId_('MAILERLITE_GROUP_MASTER_ID') || MASTER_EMAIL_LIST_GROUP_ID);
 
   return jsonResponse_({ ok: true });
 }
