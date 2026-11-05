@@ -123,7 +123,7 @@
         <p>Growth season is <b>now</b>. It would be cool to have you be a part of it.</p>
         <p><b>PLUS:</b> As soon as you're accepted you'll get instant access to 2x workshops - More Blocks by Xmas, Unmarkable by Xmas- so that you're translating the physical gains you're making into real on-field impact before next year.</p>
         <p>The doors are open, and we're choosing players now.</p>
-        <p>If you'd like to be part of the 2027 Growth Squad, read the details below and <a href="#application" data-apply class="text-blue-600 underline underline-offset-4 hover:text-blue-800">apply</a> if it looks like a match for you.</p>
+        <p>If you'd like to be part of the 2027 Growth Squad, read the details below and <a href="#next-steps" class="text-blue-600 underline underline-offset-4 hover:text-blue-800">apply</a> if it looks like a match for you.</p>
         <p class="font-bold">-Eric</p>
       </div>
     </div>
@@ -365,7 +365,7 @@
         setTimeout(() => appSection.querySelector('input').focus({ preventScroll: true }), 600);
       }
     }
-    document.querySelectorAll('#apply-cta, [data-apply]').forEach(a => a.addEventListener('click', openApplication));
+    document.getElementById('apply-cta').addEventListener('click', openApplication);
     if (location.hash === '#application') openApplication();
 
     // ── Application: "Other" / delay-reason boxes appear (and become required) only while their option is ticked ──
