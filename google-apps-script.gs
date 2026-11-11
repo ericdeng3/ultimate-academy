@@ -27,7 +27,7 @@
  *      MAILERLITE_GROUP_QUALIFIED_ID       optional — group for qualified apply-page applicants
  *      MAILERLITE_GROUP_NOT_QUALIFIED_ID   optional — group for not-qualified apply-page applicants
  *      MAILERLITE_GROUP_PREMIUM_ID         optional — group for homepage Premium Application submissions
- *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — overrides the built-in "2027 Challenge LITE" group (201733058542438260)
+ *      MAILERLITE_GROUP_LOCKIN_LITE_ID     optional — group for "Join $9" leads; defaults to the "Master Email List" group (150925648614917820)
  *      MAILERLITE_GROUP_LOCKIN_VIP_ID      optional — overrides the built-in "2027 Challenge VIP" group (201810746446710725)
  *      MAILERLITE_GROUP_MASTER_ID          optional — overrides the built-in "Master Email List" group (150925648614917820)
  *
@@ -279,11 +279,10 @@ function handleLockInLiteLead_(p) {
     ].join('\n')
   );
 
-  // MailerLite group "2027 Challenge LITE". Kept as a string - the ID is too
-  // long to be stored as a JavaScript number without losing digits.
-  // A MAILERLITE_GROUP_LOCKIN_LITE_ID script property, if set, overrides it.
-  const LOCKIN_LITE_GROUP_ID = '201733058542438260';
-  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_LITE_ID') || LOCKIN_LITE_GROUP_ID);
+  // MailerLite group "Master Email List" (changed from "2027 Challenge LITE",
+  // 201733058542438260, on 2026-11-11). A MAILERLITE_GROUP_LOCKIN_LITE_ID
+  // script property, if set, overrides it.
+  syncToMailerLite_(p.email, p.firstName, '', mlGroupId_('MAILERLITE_GROUP_LOCKIN_LITE_ID') || MASTER_EMAIL_LIST_GROUP_ID);
 
   return jsonResponse_({ ok: true });
 }
