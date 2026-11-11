@@ -5,7 +5,6 @@
     // ── Links ── paste the real ones here
     const PAGE = {
       loomEmbedUrl: "https://www.loom.com/embed/8605bbb653a144f8b9af8a224941a5db", // welcome video (Loom share link -> /embed/ form)
-      calendlyUrl: "https://calendly.com/eric-deng-ultimate/workshop-strategy-call",
     };
   </script>
   <meta charset="UTF-8" />
@@ -55,7 +54,7 @@
 
   <!-- ─── TOP BAR: live countdown to the workshop (sticky). Start: Fri 27 Nov 2026, 9:00am Sydney = 26 Nov 22:00 UTC ─── -->
   <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
-    <a href="#book" id="countdown" data-target="2026-11-26T22:00:00Z" aria-label="Time until the workshop starts"
+    <a href="#save-date" id="countdown" data-target="2026-11-26T22:00:00Z" aria-label="Time until the workshop starts"
        class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
       <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Starts in</span>
       <span class="flex items-start gap-2 sm:gap-3">
@@ -72,10 +71,10 @@
           <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
         </div>
         <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
-          Congrats - you've been accepted!
+          You're in! Your spot is confirmed.
         </h1>
         <p class="reveal text-lg md:text-xl text-white leading-relaxed max-w-2xl mx-auto mb-10" style="transition-delay:0.16s">
-          Follow the steps below to get started.
+          Here's what to do next.
         </p>
       </div>
     </div>
@@ -95,32 +94,16 @@
     <div id="hero-white-panel" class="pt-6 px-6" style="margin-top: -40px;"></div>
   </section>
 
-  <!-- ─── NEXT STEPS ─── step 1 (book the call, with the Calendly embed), then step 2 (save the date) -->
+  <!-- ─── NEXT STEP ─── save the workshop date -->
   <section class="pt-12 pb-16 px-6">
     <div class="max-w-3xl mx-auto">
-      <!-- Step 1: book the strategy call (Calendly inline embed) -->
-      <div id="book" class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6" style="scroll-margin-top:24px">
-        <!-- Number + title side by side; body text uses the full card width on mobile, indented under the title from sm up -->
-        <div class="flex items-center gap-4 mb-3">
-          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">1</div>
-          <h3 class="text-xl md:text-2xl font-extrabold text-gray-900">Book your 1:1 strategy call</h3>
-        </div>
-        <div class="sm:pl-[52px] mb-5">
-          <p class="text-base md:text-lg text-gray-700 leading-relaxed">Pick a time that suits you below. We'll talk through your goals, where you're at right now, and how to get the most out of the workshop.</p>
-        </div>
-        <div id="calendly-embed" class="rounded-2xl overflow-hidden -mx-6 md:-mx-8 -mb-6 md:-mb-8" style="min-width:320px;height:700px;"></div>
-      </div>
-
-      <!-- Step 2: save the workshop date (right under the booking embed) -->
-      <div class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8">
-        <div class="flex items-center gap-4 mb-3">
-          <div class="w-9 h-9 rounded-full bg-brand text-white text-sm font-bold flex items-center justify-center flex-shrink-0">2</div>
-          <h3 class="text-xl md:text-2xl font-extrabold text-gray-900">Save the workshop date</h3>
-        </div>
+      <!-- Save the workshop date (the countdown bar links here) -->
+      <div id="save-date" class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" style="scroll-margin-top:96px">
+        <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">Save the workshop date</h3>
         <div>
-          <div class="sm:pl-[52px]">
+          <div>
             <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-3">Add the workshop date and time to your calendar so that you don't forget.</p>
-            <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">Get a copy of our ultimate off-season training template when you attend live.</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">You'll also get our holiday season training template as a bonus.</p>
             <a id="gcal-link" href="https://calendar.app.google/HqGE2afzEFZv7XLz6" target="_blank" rel="noopener"
                class="inline-flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap bg-brand text-white font-bold px-5 sm:px-8 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors text-base min-[380px]:text-lg shadow-sm">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -129,6 +112,16 @@
           </div>
         </div>
       </div>
+      <!-- Accelerator program: early applications for workshop buyers -->
+      <div class="reveal mt-6 bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8">
+        <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">We're loading for 2027</h3>
+        <div class="space-y-3 text-base md:text-lg text-gray-700 leading-relaxed">
+          <p>We're opening applications to our <b><i>2027 Growth Squad</i></b> after the workshop.</p>
+          <p>We save a few spots for people on the workshop before the applications go live to the general public.</p>
+          <p>If you'd like lasting results in 2027 - and want a structured plan to help you get there - then <a href="https://eric-deng-ultimate.com/program-application/" target="_blank" rel="noopener" class="text-blue-600 underline underline-offset-4 hover:text-blue-800">apply here</a> for first dibs.</p>
+        </div>
+      </div>
+
       <!-- Same card as the landing page: workshop date + start times, in time order (same moment: 26 Nov 2026, 22:00 UTC) -->
       <div class="reveal mt-6 rounded-2xl bg-[#232321] px-5 py-7 text-center">
         <div class="flex flex-wrap justify-center gap-x-4 gap-y-6">
@@ -150,7 +143,6 @@
     </div>
   </footer>
 
-  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
   <script>
     // ── Loom video (placeholder until PAGE.loomEmbedUrl is set) ──
     if (PAGE.loomEmbedUrl) {
@@ -180,17 +172,6 @@
       }
       tick();
       setInterval(tick, 1000);
-    })();
-
-    // ── Calendly inline embed (widget.js loads async) ──
-    (function () {
-      const init = () => Calendly.initInlineWidget({ url: PAGE.calendlyUrl, parentElement: document.getElementById('calendly-embed') });
-      if (window.Calendly) return init();
-      let tries = 0;
-      const wait = setInterval(() => {
-        if (window.Calendly) { clearInterval(wait); init(); }
-        else if (++tries > 100) { clearInterval(wait); console.warn('Calendly did not load'); }
-      }, 100);
     })();
 
     // ── Hero split (same as the apply page) ──
