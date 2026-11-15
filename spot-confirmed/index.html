@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    // ── Links ── paste the real ones here
-    const PAGE = {
-      loomEmbedUrl: "https://www.loom.com/embed/47a2c6ff41544a6a8e5cc02bd4e509be", // welcome video (Loom share link -> /embed/ form)
-    };
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spot Confirmed | Eric Deng Ultimate</title>
@@ -63,40 +57,37 @@
     </a>
   </div>
 
-  <!-- ─── HERO ─── navy panel, video straddling the navy/white edge (same as the apply page) -->
+  <!-- ─── HERO ─── navy panel -->
   <section class="relative text-center">
-    <div id="hero-dark-panel" class="pt-14 px-6" style="background-color:#004fb8; padding-bottom:365px;">
+    <div class="py-14 px-6" style="background-color:#1F5C3A;">
       <div class="max-w-4xl mx-auto">
         <div class="reveal w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5" style="transition-delay:0.06s">
           <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
         </div>
         <h1 class="reveal text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4" style="transition-delay:0.12s">
-          You're in! Your spot is confirmed.
+          Your spot is confirmed.
         </h1>
-        <p class="reveal text-lg md:text-xl text-white leading-relaxed max-w-2xl mx-auto mb-10" style="transition-delay:0.16s">
+        <p class="reveal text-lg md:text-xl text-white leading-relaxed max-w-2xl mx-auto" style="transition-delay:0.16s">
           Here's what to do next.
         </p>
       </div>
     </div>
-
-    <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -365px;">
-      <div class="rounded-lg overflow-hidden shadow-xl">
-        <div id="hero-image" class="relative w-full bg-gray-800" style="padding-top: 56.25%;">
-          <!-- Filled from PAGE.loomEmbedUrl; until then this placeholder shows -->
-          <div id="loom-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-white/70">
-            <svg class="w-14 h-14 mb-3 text-white/60" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <p class="text-base font-semibold">Welcome video coming soon</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="hero-white-panel" class="pt-6 px-6" style="margin-top: -40px;"></div>
   </section>
 
   <!-- ─── NEXT STEP ─── save the workshop date -->
   <section class="pt-12 pb-16 px-6">
     <div class="max-w-3xl mx-auto">
+      <!-- Personal welcome note from Eric -->
+      <!-- Same avatar + left-bar quote style as the application page (program-application/index.html) -->
+      <div class="reveal flex items-center gap-4 mb-5">
+        <img src="../program-application/avatar.jpg" alt="Eric Deng" width="56" height="56" class="w-14 h-14 rounded-full object-cover shadow-sm flex-shrink-0" />
+        <p class="text-lg md:text-xl font-bold text-gray-900">You're in!</p>
+      </div>
+      <div class="reveal mb-10 border-l-4 border-gray-600 pl-5 md:pl-7 space-y-3 text-lg md:text-xl text-gray-800 leading-relaxed">
+        <p>Welcome to the Level Up by Christmas Workshop - I'm excited to have you!</p>
+        <p>It's going to be an awesome time live, where we'll help you build a holiday season game plan so that you can go into 2027 a step ahead.</p>
+        <p>Here are the details to add the event to your calendar.</p>
+      </div>
       <!-- Save the workshop date (the countdown bar links here) -->
       <div id="save-date" class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" style="scroll-margin-top:96px">
         <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">Save the workshop date</h3>
@@ -112,27 +103,15 @@
           </div>
         </div>
       </div>
-      <!-- Accelerator program: early applications for workshop buyers -->
-      <div class="reveal mt-6 bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8">
-        <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">We're loading for 2027</h3>
-        <div class="space-y-3 text-base md:text-lg text-gray-700 leading-relaxed">
-          <p>We're opening applications to our <b><i>2027 Growth Squad</i></b> after the workshop.</p>
-          <p>We save a few spots for people on the workshop before the applications go live to the general public.</p>
-          <p>If you'd like lasting results in 2027 - and want a structured plan to help you get there - then <a href="https://eric-deng-ultimate.com/program-application/" target="_blank" rel="noopener" class="text-blue-600 underline underline-offset-4 hover:text-blue-800">apply here</a> for first dibs.</p>
-        </div>
+      <!-- Sign-off + P.S. (same left-bar style as the welcome note). P.S. = early Growth Squad applications for workshop buyers -->
+      <div class="reveal mt-10 border-l-4 border-gray-600 pl-5 md:pl-7 space-y-3 text-lg md:text-xl text-gray-800 leading-relaxed">
+        <p>That's all for now. If you're free during that time, we'd love to see you there live.</p>
+        <p class="font-bold">-Eric</p>
+        <p class="pt-6"><b>P.S.</b> We're loading for 2027!</p>
+        <p>We're opening applications to our <b>2027 Growth Squad</b> after the workshop.</p>
+        <p>We save a few spots for people on the workshop before the applications go live to the general public.</p>
+        <p>If you'd like lasting results in 2027 - and want a structured plan to help you get there - then <a href="https://eric-deng-ultimate.com/program-application/" target="_blank" rel="noopener" class="text-blue-600 underline underline-offset-4 hover:text-blue-800">apply here</a> for first dibs.</p>
       </div>
-
-      <!-- Same card as the landing page: workshop date + start times, in time order (same moment: 26 Nov 2026, 22:00 UTC) -->
-      <div class="reveal mt-6 rounded-2xl bg-[#232321] px-5 py-7 text-center">
-        <div class="flex flex-wrap justify-center gap-x-4 gap-y-6">
-          <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">Los Angeles</p><p class="text-sm md:text-base text-white/70">2PM</p><p class="text-sm md:text-base text-white/70">Thu 26 Nov</p></div>
-          <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">New York</p><p class="text-sm md:text-base text-white/70">5PM</p><p class="text-sm md:text-base text-white/70">Thu 26 Nov</p></div>
-          <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">London</p><p class="text-sm md:text-base text-white/70">10PM</p><p class="text-sm md:text-base text-white/70">Thu 26 Nov</p></div>
-          <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">Singapore</p><p class="text-sm md:text-base text-white/70">6AM</p><p class="text-sm md:text-base text-white/70">Fri 27 Nov</p></div>
-          <div class="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)]"><p class="text-base md:text-lg font-bold text-white">Sydney</p><p class="text-sm md:text-base text-white/70">9AM</p><p class="text-sm md:text-base text-white/70">Fri 27 Nov</p></div>
-        </div>
-      </div>
-      <p class="reveal mt-4 text-center text-sm md:text-base text-gray-500">If you can't make it live, a recording will be sent to you after the workshop.</p>
     </div>
   </section>
 
@@ -144,19 +123,6 @@
   </footer>
 
   <script>
-    // ── Loom video (placeholder until PAGE.loomEmbedUrl is set) ──
-    if (PAGE.loomEmbedUrl) {
-      const box = document.getElementById('hero-image');
-      box.innerHTML = '';
-      const f = document.createElement('iframe');
-      f.src = PAGE.loomEmbedUrl;
-      f.title = 'Welcome to the Lock In For 2027 Challenge';
-      f.setAttribute('frameborder', '0');
-      f.setAttribute('allowfullscreen', '');
-      f.className = 'absolute inset-0 w-full h-full';
-      box.appendChild(f);
-    }
-
     // ── Countdown: counts to data-target, then holds at 00 (never negative) ──
     (function () {
       const box = document.getElementById('countdown');
@@ -173,21 +139,6 @@
       tick();
       setInterval(tick, 1000);
     })();
-
-    // ── Hero split (same as the apply page) ──
-    function syncHeroSplit() {
-      const img = document.getElementById('hero-image');
-      const darkPanel = document.getElementById('hero-dark-panel');
-      const imageWrap = document.getElementById('hero-image-wrap');
-      const whitePanel = document.getElementById('hero-white-panel');
-      const h = img.getBoundingClientRect().height;
-      if (!h) return;
-      darkPanel.style.paddingBottom = (h * 0.9) + 'px';
-      imageWrap.style.marginTop = '-' + (h * 0.9) + 'px';
-      whitePanel.style.marginTop = '-' + (h * 0.1) + 'px';
-    }
-    syncHeroSplit();
-    window.addEventListener('resize', () => requestAnimationFrame(syncHeroSplit));
 
     // ── Scroll reveal ──
     const observer = new IntersectionObserver((entries) => {
