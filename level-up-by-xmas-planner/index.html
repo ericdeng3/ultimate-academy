@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Level Up by Xmas Planner — Eric Deng Ultimate</title>
+  <meta name="description" content="Plan your training from 27 November to Christmas around everything else going on, then download it as a PDF to tick off as you go." />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK7BFTYPJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PK7BFTYPJZ');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          colors: {
+            pine:  { DEFAULT: '#1F5C3A', dark: '#164530', light: '#E8F1EC' },
+            berry: { DEFAULT: '#B8322F', light: '#FCEDEC' },
+            gold:  { DEFAULT: '#D4A23A', dark: '#8A6514', light: '#FBF1D9' },
+            cream: '#FBF7F0',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Item colours — festive but soft, and still distinct in greyscale */
+    .chip-life  { background: #F1ECE4; color: #5B5348; border: 1px solid #E6DED2; }
+    .chip-gym   { background: #1F5C3A; color: #fff;    border: 1px solid #1F5C3A; }
+    .chip-field { background: #FCEDEC; color: #8E2522; border: 1px solid #EDBDBA; }
+    .chip-game  { background: #FBF1D9; color: #6E5110; border: 1px solid #EBCF8A; }
+    .chip-other { background: #E6F0FA; color: #1D4E89; border: 1px solid #B9D3EE; }
+
+    .type-btn[aria-pressed="true"] { background: #1F5C3A; color: #fff; border-color: #1F5C3A; }
+    .day-btn[aria-pressed="true"]  { background: #1F5C3A; color: #fff; border-color: #1F5C3A; }
+    .tag-btn[aria-pressed="true"]  { background: #B8322F; color: #fff; border-color: #B8322F; }
+    .tag-btn[aria-pressed="true"] .tag-tick { display: inline; }
+
+    /* Header: faint snowflakes over evergreen */
+    .snow-bg {
+      background-color: #1F5C3A;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='1.4' stroke-linecap='round'%3E%3Cg transform='translate(30 34)'%3E%3Cpath d='M0-10V10M-8.7-5L8.7 5M-8.7 5L8.7-5M0-10l-3-3M0-10l3-3M0 10l-3 3M0 10l3 3'/%3E%3C/g%3E%3Cg transform='translate(118 92) scale(.7)'%3E%3Cpath d='M0-10V10M-8.7-5L8.7 5M-8.7 5L8.7-5'/%3E%3C/g%3E%3Cg transform='translate(64 128) scale(.55)'%3E%3Cpath d='M0-10V10M-8.7-5L8.7 5M-8.7 5L8.7-5'/%3E%3C/g%3E%3C/g%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='96' cy='24' r='1.6'/%3E%3Ccircle cx='140' cy='146' r='1.3'/%3E%3Ccircle cx='12' cy='96' r='1.4'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    /* A string of fairy lights along the bottom of the header */
+    .lights {
+      height: 22px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='22' viewBox='0 0 120 22'%3E%3Cpath d='M0 4 Q15 12 30 4 T60 4 T90 4 T120 4' fill='none' stroke='%23164530' stroke-width='1.2'/%3E%3Cg%3E%3Crect x='13.5' y='7' width='3' height='3' fill='%23164530'/%3E%3Cellipse cx='15' cy='14' rx='3.2' ry='4.6' fill='%23B8322F'/%3E%3Crect x='43.5' y='7' width='3' height='3' fill='%23164530'/%3E%3Cellipse cx='45' cy='14' rx='3.2' ry='4.6' fill='%23D4A23A'/%3E%3Crect x='73.5' y='7' width='3' height='3' fill='%23164530'/%3E%3Cellipse cx='75' cy='14' rx='3.2' ry='4.6' fill='%234F9A6E'/%3E%3Crect x='103.5' y='7' width='3' height='3' fill='%23164530'/%3E%3Cellipse cx='105' cy='14' rx='3.2' ry='4.6' fill='%23F4EBDD'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: repeat-x;
+      background-position: center top;
+    }
+    .twinkle { animation: twinkle 3.2s ease-in-out infinite; }
+    @keyframes twinkle { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    @media (prefers-reduced-motion: reduce) { .twinkle { animation: none; } }
+
+    /* Drag and drop */
+    [data-edit] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+    @media (hover: hover) { [data-edit] { cursor: grab; } }
+    body.dragging, body.dragging * { cursor: grabbing !important; }
+    body.dragging { -webkit-user-select: none; user-select: none; }
+    .drag-source { opacity: 0.35; }
+    .drag-ghost { position: fixed; z-index: 60; pointer-events: none; margin: 0; transform: rotate(2deg) scale(1.03); box-shadow: 0 12px 28px rgba(0,0,0,0.22); opacity: 0.95; }
+    .insert-line { height: 3px; margin: -2px 0 -1px; border-radius: 9999px; background: #B8322F; box-shadow: 0 0 0 2px rgba(184,50,47,0.15); }
+    .drop-target { background: #FCEDEC !important; box-shadow: inset 0 0 0 2px #B8322F; }
+    .modal-in { animation: modalIn 0.16s ease-out; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    input:focus, textarea:focus, select:focus, button:focus-visible { outline: 2px solid #1F5C3A; outline-offset: 1px; }
+  </style>
+</head>
+<body class="bg-cream text-gray-900 font-sans antialiased">
+
+  <!-- ─── HEADER ─────────────────────────────────────────────────── -->
+  <header class="snow-bg text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 md:pt-10 pb-8 md:pb-10">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-white/75 mb-3">Eric Deng Ultimate</p>
+      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.05] flex items-center gap-3">
+        <span>Level Up by <span class="text-gold">Xmas</span> Planner</span>
+        <svg class="twinkle w-7 h-7 md:w-10 md:h-10 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg>
+      </h1>
+      <p class="mt-4 text-base md:text-lg text-white/95 max-w-[40rem] leading-relaxed">Plan your training from Friday 27 November to Christmas, around everything else going on. Then download it and tick it off as you go.</p>
+
+      <ol class="mt-7 grid sm:grid-cols-3 gap-3 text-sm md:text-[15px]">
+        <li class="flex gap-3 rounded-xl bg-pine-dark ring-1 ring-white/10 px-4 py-3.5 items-center"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-berry text-white text-xs font-bold flex items-center justify-center">1</span><span class="text-white/90 leading-snug"><b class="text-white">Add your life commitments</b> - work, travel, family, parties.</span></li>
+        <li class="flex gap-3 rounded-xl bg-pine-dark ring-1 ring-white/10 px-4 py-3.5 items-center"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-gold text-pine-dark text-xs font-bold flex items-center justify-center">2</span><span class="text-white/90 leading-snug"><b class="text-white">Fit in your gym, field and ultimate sessions</b> around them.</span></li>
+        <li class="flex gap-3 rounded-xl bg-pine-dark ring-1 ring-white/10 px-4 py-3.5 items-center"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-white text-pine text-xs font-bold flex items-center justify-center">3</span><span class="text-white/90 leading-snug"><b class="text-white">Download your PDF</b> and tick each session off.</span></li>
+      </ol>
+    </div>
+    <div class="lights bg-cream" aria-hidden="true"></div>
+  </header>
+
+  <!-- ─── TOOLBAR ────────────────────────────────────────────────── -->
+  <div class="sticky top-0 z-30 bg-cream/95 backdrop-blur border-b border-[#EAE2D5]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-x-5 gap-y-3">
+      <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+        <button type="button" data-add-type="life"  class="add-type rounded-lg px-3 py-2 chip-life hover:brightness-95">+ Life commitment</button>
+        <button type="button" data-add-type="gym"   class="add-type rounded-lg px-3 py-2 chip-gym hover:opacity-90">+ Gym</button>
+        <button type="button" data-add-type="field" class="add-type rounded-lg px-3 py-2 chip-field hover:brightness-95">+ Field</button>
+        <button type="button" data-add-type="game"  class="add-type rounded-lg px-3 py-2 chip-game hover:brightness-95">+ Ultimate</button>
+        <button type="button" data-add-type="other" class="add-type rounded-lg px-3 py-2 chip-other hover:brightness-95">+ Other</button>
+      </div>
+      <p id="counts" class="text-sm text-gray-500"></p>
+      <div class="flex items-center gap-2 ml-auto">
+        <button type="button" id="undo-btn" disabled title="Undo (Ctrl/Cmd + Z)" class="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-black/5 disabled:opacity-35 disabled:pointer-events-none">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 010 11H11"/></svg>
+          Undo
+        </button>
+        <button type="button" id="clear-btn" class="text-sm font-semibold text-gray-500 hover:text-gray-900 px-3 py-2">Clear</button>
+        <button type="button" id="pdf-btn" class="inline-flex items-center gap-2 bg-berry text-white text-sm font-bold px-4 py-2.5 rounded-lg hover:brightness-110 shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg>
+          Download PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8">
+    <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 class="text-xl md:text-2xl font-bold tracking-tight text-pine-dark">27 November – 25 December</h2>
+        <p class="text-sm text-gray-500 mt-1"><span class="hidden md:inline">Click a day to add to it. Click anything you've added to edit it, or drag it to reorder or move it to another day.</span><span class="md:hidden">Tap a day's + Add to add to it. Tap anything to edit it, or press and hold to drag it up, down or to another day.</span></p>
+      </div>
+      <label class="text-sm text-gray-600 flex items-center gap-2">Your name <span class="text-gray-400">(for the PDF)</span>
+        <input id="athlete-name" type="text" maxlength="40" placeholder="Optional" class="w-40 rounded-lg border border-[#E2D9CB] bg-white px-3 py-1.5 text-sm text-gray-900" />
+      </label>
+    </div>
+
+    <!-- Month grid (tablet + desktop) -->
+    <div class="hidden md:block rounded-2xl border border-[#E6DED2] bg-white overflow-hidden shadow-sm">
+      <div class="grid grid-cols-7 border-b border-[#E6DED2] bg-pine-light text-xs font-bold uppercase tracking-wider text-pine">
+        <div class="px-3 py-2.5">Mon</div><div class="px-3 py-2.5">Tue</div><div class="px-3 py-2.5">Wed</div><div class="px-3 py-2.5">Thu</div><div class="px-3 py-2.5">Fri</div><div class="px-3 py-2.5">Sat</div><div class="px-3 py-2.5">Sun</div>
+      </div>
+      <div id="grid" class="grid grid-cols-7"></div>
+    </div>
+
+    <!-- Day list (phones) -->
+    <div id="list" class="md:hidden space-y-6"></div>
+  </main>
+
+  <footer class="py-8 px-6 border-t border-[#EAE2D5]">
+    <p class="text-center text-xs text-gray-400">Your plan is saved in this browser only. © 2026 Eric Deng Ultimate.</p>
+  </footer>
+
+  <!-- ─── ADD / EDIT MODAL ───────────────────────────────────────── -->
+  <div id="modal" class="hidden fixed inset-0 z-50 bg-black/40 items-end sm:items-center justify-center sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <form id="item-form" novalidate class="modal-in w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div class="h-1.5 rounded-t-2xl bg-gradient-to-r from-berry via-gold to-pine" aria-hidden="true"></div>
+      <div class="flex items-start justify-between gap-4 px-5 sm:px-6 pt-5">
+        <div>
+          <p id="modal-date" class="text-xs font-bold uppercase tracking-[0.14em] text-berry"></p>
+          <h3 id="modal-title" class="text-xl font-bold tracking-tight mt-1">Add to your plan</h3>
+        </div>
+        <button type="button" id="modal-close" aria-label="Close" class="-mr-2 w-9 h-9 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <div class="px-5 sm:px-6 py-5 space-y-5">
+        <div>
+          <p class="text-sm font-semibold mb-2">Type</p>
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 text-sm font-semibold">
+            <button type="button" class="type-btn rounded-lg border border-gray-300 px-2 py-2.5" data-type="life">Life</button>
+            <button type="button" class="type-btn rounded-lg border border-gray-300 px-2 py-2.5" data-type="gym">Gym</button>
+            <button type="button" class="type-btn rounded-lg border border-gray-300 px-2 py-2.5" data-type="field">Field</button>
+            <button type="button" class="type-btn rounded-lg border border-gray-300 px-2 py-2.5" data-type="game">Ultimate</button>
+            <button type="button" class="type-btn rounded-lg border border-gray-300 px-2 py-2.5" data-type="other">Other</button>
+          </div>
+        </div>
+
+        <div id="date-row" class="hidden">
+          <label for="f-date" class="text-sm font-semibold block mb-2">Day</label>
+          <select id="f-date" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-base"></select>
+        </div>
+
+        <!-- Field sessions: pick one or more focus tags -->
+        <div>
+          <p class="text-sm font-semibold mb-2">Colour <span id="color-name" class="font-normal text-gray-400"></span></p>
+          <div id="colors" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div id="tags-row" class="hidden">
+          <p class="text-sm font-semibold mb-2">Focus <span class="font-normal text-gray-400">(pick one or more)</span></p>
+          <div id="tags" class="flex flex-wrap gap-2 text-sm font-semibold"></div>
+        </div>
+
+        <div>
+          <label for="f-title" class="text-sm font-semibold block mb-2">Label <span id="label-optional" class="hidden font-normal text-gray-400">(optional)</span></label>
+          <input id="f-title" type="text" maxlength="60" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base" />
+          <div id="presets" class="flex flex-wrap gap-1.5 mt-2"></div>
+          <p id="form-error" class="hidden text-sm text-berry font-medium mt-2"></p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="f-start" class="text-sm font-semibold block mb-2">Start <span class="font-normal text-gray-400">(optional)</span></label>
+            <input id="f-start" type="time" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base" />
+          </div>
+          <div>
+            <label for="f-end" class="text-sm font-semibold block mb-2">End <span class="font-normal text-gray-400">(optional)</span></label>
+            <input id="f-end" type="time" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base" />
+          </div>
+        </div>
+
+        <div>
+          <label for="f-details" id="details-label" class="text-sm font-semibold block mb-2">Session details <span class="font-normal text-gray-400">(optional)</span></label>
+          <textarea id="f-details" rows="4" maxlength="1500" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base leading-relaxed"></textarea>
+        </div>
+
+        <div id="repeat-row">
+          <p class="text-sm font-semibold mb-1">Repeat every week on <span class="font-normal text-gray-400">(optional)</span></p>
+          <p class="text-xs text-gray-500 mb-2">Adds a copy to each of these days until Christmas. You can edit or delete each one after.</p>
+          <div id="repeat-days" class="grid grid-cols-7 gap-1.5 text-xs font-semibold"></div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 px-5 sm:px-6 py-4 border-t border-gray-100 bg-cream rounded-b-2xl">
+        <button type="button" id="delete-btn" class="hidden text-sm font-semibold text-berry hover:brightness-90 px-1 py-2">Delete</button>
+        <button type="button" id="cancel-btn" class="ml-auto text-sm font-semibold text-gray-600 hover:text-gray-900 px-3 py-2">Cancel</button>
+        <button type="submit" id="save-btn" class="bg-pine text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-pine-dark">Add</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // ── Dates ─────────────────────────────────────────────────────
+    // The plan runs Fri 27 Nov → Fri 25 Dec 2026. The grid shows whole
+    // Mon–Sun weeks (23 Nov → 27 Dec); days outside the range are greyed out.
+    const YEAR = 2026;
+    const START = '2026-11-27', END = '2026-12-25';
+    const GRID_START = new Date(Date.UTC(YEAR, 10, 23));   // Mon 23 Nov
+    const WEEKS = 5;
+    const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    const iso = d => d.toISOString().slice(0, 10);
+    const addDays = (d, n) => new Date(d.getTime() + n * 86400000);
+    const parse = s => new Date(s + 'T00:00:00Z');
+    const inRange = s => s >= START && s <= END;
+    const weekdayIdx = s => (parse(s).getUTCDay() + 6) % 7;            // Mon = 0
+    const longDate = s => { const d = parse(s); return `${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getUTCDay()]} ${d.getUTCDate()} ${['January','February','March','April','May','June','July','August','September','October','November','December'][d.getUTCMonth()]}`; };
+    const shortDate = s => { const d = parse(s); return `${DAY_NAMES[weekdayIdx(s)]} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`; };
+
+    const GRID_DAYS = Array.from({ length: WEEKS * 7 }, (_, i) => iso(addDays(GRID_START, i)));
+    const PLAN_DAYS = GRID_DAYS.filter(inRange);
+
+    // ── Types ─────────────────────────────────────────────────────
+    const FIELD_TAGS = ['Speed', 'Acceleration', 'Conditioning', 'Skills'];
+    const TYPES = {
+      life:  { name: 'Life commitment',   short: 'Life',  tag: '',       presets: ['Work', 'Travel', 'Family', 'Christmas party', 'Uni / study', 'Rest day'], placeholder: 'e.g. Work, flight to Melbourne',
+               details: 'Any notes, e.g. flight leaves 7am', detailsLabel: 'Notes' },
+      gym:   { name: 'Gym session',       short: 'Gym',   tag: 'GYM',    presets: ['Lower body', 'Upper body', 'Full body'], placeholder: 'e.g. Lower body',
+               details: 'e.g. Trap bar deadlift 4x5, split squats 3x8, Copenhagen planks 3x20s', detailsLabel: 'Session details' },
+      field: { name: 'Field session',     short: 'Field', tag: 'FIELD',  presets: [], placeholder: 'e.g. Hill sprints, throwing at the park',
+               details: 'e.g. 15 min warm-up, 6x10m accelerations, 4x40m flying sprints, 50 hucks each side', detailsLabel: 'Session details' },
+      game:  { name: 'Ultimate gameplay', short: 'Ultimate', tag: '',  presets: ['Pickup', 'League', 'Training', 'Tournament'], placeholder: 'e.g. League',
+               details: 'e.g. Focus on cutting earlier, 2 hucks per point when open', detailsLabel: 'Notes / focus' },
+      other: { name: 'Other activity',    short: 'Other', tag: '',       presets: ['Run', 'Swim', 'Bike', 'Yoga / mobility', 'Other sport'], placeholder: 'e.g. 5km easy run',
+               details: 'e.g. 30 min easy pace, flat route', detailsLabel: 'Details' },
+    };
+    const TYPE_ORDER = { life: 0, gym: 1, field: 2, game: 3, other: 4 };
+
+    // Colours an athlete can pick for any item. bg/text/border style the chip on screen;
+    // ink is used for the PDF tick box and type tag, tint for the PDF row background.
+    const PALETTE = {
+      pine:     { name: 'Pine',        bg: '#1F5C3A', text: '#FFFFFF', border: '#1F5C3A', ink: '#1F5C3A', tint: '#E8F1EC' },
+      berry:    { name: 'Berry',       bg: '#FCEDEC', text: '#8E2522', border: '#EDBDBA', ink: '#B8322F', tint: '#FCEDEC' },
+      gold:     { name: 'Gold',        bg: '#FBF1D9', text: '#6E5110', border: '#EBCF8A', ink: '#8A6514', tint: '#FBF1D9' },
+      stone:    { name: 'Stone',       bg: '#F1ECE4', text: '#5B5348', border: '#E6DED2', ink: '#5B5348', tint: '#F1ECE4' },
+      red:      { name: 'Red',         bg: '#B8322F', text: '#FFFFFF', border: '#B8322F', ink: '#B8322F', tint: '#FBE4E3' },
+      mint:     { name: 'Mint',        bg: '#E6F4EC', text: '#1F5C3A', border: '#B7DCC6', ink: '#1F5C3A', tint: '#E6F4EC' },
+      sky:      { name: 'Sky',         bg: '#E6F0FA', text: '#1D4E89', border: '#B9D3EE', ink: '#1D4E89', tint: '#E6F0FA' },
+      navy:     { name: 'Navy',        bg: '#1E3A5F', text: '#FFFFFF', border: '#1E3A5F', ink: '#1E3A5F', tint: '#E3EAF3' },
+      plum:     { name: 'Plum',        bg: '#F3E8F5', text: '#6B2E73', border: '#DDBFE2', ink: '#6B2E73', tint: '#F3E8F5' },
+      orange:   { name: 'Orange',      bg: '#FDEBDD', text: '#9A4413', border: '#F3C4A0', ink: '#C0561A', tint: '#FDEBDD' },
+      brightgold:{ name: 'Bright gold', bg: '#D4A23A', text: '#2E2104', border: '#D4A23A', ink: '#8A6514', tint: '#FBF1D9' },
+      charcoal: { name: 'Charcoal',    bg: '#374151', text: '#FFFFFF', border: '#374151', ink: '#374151', tint: '#EEF0F2' },
+    };
+    const DEFAULT_COLOR = { life: 'stone', gym: 'pine', field: 'berry', game: 'gold', other: 'sky' };
+    const colorOf = it => PALETTE[it.color] || PALETTE[DEFAULT_COLOR[it.type]];
+    const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+    const SESSION_TYPES = ['gym', 'field', 'game', 'other'];
+
+    // ── State (saved in this browser only) ────────────────────────
+    const KEY = 'level-up-by-xmas-planner-2026';
+    let state = { name: '', items: [] };
+    try { const saved = JSON.parse(localStorage.getItem(KEY)); if (saved && Array.isArray(saved.items)) state = saved; } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+    setTimeout(() => { [...new Set(state.items.map(i => i.date))].forEach(renumber); }, 0);
+    const uid = () => Math.random().toString(36).slice(2, 10);
+
+    // ── Undo ──────────────────────────────────────────────────────
+    // A snapshot of the plan is taken before every change (add, edit, delete,
+    // drag, clear). Undo steps back one change at a time, for this visit.
+    const undoStack = [];
+    function checkpoint() {
+      undoStack.push(JSON.stringify(state.items));
+      if (undoStack.length > 100) undoStack.shift();
+      updateUndo();
+    }
+    function undo() {
+      if (!undoStack.length) return;
+      state.items = JSON.parse(undoStack.pop());
+      save(); render(); updateUndo();
+    }
+    function updateUndo() { const b = document.getElementById('undo-btn'); if (b) b.disabled = !undoStack.length; }
+
+    const itemsOn = date => state.items
+      .filter(it => it.date === date)
+      .sort(byOrder);
+
+    // Each item keeps a position within its day (it.order). Older saved plans
+    // without positions fall back to time order, then type.
+    function byTime(a, b) { return (a.start || '99:99').localeCompare(b.start || '99:99') || TYPE_ORDER[a.type] - TYPE_ORDER[b.type]; }
+    function byOrder(a, b) {
+      const ao = a.order ?? Infinity, bo = b.order ?? Infinity;
+      return ao !== bo ? (ao < bo ? -1 : 1) : byTime(a, b);
+    }
+    // Put an item into a day at a given position and renumber that day
+    function placeAt(item, date, idx) {
+      const list = itemsOn(date).filter(x => x !== item);
+      item.date = date;
+      list.splice(Math.max(0, Math.min(idx, list.length)), 0, item);
+      list.forEach((x, i) => x.order = i);
+    }
+    // Default position: timed items slot in before the first later-starting item; untimed go last
+    function placeByTime(item, date) {
+      const list = itemsOn(date).filter(x => x !== item);
+      let idx = list.length;
+      if (item.start) { const i = list.findIndex(x => x.start && x.start > item.start); if (i >= 0) idx = i; }
+      placeAt(item, date, idx);
+    }
+    function renumber(date) { itemsOn(date).forEach((x, i) => x.order = i); }
+
+    // A field session can be just its tags ("Speed + Skills") or a label plus tags
+    const tagsOf = it => (it.type === 'field' && Array.isArray(it.tags)) ? it.tags : [];
+    const titleOf = it => it.title || tagsOf(it).join(' + ');
+    const subTags = it => it.title ? tagsOf(it).join(' · ') : '';
+
+    const fmtTime = t => {
+      if (!t) return '';
+      let [h, m] = t.split(':').map(Number);
+      const ap = h >= 12 ? 'pm' : 'am';
+      h = h % 12 || 12;
+      return m ? `${h}:${String(m).padStart(2, '0')}${ap}` : `${h}${ap}`;
+    };
+    const timeText = it => it.start && it.end ? `${fmtTime(it.start)}–${fmtTime(it.end)}` : fmtTime(it.start);
+
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const STAR = '<svg class="inline w-3.5 h-3.5 text-gold -mt-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg>';
+
+    // ── Rendering ─────────────────────────────────────────────────
+    function chipHTML(it, compact) {
+      const t = timeText(it), sub = subTags(it);
+      const note = it.details ? '<svg class="inline w-3 h-3 -mt-0.5 opacity-80' + (t ? ' ml-1' : '') + '" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" aria-label="Has details"><path stroke-linecap="round" d="M5 7h14M5 12h14M5 17h9"/></svg>' : '';
+      const label = TYPES[it.type].tag ? `<span class="uppercase tracking-wider text-[10px] font-bold opacity-70 mr-1">${TYPES[it.type].tag}</span>` : '';
+      const small = compact ? 'text-[10.5px]' : 'text-xs';
+      const c = colorOf(it);
+      return `<button type="button" data-edit="${it.id}" style="background:${c.bg};color:${c.text};border:1px solid ${c.border}" class="w-full text-left rounded-md ${compact ? 'px-1.5 py-1 text-[11.5px]' : 'px-3 py-2 text-sm'} leading-snug font-semibold hover:opacity-85">
+        ${label}<span>${esc(titleOf(it))}</span>${sub ? `<span class="block font-medium opacity-80 ${small}">${esc(sub)}</span>` : ''}${t || it.details ? `<span class="block font-medium opacity-70 ${small}">${t}${note}</span>` : ''}
+      </button>`;
+    }
+
+    function render() {
+      // Desktop grid
+      document.getElementById('grid').innerHTML = GRID_DAYS.map((date, i) => {
+        const d = parse(date), active = inRange(date), xmas = date === END;
+        const num = d.getUTCDate();
+        const label = (num === 1 || date === START) ? `${num} ${MONTHS[d.getUTCMonth()]}` : num;
+        const border = `${i % 7 ? 'border-l' : ''} ${i >= 7 ? 'border-t' : ''} border-[#EFE8DD]`;
+        if (!active) return `<div class="${border} bg-[#F7F3EC] min-h-[132px] p-2"><span class="text-xs font-semibold text-gray-300">${label}</span></div>`;
+        const xtag = xmas ? ` <span class="ml-1 text-[10px] font-bold uppercase tracking-wider text-gold-dark">${STAR} Christmas</span>` : '';
+        return `<div data-drop="${date}" class="${border} group min-h-[132px] p-2 flex flex-col gap-1 cursor-pointer transition-colors ${xmas ? 'bg-gold-light/60 hover:bg-gold-light' : 'hover:bg-cream'}" data-day="${date}">
+          <div class="flex items-center justify-between"><span class="text-xs font-bold text-gray-700">${label}${xtag}</span>
+            <span class="w-5 h-5 rounded-full flex items-center justify-center text-berry opacity-0 group-hover:opacity-100 text-sm font-bold leading-none" aria-hidden="true">+</span></div>
+          <div class="day-items flex flex-col gap-1">${itemsOn(date).map(it => chipHTML(it, true)).join('')}</div>
+        </div>`;
+      }).join('');
+
+      // Phone list, grouped by week
+      const weeks = [];
+      PLAN_DAYS.forEach(date => { const w = Math.floor(GRID_DAYS.indexOf(date) / 7); (weeks[w] = weeks[w] || []).push(date); });
+      document.getElementById('list').innerHTML = weeks.filter(Boolean).map((days, i) => `
+        <section>
+          <h3 class="text-xs font-bold uppercase tracking-[0.14em] text-pine mb-2">Week ${i + 1} · ${shortDate(days[0]).slice(4)} – ${shortDate(days[days.length - 1]).slice(4)}</h3>
+          <div class="rounded-2xl border border-[#E6DED2] bg-white divide-y divide-[#F1EBE1]">
+            ${days.map(date => {
+              const items = itemsOn(date), xmas = date === END;
+              return `<div data-drop="${date}" class="p-3 transition-colors ${xmas ? 'bg-gold-light/60' : ''}">
+                <div class="flex items-center justify-between ${items.length ? 'mb-2' : ''}">
+                  <span class="text-sm font-bold">${shortDate(date)}${xmas ? ` <span class="text-[10px] font-bold uppercase tracking-wider text-gold-dark ml-1">${STAR} Christmas</span>` : ''}</span>
+                  <button type="button" data-day="${date}" class="text-xs font-semibold text-berry border border-[#EDBDBA] bg-white rounded-lg px-2.5 py-1.5">+ Add</button>
+                </div>
+                <div class="day-items flex flex-col gap-1.5">${items.map(it => chipHTML(it, false)).join('')}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </section>`).join('');
+
+      // Counts
+      const n = t => state.items.filter(it => it.type === t).length;
+      document.getElementById('counts').textContent = `${n('gym')} gym · ${n('field')} field · ${n('game')} ultimate · ${n('other')} other`;
+    }
+
+    // ── Modal ─────────────────────────────────────────────────────
+    const modal = document.getElementById('modal');
+    const form = document.getElementById('item-form');
+    const $ = id => document.getElementById(id);
+    let editing = null, curType = 'gym', repeat = new Set(), tags = new Set(), curColor = 'pine', colorPicked = false;
+    $('colors').innerHTML = Object.entries(PALETTE).map(([k, c]) => `<button type="button" class="color-btn w-7 h-7 rounded-full transition-shadow" data-color="${k}" title="${c.name}" aria-label="${c.name}" aria-pressed="false" style="background:${c.bg};border:2px solid ${c.border}"></button>`).join('');
+    function setColor(k) {
+      curColor = k;
+      form.querySelectorAll('.color-btn').forEach(b => {
+        const on = b.dataset.color === k;
+        b.setAttribute('aria-pressed', on);
+        b.style.boxShadow = on ? '0 0 0 2px #fff, 0 0 0 4px #111827' : '';
+      });
+      $('color-name').textContent = `(${PALETTE[k].name}${k === DEFAULT_COLOR[curType] ? ', default' : ''})`;
+    }
+
+    $('f-date').innerHTML = PLAN_DAYS.map(d => `<option value="${d}">${longDate(d)}</option>`).join('');
+    $('repeat-days').innerHTML = DAY_NAMES.map((d, i) => `<button type="button" class="day-btn rounded-lg border border-gray-300 py-2" data-wd="${i}" aria-pressed="false">${d}</button>`).join('');
+    $('tags').innerHTML = FIELD_TAGS.map(t => `<button type="button" class="tag-btn inline-flex items-center gap-1.5 rounded-full border border-[#EDBDBA] text-[#8E2522] bg-white px-3.5 py-2" data-tag="${t}" aria-pressed="false"><svg class="tag-tick hidden w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>${t}</button>`).join('');
+
+    function setType(t) {
+      curType = t;
+      const T = TYPES[t];
+      form.querySelectorAll('.type-btn').forEach(b => b.setAttribute('aria-pressed', b.dataset.type === t));
+      $('f-title').placeholder = T.placeholder;
+      $('f-details').placeholder = T.details;
+      $('details-label').firstChild.textContent = T.detailsLabel + ' ';
+      $('tags-row').classList.toggle('hidden', t !== 'field');
+      $('label-optional').classList.toggle('hidden', t !== 'field');
+      $('presets').innerHTML = T.presets.map(p => `<button type="button" class="preset text-xs font-medium text-gray-600 border border-gray-200 rounded-full px-2.5 py-1 hover:border-gray-400">${p}</button>`).join('');
+      $('presets').classList.toggle('hidden', !T.presets.length);
+      $('save-btn').textContent = editing ? 'Save' : `Add ${t === 'life' ? 'commitment' : 'session'}`;
+      $('form-error').classList.add('hidden');
+      // Follow the type's default colour until the athlete picks their own
+      setColor(colorPicked ? curColor : DEFAULT_COLOR[t]);
+    }
+
+    function setRepeat(wds) {
+      repeat = new Set(wds);
+      form.querySelectorAll('.day-btn').forEach(b => b.setAttribute('aria-pressed', repeat.has(+b.dataset.wd)));
+    }
+    function setTags(list) {
+      tags = new Set(list);
+      form.querySelectorAll('.tag-btn').forEach(b => b.setAttribute('aria-pressed', tags.has(b.dataset.tag)));
+    }
+
+    function openModal({ date, type, item }) {
+      editing = item || null;
+      const curDate = item ? item.date : (date || null);
+      $('modal-title').textContent = item ? 'Edit' : 'Add to your plan';
+      $('modal-date').textContent = curDate ? longDate(curDate) : '';
+      // Day picker: shown when adding from the toolbar (no day picked yet) or editing (to move it)
+      $('date-row').classList.toggle('hidden', !!date && !item);
+      $('f-date').value = curDate || START;
+      $('f-title').value = item ? item.title : '';
+      $('f-start').value = item ? item.start || '' : '';
+      $('f-end').value = item ? item.end || '' : '';
+      $('f-details').value = item ? item.details || '' : '';
+      $('repeat-row').classList.toggle('hidden', !!item);
+      $('delete-btn').classList.toggle('hidden', !item);
+      setRepeat([]);
+      setTags(item ? tagsOf(item) : []);
+      colorPicked = !!(item && item.color && PALETTE[item.color]);
+      curColor = colorPicked ? item.color : DEFAULT_COLOR[item ? item.type : (type || 'gym')];
+      setType(item ? item.type : (type || 'gym'));
+      modal.classList.remove('hidden'); modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => (curType === 'field' && !item ? form.querySelector('.tag-btn') : $('f-title')).focus(), 50);
+    }
+    function closeModal() {
+      modal.classList.add('hidden'); modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      editing = null;
+    }
+
+    form.addEventListener('click', e => {
+      const tb = e.target.closest('.type-btn'); if (tb) setType(tb.dataset.type);
+      const pb = e.target.closest('.preset'); if (pb) { $('f-title').value = pb.textContent; $('f-title').focus(); $('form-error').classList.add('hidden'); }
+      const db = e.target.closest('.day-btn'); if (db) { const w = +db.dataset.wd; repeat.has(w) ? repeat.delete(w) : repeat.add(w); setRepeat([...repeat]); }
+      const cb = e.target.closest('.color-btn'); if (cb) { colorPicked = cb.dataset.color !== DEFAULT_COLOR[curType]; setColor(cb.dataset.color); }
+      const gb = e.target.closest('.tag-btn'); if (gb) { const t = gb.dataset.tag; tags.has(t) ? tags.delete(t) : tags.add(t); setTags([...tags]); $('form-error').classList.add('hidden'); }
+    });
+    $('f-date').addEventListener('change', e => { $('modal-date').textContent = longDate(e.target.value); });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const title = $('f-title').value.trim();
+      const chosen = curType === 'field' ? FIELD_TAGS.filter(t => tags.has(t)) : [];
+      if (!title && !chosen.length) {
+        $('form-error').textContent = curType === 'field' ? 'Pick at least one focus, or add a label.' : 'Add a label.';
+        $('form-error').classList.remove('hidden');
+        return $('f-title').focus();
+      }
+      checkpoint();
+      const fields = { type: curType, title, tags: chosen, start: $('f-start').value, end: $('f-end').value, details: $('f-details').value.trim(),
+                       color: curColor === DEFAULT_COLOR[curType] ? '' : curColor };
+      if (editing) {
+        const moved = editing.date !== $('f-date').value, retimed = editing.start !== fields.start;
+        Object.assign(editing, fields);
+        if (moved || retimed) placeByTime(editing, $('f-date').value);
+      } else {
+        const date = $('f-date').value;
+        const dates = new Set([date]);
+        if (repeat.size) PLAN_DAYS.filter(d => d >= date && repeat.has(weekdayIdx(d))).forEach(d => dates.add(d));
+        dates.forEach(d => { const it = { id: uid(), date: d, ...fields, tags: [...chosen] }; state.items.push(it); placeByTime(it, d); });
+        gtag('event', 'planner_add', { item_type: curType, copies: dates.size });
+      }
+      save(); render(); closeModal();
+    });
+
+    $('delete-btn').addEventListener('click', () => {
+      if (!editing) return;
+      checkpoint();
+      state.items = state.items.filter(it => it !== editing);
+      save(); render(); closeModal();
+    });
+    $('modal-close').addEventListener('click', closeModal);
+    $('cancel-btn').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
+
+    // Click a day → add; click an item → edit
+    document.addEventListener('click', e => {
+      if (e.target.closest('#modal')) return;
+      const ed = e.target.closest('[data-edit]');
+      if (ed) { const it = state.items.find(x => x.id === ed.dataset.edit); if (it) openModal({ item: it }); return; }
+      const day = e.target.closest('[data-day]');
+      if (day) return openModal({ date: day.dataset.day });
+      const add = e.target.closest('.add-type');
+      if (add) openModal({ type: add.dataset.addType });
+    });
+
+    // Name + clear
+    $('athlete-name').value = state.name || '';
+    $('athlete-name').addEventListener('input', e => { state.name = e.target.value; save(); });
+    $('clear-btn').addEventListener('click', () => {
+      if (!state.items.length) return;
+      if (!confirm('Clear everything from your plan?')) return;
+      checkpoint();
+      state.items = []; save(); render();
+    });
+    $('undo-btn').addEventListener('click', undo);
+    // Ctrl/Cmd + Z, unless they're typing in a field or the form is open
+    document.addEventListener('keydown', e => {
+      if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.key.toLowerCase() !== 'z') return;
+      if (!modal.classList.contains('hidden') || (e.target.closest && e.target.closest('input, textarea, select'))) return;
+      e.preventDefault(); undo();
+    });
+
+    // ── Drag and drop ─────────────────────────────────────────────
+    // Mouse: press and drag (a plain click still opens the editor).
+    // Touch: press and hold ~0.35s, then drag; a normal swipe still scrolls.
+    let drag = null, suppressClick = false;
+
+    function dropTargetAt(x, y) {
+      const el = document.elementFromPoint(x, y);
+      const t = el && el.closest('[data-drop]');
+      return t && t.offsetParent !== null ? t : null;   // ignore the hidden layout (grid vs list)
+    }
+    function startDrag() {
+      drag.active = true;
+      const r = drag.chip.getBoundingClientRect();
+      drag.dx = drag.x - r.left; drag.dy = drag.y - r.top;
+      const g = drag.chip.cloneNode(true);
+      g.classList.add('drag-ghost'); g.removeAttribute('data-edit');
+      g.style.width = r.width + 'px';
+      document.body.appendChild(g);
+      drag.ghost = g;
+      drag.chip.classList.add('drag-source');
+      document.body.classList.add('dragging');
+      if (drag.touch && navigator.vibrate) try { navigator.vibrate(12); } catch (e) {}
+      moveGhost();
+      autoScroll();
+    }
+    function moveGhost() {
+      drag.ghost.style.left = (drag.x - drag.dx) + 'px';
+      drag.ghost.style.top = (drag.y - drag.dy) + 'px';
+      const t = dropTargetAt(drag.x, drag.y);
+      if (t !== drag.over) {
+        if (drag.over) drag.over.classList.remove('drop-target');
+        if (t && t.dataset.drop !== drag.it.date) t.classList.add('drop-target');   // whole-day highlight only when changing day
+        drag.over = t;
+      }
+      showInsertLine(t);
+    }
+    // Where in the target day's list the item would land, based on the pointer's height
+    function insertIndex(t) {
+      const chips = [...t.querySelectorAll('.day-items > [data-edit]')].filter(c => c !== drag.chip);
+      let idx = 0;
+      chips.forEach((c, i) => { const r = c.getBoundingClientRect(); if (drag.y > r.top + r.height / 2) idx = i + 1; });
+      return { idx, chips };
+    }
+    function showInsertLine(t) {
+      if (!drag.line) { drag.line = document.createElement('div'); drag.line.className = 'insert-line'; }
+      if (!t) { drag.line.remove(); drag.idx = null; return; }
+      const { idx, chips } = insertIndex(t);
+      drag.idx = idx;
+      const list = t.querySelector('.day-items');
+      if (idx < chips.length) list.insertBefore(drag.line, chips[idx]);
+      else list.appendChild(drag.line);
+    }
+    // Scroll the page while dragging near the top or bottom edge
+    function autoScroll() {
+      if (!drag || !drag.active) return;
+      const edge = 80, h = window.innerHeight;
+      const v = drag.y < edge ? -(edge - drag.y) / 4 : drag.y > h - edge ? (drag.y - (h - edge)) / 4 : 0;
+      if (v) { window.scrollBy(0, v); moveGhost(); }
+      requestAnimationFrame(autoScroll);
+    }
+    function endDrag(drop) {
+      if (!drag) return;
+      clearTimeout(drag.timer);
+      if (drag.active) {
+        const target = drop ? drag.over : null;
+        if (target && drag.idx != null) {
+          const before = JSON.stringify(state.items);
+          placeAt(drag.it, target.dataset.drop, drag.idx);
+          if (JSON.stringify(state.items) !== before) { undoStack.push(before); updateUndo(); }
+          save();
+          gtag('event', 'planner_move', { item_type: drag.it.type });
+        }
+        drag.ghost.remove();
+        if (drag.line) drag.line.remove();
+        if (drag.over) drag.over.classList.remove('drop-target');
+        document.body.classList.remove('dragging');
+        suppressClick = true; setTimeout(() => suppressClick = false, 0);
+        render();
+      }
+      drag = null;
+    }
+
+    document.addEventListener('pointerdown', e => {
+      const chip = e.target.closest('[data-edit]');
+      if (!chip || e.button > 0 || drag) return;
+      const it = state.items.find(x => x.id === chip.dataset.edit);
+      if (!it) return;
+      drag = { it, chip, x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, active: false, touch: e.pointerType !== 'mouse' };
+      if (drag.touch) drag.timer = setTimeout(() => { if (drag && !drag.active) startDrag(); }, 350);
+    });
+    document.addEventListener('pointermove', e => {
+      if (!drag) return;
+      drag.x = e.clientX; drag.y = e.clientY;
+      if (!drag.active) {
+        const dist = Math.hypot(drag.x - drag.x0, drag.y - drag.y0);
+        if (drag.touch) { if (dist > 10) { clearTimeout(drag.timer); drag = null; } }   // they're scrolling
+        else if (dist > 5) startDrag();
+        return;
+      }
+      e.preventDefault();
+      moveGhost();
+    });
+    document.addEventListener('pointerup', () => endDrag(true));
+    document.addEventListener('pointercancel', () => endDrag(false));
+    // While dragging on touch, stop the page from scrolling under the finger
+    document.addEventListener('touchmove', e => { if (drag && drag.active) e.preventDefault(); }, { passive: false });
+    // Don't open the editor at the end of a drag; and block the long-press menu
+    document.addEventListener('click', e => { if (suppressClick) { e.stopPropagation(); e.preventDefault(); } }, true);
+    document.addEventListener('contextmenu', e => { if (e.target.closest('[data-edit]')) e.preventDefault(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && drag && drag.active) endDrag(false); });
+
+    // ── PDF ───────────────────────────────────────────────────────
+    // Page 1 (landscape): the month grid with a tick box beside every session.
+    // Page 2+ (portrait): every session listed by date, with its full details.
+    const PINE = [31, 92, 58], BERRY = [184, 50, 47], GOLD = [212, 162, 58], GOLD_DARK = [138, 101, 20];
+    const TYPE_INK = { gym: PINE, field: BERRY, game: GOLD_DARK, other: [29, 78, 137] };
+
+    function buildPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const W = 297, H = 210, M = 10;
+      const name = (state.name || '').trim();
+      const ink = [17, 24, 39], mid = [107, 114, 128], line = [232, 225, 214], faint = [247, 243, 236];
+
+      // Fairy lights across the very top
+      lightsRow(doc, 0, W, 4.2);
+
+      // Header
+      doc.setTextColor(...PINE); doc.setFont('helvetica', 'bold'); doc.setFontSize(18);
+      const titleText = name ? `${name}'s Level Up by Xmas Plan` : 'Level Up by Xmas Plan';
+      doc.text(titleText, M, M + 7);
+      star(doc, M + doc.getTextWidth(titleText) + 4.5, M + 4.6, 2.6, GOLD);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(...mid);
+      doc.text('Friday 27 November – Christmas Day  ·  Tick each session off as you go', M, M + 13);
+
+      // Legend (right)
+      let lx = W - M;
+      const legend = [['life', 'Life commitment'], ['other', 'Other'], ['game', 'Ultimate'], ['field', 'Field'], ['gym', 'Gym']];
+      doc.setFontSize(8.5);
+      legend.forEach(([t, label]) => {
+        const tw = doc.getTextWidth(label);
+        lx -= tw; doc.setTextColor(...ink); doc.text(label, lx, M + 7);
+        lx -= 5.5; drawSwatch(doc, t, lx, M + 7); lx -= 5;
+      });
+      const n = t => state.items.filter(i => i.type === t).length;
+      doc.setTextColor(...mid);
+      doc.text(`${n('gym')} gym · ${n('field')} field · ${n('game')} ultimate · ${n('other')} other sessions planned`, W - M, M + 13, { align: 'right' });
+
+      // Grid
+      const top = M + 19, headH = 6, gw = W - 2 * M, cw = gw / 7;
+      const rowH = (H - M - top - headH) / WEEKS;
+      doc.setFillColor(232, 241, 236); doc.rect(M, top, gw, headH, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...PINE);
+      DAY_NAMES.forEach((d, i) => doc.text(d.toUpperCase(), M + i * cw + 2, top + 4.1));
+
+      GRID_DAYS.forEach((date, i) => {
+        const col = i % 7, row = Math.floor(i / 7);
+        const x = M + col * cw, y = top + headH + row * rowH;
+        const active = inRange(date), d = parse(date), xmas = date === END;
+        if (!active) { doc.setFillColor(...faint); doc.rect(x, y, cw, rowH, 'F'); }
+        if (xmas) { doc.setFillColor(253, 247, 232); doc.rect(x, y, cw, rowH, 'F'); }
+        const num = d.getUTCDate();
+        const label = (num === 1 || date === START) ? `${num} ${MONTHS[d.getUTCMonth()]}` : String(num);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8);
+        doc.setTextColor(...(active ? ink : [209, 213, 219]));
+        doc.text(label, x + 2, y + 4);
+        if (xmas) {
+          const lw = doc.getTextWidth(label);
+          star(doc, x + 2 + lw + 3, y + 2.75, 1.7, GOLD);
+          doc.setFontSize(6); doc.setTextColor(...GOLD_DARK); doc.text('CHRISTMAS', x + 2 + lw + 5.5, y + 4);
+        }
+        if (!active) return;
+
+        // Items: up to two lines each, while there's room in the day
+        const items = itemsOn(date);
+        let iy = y + 6.2;
+        const lineH = 3.9, maxY = y + rowH - 1.2;
+        doc.setFontSize(6.8);
+        for (let k = 0; k < items.length; k++) {
+          const it = items[k];
+          const remaining = items.length - k;
+          if (iy + lineH > maxY) {
+            doc.setFont('helvetica', 'italic'); doc.setTextColor(...mid);
+            doc.text(`+${remaining} more (see list)`, x + 2, iy + 2.6); break;
+          }
+          const t = timeText(it), isLife = it.type === 'life';
+          const textX = isLife ? x + 2.4 : x + 5.6, maxW = x + cw - 1.6 - textX;
+          doc.setFont('helvetica', isLife ? 'normal' : 'bold');
+          const tag = TYPES[it.type].tag;
+          const full = `${tag ? tag + ' ' : ''}${titleOf(it)}${it.title && tagsOf(it).length ? ' (' + tagsOf(it).join(', ') + ')' : ''}${t ? '  ' + t : ''}`;
+          let lines = doc.splitTextToSize(full, maxW).map(l => l.trim());
+          const room = Math.floor((maxY - iy) / lineH);
+          const keep = Math.max(1, Math.min(2, lines.length, room - (remaining > 1 ? 1 : 0)));
+          if (lines.length > keep) lines = [...lines.slice(0, keep - 1), fitLine(doc, lines.slice(keep - 1).join(' '), maxW)];
+          const h = lines.length * (lineH - 0.9) + 0.9;
+          const pc = colorOf(it), cInk = rgb(pc.ink);
+          doc.setFillColor(...rgb(pc.tint)); doc.rect(x + 1.2, iy, cw - 2.4, h - 0.5, 'F');
+          if (isLife) {
+            doc.setTextColor(...cInk);
+            lines.forEach((ln, j) => doc.text(ln, textX, iy + 2.55 + j * (lineH - 0.9)));
+          } else {
+            const c = cInk;
+            doc.setFillColor(255, 255, 255); doc.setDrawColor(...c); doc.setLineWidth(0.35); doc.rect(x + 1.6, iy + 0.45, 2.6, 2.6, 'FD');
+            // Type tag in its colour, the rest in dark ink
+            lines.forEach((ln, j) => {
+              const ty = iy + 2.55 + j * (lineH - 0.9);
+              if (j === 0 && tag && ln.startsWith(tag)) {
+                doc.setTextColor(...c); doc.text(tag, textX, ty);
+                const tw = doc.getTextWidth(tag) + 1.1;
+                doc.setTextColor(...ink); doc.text(ln.slice(tag.length + 1), textX + tw, ty);
+              } else { doc.setTextColor(...ink); doc.text(ln, textX, ty); }
+            });
+          }
+          iy += h + 0.4;
+        }
+      });
+      // Grid lines
+      doc.setDrawColor(...line); doc.setLineWidth(0.25);
+      for (let c = 0; c <= 7; c++) doc.line(M + c * cw, top, M + c * cw, top + headH + WEEKS * rowH);
+      doc.line(M, top, M + gw, top);
+      for (let r = 0; r <= WEEKS; r++) doc.line(M, top + headH + r * rowH, M + gw, top + headH + r * rowH);
+
+      // ── Session list ──
+      const sessions = PLAN_DAYS.flatMap(d => itemsOn(d).filter(it => SESSION_TYPES.includes(it.type)));
+      if (sessions.length) {
+        doc.addPage('a4', 'portrait');
+        const PW = 210, PH = 297, PM = 16;
+        let y;
+        const header = (cont) => {
+          lightsRow(doc, 0, PW, 4.2);
+          y = PM + 6;
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(...PINE);
+          doc.text(cont ? 'Session details (continued)' : 'Session details', PM, y);
+          y += 4;
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...mid);
+          if (!cont) { y += 2; doc.text('Every session in your plan, in order. Tick each one off when it\'s done.', PM, y); }
+          y += 7;
+        };
+        header(false);
+        let lastDate = null;
+        sessions.forEach(it => {
+          const focus = it.title && tagsOf(it).length ? `Focus: ${tagsOf(it).join(', ')}` : '';
+          const detailLines = it.details ? doc.setFontSize(9).splitTextToSize(it.details, PW - 2 * PM - 8) : [];
+          const need = (it.date !== lastDate ? 9 : 0) + 6 + (focus ? 4.4 : 0) + detailLines.length * 4.2 + 3;
+          if (y + need > PH - PM) { doc.addPage('a4', 'portrait'); header(true); lastDate = null; }
+          if (it.date !== lastDate) {
+            doc.setDrawColor(...line); doc.setLineWidth(0.25); doc.line(PM, y - 1, PW - PM, y - 1);
+            y += 4;
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...(it.date === END ? GOLD_DARK : mid));
+            doc.text(longDate(it.date).toUpperCase(), PM, y);
+            y += 5;
+            lastDate = it.date;
+          }
+          const c = rgb(colorOf(it).ink);
+          doc.setDrawColor(...c); doc.setLineWidth(0.4); doc.rect(PM, y - 3.3, 3.6, 3.6);
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5);
+          const kind = TYPES[it.type].short + ': ';
+          doc.setTextColor(...c); doc.text(kind, PM + 8, y);
+          const kw = doc.getTextWidth(kind);
+          doc.setTextColor(...ink); doc.text(titleOf(it), PM + 8 + kw, y);
+          const t = timeText(it);
+          if (t) { const hw = doc.getTextWidth(titleOf(it)); doc.setFont('helvetica', 'normal'); doc.setTextColor(...mid); doc.text(t, PM + 8 + kw + hw + 3, y); }
+          y += 5;
+          if (focus) {
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...BERRY);
+            doc.text(focus, PM + 8, y); y += 4.4;
+          }
+          if (detailLines.length) {
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(55, 65, 81);
+            doc.text(detailLines, PM + 8, y, { lineHeightFactor: 1.3 });
+            y += detailLines.length * 4.2;
+          }
+          y += 3;
+        });
+      }
+
+      // Footer on every page
+      const pages = doc.getNumberOfPages();
+      for (let p = 1; p <= pages; p++) {
+        doc.setPage(p);
+        const pw = doc.internal.pageSize.getWidth(), ph = doc.internal.pageSize.getHeight();
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(156, 163, 175);
+        doc.text('eric-deng-ultimate.com', pw - (p === 1 ? M : 16), ph - 4, { align: 'right' });
+      }
+      return doc;
+    }
+
+    // Five-point star centred on (cx, cy)
+    function star(doc, cx, cy, r, rgb) {
+      const pts = [];
+      for (let i = 0; i < 10; i++) {
+        const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.45 : r;
+        pts.push([cx + rr * Math.cos(a), cy + rr * Math.sin(a)]);
+      }
+      const segs = pts.slice(1).map((p, i) => [p[0] - pts[i][0], p[1] - pts[i][1]]);
+      doc.setFillColor(...rgb);
+      doc.lines(segs, pts[0][0], pts[0][1], [1, 1], 'F', true);
+    }
+
+    // A wire with little coloured bulbs, across the top of a page
+    function lightsRow(doc, x0, x1, y) {
+      const cols = [BERRY, GOLD, [79, 154, 110], [200, 190, 170]];
+      doc.setDrawColor(22, 69, 48); doc.setLineWidth(0.25);
+      const step = 12;
+      for (let x = x0; x < x1; x += step) {
+        doc.lines([[step / 2, 1.6, step / 2, 1.6, step, 0]], x, y - 1.2, [1, 1], 'S');   // gentle sag
+      }
+      let k = 0;
+      for (let x = x0 + step / 2; x < x1; x += step) {
+        doc.setFillColor(...cols[k++ % cols.length]);
+        doc.ellipse(x, y + 1.4, 0.9, 1.3, 'F');
+      }
+    }
+
+    // Legend swatch, vertically centred on text drawn at baseline y
+    function drawSwatch(doc, type, x, y) {
+      doc.setLineWidth(0.35);
+      if (type === 'life') { doc.setFillColor(241, 236, 228); doc.setDrawColor(222, 213, 199); doc.rect(x, y - 2.9, 4, 3.4, 'FD'); }
+      else { doc.setDrawColor(...TYPE_INK[type]); doc.rect(x + 0.7, y - 2.6, 2.6, 2.6); }
+    }
+
+    // Trim text to one line that fits the width, with an ellipsis if needed
+    function fitLine(doc, text, maxW) {
+      if (doc.getTextWidth(text) <= maxW) return text;
+      while (text.length > 1 && doc.getTextWidth(text + '…') > maxW) text = text.slice(0, -1);
+      return text.trimEnd() + '…';
+    }
+
+    $('pdf-btn').addEventListener('click', () => {
+      if (!window.jspdf) { alert('The PDF tool is still loading. Please try again in a moment.'); return; }
+      const doc = buildPDF();
+      doc.save('level-up-by-xmas-plan.pdf');
+      const n = t => state.items.filter(i => i.type === t).length;
+      gtag('event', 'planner_download', { gym: n('gym'), field: n('field'), ultimate: n('game'), other: n('other') });
+    });
+
+    render();
+  </script>
+</body>
+</html>
