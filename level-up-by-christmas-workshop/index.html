@@ -64,11 +64,11 @@
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
 
-  <!-- ─── TOP BAR: live countdown to the workshop (sticky). Start: Fri 27 Nov 2026, 9:00am Sydney = 26 Nov 22:00 UTC ─── -->
+  <!-- ─── TOP BAR: 24-hour window to grab the recording (sticky). Ends: Sat 28 Nov 2026, 5:00pm Sydney = 28 Nov 06:00 UTC ─── -->
   <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
-    <a href="#options" id="countdown" data-target="2026-11-26T22:00:00Z" aria-label="Time until the workshop starts"
+    <a href="#options" id="countdown" data-target="2026-11-28T06:00:00Z" aria-label="Time left to grab the recording"
        class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
-      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Starts in</span>
+      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Grab the recording in the next</span>
       <span class="flex items-start gap-2 sm:gap-3">
         <span class="text-center leading-none"><span data-cd="days" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Days</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="hrs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Hrs</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="mins" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Mins</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="secs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Secs</span></span>
       </span>
@@ -92,9 +92,31 @@
 
     <div id="hero-image-wrap" class="reveal-scale relative z-10 mx-auto px-6" style="transition-delay:0.22s; max-width: 48rem; margin-top: -395px;">
       <div class="rounded-lg overflow-hidden shadow-xl">
-        <!-- 1400x800 photo: 57.14% keeps its real aspect ratio, so the height is known before it loads -->
-        <div id="hero-image" class="relative w-full" style="padding-top: 57.14%;">
-          <img src="hero.jpg" alt="Eric leaping for a disc on an ultimate field" class="absolute inset-0 w-full h-full object-cover" />
+        <!-- 1448x812 workshop recording still: 56.08% keeps its real aspect ratio, so the height is known before it loads -->
+        <div id="hero-image" class="relative w-full" style="padding-top: 56.08%;">
+          <img src="workshop-recording.jpg" alt="Eric presenting the Level Up by Xmas workshop" class="absolute inset-0 w-full h-full object-cover" />
+          <!-- Static "video player" look: badge, play button, control bar (1:56:26 = real length of the recording). Clicking goes to the offer. -->
+          <a href="#options" aria-label="Grab the recording" class="absolute inset-0 block text-left">
+            <span class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/25"></span>
+            <span class="absolute top-3 left-3 sm:top-4 sm:left-4 inline-flex items-center gap-1.5 sm:gap-2 bg-black/60 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-md">
+              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Workshop recording
+            </span>
+            <span class="absolute inset-0 flex items-center justify-center">
+              <svg class="w-[68px] h-12 sm:w-[96px] sm:h-[68px]" viewBox="0 0 68 48" aria-hidden="true"><rect width="68" height="48" rx="13" fill="#212121" fill-opacity="0.8"/><path d="M27 14.5v19l17-9.5z" fill="#fff"/></svg>
+            </span>
+            <span class="absolute inset-x-0 bottom-0 px-3 sm:px-4 pb-2.5 sm:pb-3">
+              <span class="block relative h-1 rounded-full bg-white/35 mb-2 sm:mb-2.5">
+                <span class="absolute left-0 top-0 h-full w-[3%] rounded-full bg-brand"></span>
+                <span class="absolute top-1/2 -translate-y-1/2 left-[3%] -ml-1.5 w-3 h-3 rounded-full bg-brand"></span>
+              </span>
+              <span class="flex items-center gap-3 sm:gap-4 text-white">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg>
+                <span class="text-[11px] sm:text-sm font-semibold tabular-nums">0:00 / 1:56:26</span>
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+              </span>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -115,7 +137,7 @@
         </div>
       </div>
       <div class="reveal mt-10">
-        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">SAVE YOUR SEAT →</a>
+        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">GRAB THE RECORDING →</a>
       </div>
     </div>
   </section>
@@ -139,7 +161,7 @@
         <p class="font-bold">So once a year, right before the holidays, we do something about it.</p>
       </div>
       <div class="reveal mt-10">
-        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">SAVE YOUR SEAT →</a>
+        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">GRAB THE RECORDING →</a>
       </div>
     </div>
   </section>
@@ -247,7 +269,7 @@
       </div>
 
       <div class="reveal mt-10">
-        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">SAVE YOUR SEAT →</a>
+        <a href="#options" class="block w-full max-w-sm mx-auto text-center bg-brand text-white font-extrabold px-4 sm:px-8 py-5 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors shadow-sm whitespace-nowrap text-[clamp(0.9rem,4.6vw,1.25rem)] sm:text-xl">GRAB THE RECORDING →</a>
       </div>
     </div>
   </section>
