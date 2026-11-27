@@ -46,15 +46,9 @@
 </head>
 <body class="bg-white text-gray-900 font-sans antialiased">
 
-  <!-- ─── TOP BAR: live countdown to the workshop (sticky). Start: Fri 27 Nov 2026, 9:00am Sydney = 26 Nov 22:00 UTC ─── -->
+  <!-- ─── TOP BAR ─── workshop is over: points to the recording -->
   <div class="reveal sticky top-0 z-50 bg-[#232321]" style="transition-delay:0.02s">
-    <a href="#save-date" id="countdown" data-target="2026-11-26T22:00:00Z" aria-label="Time until the workshop starts"
-       class="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 py-3 px-4">
-      <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-white/80">Starts in</span>
-      <span class="flex items-start gap-2 sm:gap-3">
-        <span class="text-center leading-none"><span data-cd="days" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Days</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="hrs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Hrs</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="mins" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Mins</span></span><span class="text-xl sm:text-2xl font-normal text-white/25 leading-none">:</span><span class="text-center leading-none"><span data-cd="secs" class="block text-xl sm:text-2xl font-extrabold text-white tabular-nums">00</span><span class="block mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Secs</span></span>
-      </span>
-    </a>
+    <a href="#recording" class="flex items-center justify-center py-4 px-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-white text-center">The workshop recording is ready below</a>
   </div>
 
   <!-- ─── HERO ─── navy panel -->
@@ -74,7 +68,7 @@
     </div>
   </section>
 
-  <!-- ─── NEXT STEP ─── save the workshop date -->
+  <!-- ─── NEXT STEP ─── watch the recording, get the planner -->
   <section class="pt-12 pb-16 px-6">
     <div class="max-w-3xl mx-auto">
       <!-- Personal welcome note from Eric -->
@@ -85,30 +79,33 @@
       </div>
       <div class="reveal mb-10 border-l-4 border-gray-600 pl-5 md:pl-7 space-y-3 text-lg md:text-xl text-gray-800 leading-relaxed">
         <p>Welcome to the Level Up by Christmas Workshop - I'm excited to have you!</p>
-        <p>It's going to be an awesome time live, where we'll help you build a holiday season game plan so that you can go into 2027 a step ahead.</p>
-        <p>Here are the details to add the event to your calendar.</p>
+        <p>The live workshop is now complete, so you can watch the full recording below at your own convenience.</p>
+        <p>It'll help you build a holiday season game plan so that you can go into 2027 a step ahead.</p>
       </div>
-      <!-- Save the workshop date (the countdown bar links here) -->
-      <div id="save-date" class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" style="scroll-margin-top:96px">
-        <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">Save the workshop date</h3>
-        <div>
-          <div>
-            <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-3">Add the workshop date and time to your calendar so that you don't forget.</p>
-            <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">You'll also get our holiday season training template as a bonus.</p>
-            <a id="gcal-link" href="https://calendar.app.google/HqGE2afzEFZv7XLz6" target="_blank" rel="noopener"
-               class="inline-flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap bg-brand text-white font-bold px-5 sm:px-8 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors text-base min-[380px]:text-lg shadow-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              Add to Google Calendar
-            </a>
-          </div>
+      <!-- Workshop recording (the top bar links here). youtu.be/4CgX-8oEAkg -->
+      <div id="recording" class="reveal bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8" style="scroll-margin-top:80px">
+        <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">Watch the workshop recording</h3>
+        <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">Grab a notepad. You'll want to plan along as you watch.</p>
+        <div class="relative w-full overflow-hidden rounded-2xl bg-gray-900" style="aspect-ratio:16/9">
+          <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube-nocookie.com/embed/4CgX-8oEAkg?rel=0" title="Level Up by Christmas Workshop recording" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
+      </div>
+      <!-- Resource: the Level Up by Xmas Planner -->
+      <div class="reveal mt-6 bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8">
+        <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-3">Get your Level Up by Xmas Planner</h3>
+        <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">Map out your gym, field and ultimate sessions around your commitments from now until Christmas, then download it as a PDF to tick off as you go.</p>
+        <a href="https://eric-deng-ultimate.com/level-up-by-xmas-planner/" target="_blank" rel="noopener" onclick="gtag('event','planner_link_click')"
+           class="inline-flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap bg-brand text-white font-bold px-5 sm:px-8 py-4 rounded-xl border-2 border-brand hover:bg-white hover:text-brand transition-colors text-base min-[380px]:text-lg shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Open the planner
+        </a>
       </div>
       <!-- Sign-off + P.S. (same left-bar style as the welcome note). P.S. = early Growth Squad applications for workshop buyers -->
       <div class="reveal mt-10 border-l-4 border-gray-600 pl-5 md:pl-7 space-y-3 text-lg md:text-xl text-gray-800 leading-relaxed">
-        <p>That's all for now. If you're free during that time, we'd love to see you there live.</p>
+        <p>That's all for now. Enjoy the recording, and have fun planning your holiday season.</p>
         <p class="font-bold">-Eric</p>
         <p class="pt-6"><b>P.S.</b> We're loading for 2027!</p>
-        <p>We're opening applications to our <b>2027 Growth Squad</b> after the workshop.</p>
+        <p>We're opening applications to our <b>2027 Growth Squad</b> soon.</p>
         <p>We save a few spots for people on the workshop before the applications go live to the general public.</p>
         <p>If you'd like lasting results in 2027 - and want a structured plan to help you get there - then <a href="https://eric-deng-ultimate.com/program-application/" target="_blank" rel="noopener" class="text-blue-600 underline underline-offset-4 hover:text-blue-800">apply here</a> for first dibs.</p>
       </div>
@@ -123,23 +120,6 @@
   </footer>
 
   <script>
-    // ── Countdown: counts to data-target, then holds at 00 (never negative) ──
-    (function () {
-      const box = document.getElementById('countdown');
-      const target = Date.parse(box.dataset.target);
-      const el = k => box.querySelector('[data-cd="' + k + '"]');
-      const pad = n => String(n).padStart(2, '0');
-      function tick() {
-        let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
-        el('days').textContent = pad(Math.floor(s / 86400)); s %= 86400;
-        el('hrs').textContent = pad(Math.floor(s / 3600)); s %= 3600;
-        el('mins').textContent = pad(Math.floor(s / 60));
-        el('secs').textContent = pad(s % 60);
-      }
-      tick();
-      setInterval(tick, 1000);
-    })();
-
     // ── Scroll reveal ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
